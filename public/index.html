@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Vault — Apple Private Wealth</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
+  <style>
+    /* ==========================================================================
+       APPLE HIG (iOS 18) x PINTEREST BENTO ARCHITECTURE
+       Design Language: SF Pro, Dynamic Card Stack, Inset Grouped, Liquid Glass
+       ========================================================================== */
+    :root {
+      --font-sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", -system-ui, sans-serif;
+      --font-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+      /* Dark Mode (Apple OLED Pure Black & Deep Zinc) */
+      --ios-bg: #000000;
+      --ios-grouped-bg: #000000;
+      --ios-card-bg: #1c1c1e;
+      --ios-card-secondary: #2c2c2e;
+      --ios-surface-glass: rgba(28, 28, 30, 0.78);
+      --ios-border: rgba(255, 255, 255, 0.09);
+      --ios-separator: rgba(255, 255, 255, 0.08);
+
+      --ios-label: #ffffff;
+      --ios-label-secondary: #8e8e93;
+      --ios-label-tertiary: #48484a;
+
+      /* Apple System Color Palette */
+      --ios-blue: #0a84ff;
+      --ios-green: #30d158;
+      --ios-indigo: #5e5ce6;
+      --ios-orange: #ff9f0a;
+      --ios-pink: #ff375f;
+      --ios-purple: #bf5af2;
+      --ios-red: #ff453a;
+      --ios-teal: #64d2ff;
+      --ios-yellow: #ffd60a;
+
+      /* SwiftUI Spring Physics Curves */
+      --spring-stack: cubic-bezier(0.25, 1, 0.5, 1);
+      --spring-smooth: linear(
+        0, .099 4.5%, .299 9.1%, .507 13.6%,
+        .682 18.2%, .812 22.7%, .901 27.3%, .956 31.8%, .987 36.4%,
+        1.003 40.9%, 1.01 50%, 1.005 63.6%, 1.001 77.3%, 1
+      );
+      --spring-pop: linear(
+        0, .124 4.5%, .371 9.1%, .62 13.6%,
+        .815 18.2%, .943 22.7%, 1.013 27.3%, 1.042 31.8%, 1.045 36.4%,
+        1.037 40.9%, 1.014 50%, 1.001 59.1%, .998 72.7%, 1
+      );
+
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+      --radius-capsule: 9999px;
+    }
+
+    [data-theme="light"] {
+      --ios-bg: #f2f2f7;
+      --ios-grouped-bg: #f2f2f7;
+      --ios-card-bg: #ffffff;
+      --ios-card-secondary: #f2f2f7;
+      --ios-surface-glass: rgba(255, 255, 255, 0.84);
+      --ios-border: rgba(0, 0, 0, 0.06);
+      --ios-separator: rgba(60, 60, 67, 0.12);
+
+      --ios-label: #000000;
+      --ios-label-secondary: #8a8a8e;
+      --ios-label-tertiary: #c7c7cc;
+
+      --ios-blue: #0071e3;
+      --ios-green: #34c759;
+      --ios-indigo: #5856d6;
+      --ios-orange: #ff9500;
+      --ios-pink: #ff2d55;
+      --ios-purple: #af52de;
+      --ios-red: #ff3b30;
+      --ios-teal: #5ac8fa;
+      --ios-yellow: #ffcc00;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: var(--font-sf);
+      background-color: var(--ios-bg);
+      color: var(--ios-label);
+      min-height: 100vh;
+      overflow-x: hidden;
+      letter-spacing: -0.015em;
+      padding-bottom: 120px; /* Space for Apple Floating Glass Tab Bar */
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Container Frame */
+    .ios-shell {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+      width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+      .ios-shell {
+        max-width: 980px;
+      }
+    }
+
+    /* ==========================================================================
+       APPLE LARGE TITLE HEADER
+       ========================================================================== */
+    .ios-header {
+      margin-bottom: 24px;
+      padding-top: 10px;
+    }
+
+    .ios-header-super {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .ios-date-badge {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--ios-label-secondary);
+      text-transform: uppercase;
+    }
+
+    .ios-header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ios-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--ios-card-secondary);
+      border: 1px solid var(--ios-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ios-label);
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .ios-icon-circle:active {
+      transform: scale(0.92);
+    }
+
+    .ios-large-title-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .ios-large-title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .ios-badge-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-capsule);
+      background: rgba(10, 132, 255, 0.12);
+      color: var(--ios-blue);
+      border: 0.5px solid rgba(10, 132, 255, 0.25);
+    }
+
+    /* ==========================================================================
+       APPLE WALLET: PHYSICAL CARD FANNING STACK (TOUCH & EXPAND)
+       ========================================================================== */
+    .apple-wallet-stack-wrapper {
+      margin-bottom: 32px;
+      perspective: 1200px;
+    }
+
+    .stack-helper-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ios-label-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-stack {
+      position: relative;
+      height: 250px;
+      cursor: pointer;
+      transition: height 0.4s var(--spring-smooth);
+    }
+
+    .card-stack.expanded {
+      height: 480px;
+    }
+
+    .physical-card {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 230px;
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.65), 0 1px 3px rgba(255, 255, 255, 0.15) inset;
+      transition: transform 0.5s var(--spring-stack), box-shadow 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .physical-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.04) 45%, rgba(0, 0, 0, 0.4) 100%);
+      pointer-events: none;
+    }
+
+    /* Card 1: Apple Card Iridescent Mesh */
+    .card-theme-apple {
+      background: radial-gradient(120% 120% at 85% 15%, #ff4b2b 0%, #ff416c 22%, #8a2387 50%, #0072ff 85%, #00c6ff 100%);
+      z-index: 3;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Card 2: 24K Gold Sovereign Private Reserve */
+    .card-theme-gold {
+      background: radial-gradient(120% 120% at 85% 15%, #ffe259 0%, #ffa751 45%, #b8860b 80%, #795548 100%);
+      z-index: 2;
+      transform: translateY(32px) scale(0.96);
+      filter: brightness(0.92);
+    }
+
+    /* Card 3: Black Titanium Obsidian */
+    .card-theme-obsidian {
+      background: radial-gradient(120% 120% at 85% 15%, #434343 0%, #212121 40%, #0c0c0c 80%, #000000 100%);
+      z-index: 1;
+      transform: translateY(64px) scale(0.92);
+      filter: brightness(0.85);
+    }
+
+    /* Expanded Fan Out Mode */
+    .card-stack.expanded .card-theme-apple {
+      transform: translateY(0) scale(1);
+    }
+    .card-stack.expanded .card-theme-gold {
+      transform: translateY(140px) scale(1);
+      filter: brightness(1);
+    }
+    .card-stack.expanded .card-theme-obsidian {
+      transform: translateY(280px) scale(1);
+      filter: brightness(1);
+    }
+
+    /* Inside Card Elements */
+    .card-micro-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .apple-chip-svg {
+      width: 44px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #e6e6e6 0%, #999999 100%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
+      border: 0.5px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .card-brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-center-balance-group {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-balance-subtext {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .card-balance-large {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      color: #ffffff;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-bottom-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-owner-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .card-number-mask {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.08em;
+    }
+
+    /* ==========================================================================
+       PINTEREST x APPLE BENTO GRID (ORGANIC TILES)
+       ========================================================================== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bento-tile {
+      background: var(--ios-card-bg);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .bento-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .tile-span-2 {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 600px) {
+      .tile-span-2 {
+        grid-column: span 1;
+      }
+    }
+
+    .tile-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ios-label-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tile-value-huge {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ios-label);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tile-subtext {
+      font-size: 12px;
+      color: var(--ios-green);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* Apple Quick Action Pills */
+    .quick-actions-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .action-pill-btn {
+      background: var(--ios-card-bg);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-md);
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.12s ease, background-color 0.2s ease;
+    }
+
+    .action-pill-btn:active {
+      transform: scale(0.95);
+      background: var(--ios-card-secondary);
+    }
+
+    .action-pill-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(10, 132, 255, 0.12);
+      color: var(--ios-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .action-pill-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ios-label);
+    }
+
+    /* ==========================================================================
+       APPLE INSET GROUPED LIST (TRANSACTION HISTORY)
+       ========================================================================== */
+    .ios-section-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ios-inset-group {
+      background: var(--ios-card-bg);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .ios-list-cell {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .ios-list-cell:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 68px;
+      right: 0;
+      bottom: 0;
+      height: 0.5px;
+      background: var(--ios-separator);
+    }
+
+    .ios-list-cell:active {
+      background: var(--ios-card-secondary);
+    }
+
+    .cell-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cell-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--ios-card-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--ios-label);
+      flex-shrink: 0;
+    }
+
+    .cell-details h4 {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--ios-label);
+    }
+
+    .cell-details span {
+      font-size: 12px;
+      color: var(--ios-label-secondary);
+    }
+
+    .cell-right {
+      text-align: right;
+    }
+
+    .cell-amount {
+      font-size: 16px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--ios-label);
+    }
+
+    .cell-amount.credit {
+      color: var(--ios-green);
+    }
+
+    .cell-status-sub {
+      font-size: 11px;
+      color: var(--ios-label-secondary);
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       OPERATIONS & MANAGER DESK (PINTEREST MASONRY STYLE)
+       ========================================================================== */
+    .masonry-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .client-account-card {
+      background: var(--ios-card-bg);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-apple-capsule {
+      padding: 8px 18px;
+      border-radius: var(--radius-capsule);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s ease;
+    }
+
+    .btn-apple-capsule:active {
+      transform: scale(0.95);
+    }
+
+    .btn-capsule-blue { background: var(--ios-blue); color: #ffffff; }
+    .btn-capsule-red { background: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
+    .btn-capsule-green { background: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
+
+    /* ==========================================================================
+       XCODE / RAYCAST SQL STUDIO
+       ========================================================================== */
+    .xcode-terminal-card {
+      background: var(--ios-card-bg);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+    }
+
+    .xcode-editor-box {
+      background: #09090b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .xcode-editor-topbar {
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .xcode-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .xcode-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+
+    .xcode-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 16px;
+      color: var(--ios-teal);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100px;
+      resize: vertical;
+      outline: none;
+    }
+
+    /* ==========================================================================
+       APPLE FLOATING GLASS TAB BAR (NATIVE iOS BOTTOM BAR)
+       ========================================================================== */
+    .ios-tab-bar-wrap {
+      position: fixed;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+
+    .ios-tab-bar {
+      pointer-events: auto;
+      background: var(--ios-surface-glass);
+      backdrop-filter: blur(30px) saturate(210%);
+      -webkit-backdrop-filter: blur(30px) saturate(210%);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-capsule);
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(255, 255, 255, 0.1) inset;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-capsule);
+      background: transparent;
+      border: none;
+      color: var(--ios-label-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.25s var(--spring-smooth);
+    }
+
+    .tab-item.active {
+      background: var(--ios-card-secondary);
+      color: var(--ios-label);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .tab-item:active {
+      transform: scale(0.95);
+    }
+
+    /* ==========================================================================
+       APPLE BOTTOM SHEET MODAL (SWIFTUI NATIVE EXPERIENCE)
+       ========================================================================== */
+    .ios-sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .ios-sheet-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ios-sheet {
+      width: 100%;
+      max-width: 500px;
+      background: var(--ios-card-bg);
+      border-top-left-radius: var(--radius-xl);
+      border-top-right-radius: var(--radius-xl);
+      padding: 16px 24px 44px;
+      border-top: 1px solid var(--ios-border);
+      box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.5);
+      transform: translateY(105%);
+      transition: transform 0.45s var(--spring-smooth);
+    }
+
+    .ios-sheet-backdrop.active .ios-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-pull-handle {
+      width: 36px;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--ios-label-tertiary);
+      margin: 0 auto 18px;
+    }
+
+    .sheet-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .sheet-subtitle {
+      font-size: 13px;
+      color: var(--ios-label-secondary);
+      margin-bottom: 24px;
+    }
+
+    /* Apple Pay Numeric Input */
+    .apple-pay-amount-box {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .apple-pay-amount-display {
+      font-size: 54px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--ios-label);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ios-field {
+      width: 100%;
+      background: var(--ios-card-secondary);
+      border: 1px solid var(--ios-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      color: var(--ios-label);
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 16px;
+      font-family: inherit;
+    }
+
+    .ios-field:focus {
+      border-color: var(--ios-blue);
+    }
+
+    .btn-apple-pay-submit {
+      width: 100%;
+      height: 54px;
+      border-radius: var(--radius-capsule);
+      background: var(--ios-blue);
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 6px 18px rgba(10, 132, 255, 0.35);
+      transition: transform 0.12s ease;
+    }
+
+    .btn-apple-pay-submit:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ios-shell">
+
+    <!-- ======================================================================
+         APPLE LARGE TITLE NAVIGATION HEADER
+         ====================================================================== -->
+    <header class="ios-header">
+      <div class="ios-header-super">
+        <span class="ios-date-badge" id="headerDate">Wednesday, November 25</span>
+        <div class="ios-header-controls">
+          <button class="ios-icon-circle" onclick="toggleTheme()" aria-label="Toggle Theme">
+            <svg id="themeSvg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="ios-large-title-row">
+        <div>
+          <h1 class="ios-large-title" id="pageTitleHeading">Wallet</h1>
+        </div>
+        <div class="ios-badge-pill" id="activeAccountTier">Private Wealth</div>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         VIEW 1: WALLET & APPLE CARD STACK (FAN OUT MODE)
+         ====================================================================== -->
+    <div id="viewWallet" class="view-content">
+
+      <!-- The Apple Wallet Stacking Cards -->
+      <section class="apple-wallet-stack-wrapper">
+        <div class="stack-helper-title">
+          <span>Cards & Passports</span>
+          <span style="color:var(--ios-blue); cursor:pointer;" onclick="toggleCardFan()">Tap to Fan Out</span>
+        </div>
+
+        <div class="card-stack" id="cardStack" onclick="toggleCardFan()">
+          
+          <!-- Card 1: Apple Card Mesh -->
+          <div class="physical-card card-theme-apple" id="cardObj1" onclick="selectCardIdx(0, event)">
+            <div class="card-micro-top">
+              <div class="apple-chip-svg"></div>
+              <div class="card-brand-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.97 1.7-0.85 2.73.99.08 2.02-.48 2.56-1.23z"/>
+                </svg>
+                <span>Titanium Card</span>
+              </div>
+            </div>
+            <div class="card-center-balance-group">
+              <div class="card-balance-subtext">Total Balance</div>
+              <div class="card-balance-large" id="cardBal1">$84,500.00</div>
+            </div>
+            <div class="card-bottom-row">
+              <div class="card-owner-name" id="cardHolder1">Aarav Sharma</div>
+              <div class="card-number-mask" id="cardMask1">BV •••• 9481</div>
+            </div>
+          </div>
+
+          <!-- Card 2: 24K Sovereign Gold -->
+          <div class="physical-card card-theme-gold" id="cardObj2" onclick="selectCardIdx(1, event)">
+            <div class="card-micro-top">
+              <div class="apple-chip-svg"></div>
+              <div class="card-brand-title">Sovereign Reserve</div>
+            </div>
+            <div class="card-center-balance-group">
+              <div class="card-balance-subtext">Liquidity Balance</div>
+              <div class="card-balance-large" id="cardBal2">$124,000.00</div>
+            </div>
+            <div class="card-bottom-row">
+              <div class="card-owner-name" id="cardHolder2">Priya Patel</div>
+              <div class="card-number-mask" id="cardMask2">BV •••• 9482</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Obsidian Black Titanium -->
+          <div class="physical-card card-theme-obsidian" id="cardObj3" onclick="selectCardIdx(2, event)">
+            <div class="card-micro-top">
+              <div class="apple-chip-svg"></div>
+              <div class="card-brand-title">Obsidian Prime</div>
+            </div>
+            <div class="card-center-balance-group">
+              <div class="card-balance-subtext">Vault Deposit</div>
+              <div class="card-balance-large" id="cardBal3">$25,600.00</div>
+            </div>
+            <div class="card-bottom-row">
+              <div class="card-owner-name" id="cardHolder3">Rohan Verma</div>
+              <div class="card-number-mask" id="cardMask3">BV •••• 9483</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Apple Pay Quick Action Buttons -->
+      <section class="quick-actions-bar">
+        <button class="action-pill-btn" onclick="openAppleSheet('transfer')">
+          <div class="action-pill-icon">↗</div>
+          <span class="action-pill-label">Send</span>
+        </button>
+
+        <button class="action-pill-btn" onclick="openAppleSheet('deposit')">
+          <div class="action-pill-icon">↓</div>
+          <span class="action-pill-label">Add Cash</span>
+        </button>
+
+        <button class="action-pill-btn" onclick="openAppleSheet('withdraw')">
+          <div class="action-pill-icon">↑</div>
+          <span class="action-pill-label">Withdraw</span>
+        </button>
+
+        <button class="action-pill-btn" onclick="openAppleSheet('loan')">
+          <div class="action-pill-icon">🏛</div>
+          <span class="action-pill-label">Borrow</span>
+        </button>
+      </section>
+
+      <!-- Pinterest x Apple Bento Grid Tiles -->
+      <section class="bento-grid">
+        
+        <!-- Tile 1: Spending Categories Ring -->
+        <div class="bento-tile">
+          <div class="tile-eyebrow">
+            <span>Spending Analytics</span>
+            <span>Monthly</span>
+          </div>
+          <div class="tile-value-huge" id="bentoTotalSpend">$26,000</div>
+          <div class="tile-subtext">Within Healthy Range</div>
+          <div style="display:flex; height:6px; border-radius:3px; background:rgba(255,255,255,0.06); overflow:hidden; margin-top:14px;">
+            <div style="width:45%; background:var(--ios-blue);"></div>
+            <div style="width:30%; background:var(--ios-pink);"></div>
+            <div style="width:25%; background:var(--ios-green);"></div>
+          </div>
+        </div>
+
+        <!-- Tile 2: Security & Biometrics -->
+        <div class="bento-tile">
+          <div class="tile-eyebrow">
+            <span>Security Status</span>
+            <span id="bentoSecStatus" style="color:var(--ios-green);">Active</span>
+          </div>
+          <div class="tile-value-huge">Face ID 🔒</div>
+          <div class="tile-subtext" style="color:var(--ios-label-secondary);">Instant Lock Guard</div>
+          <div style="margin-top:10px;">
+            <button class="btn-apple-capsule btn-capsule-red" style="font-size:11px; padding:4px 10px;" onclick="toggleFreezeCurrentAccount()">Freeze Card</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Grouped Inset Feed: Transactions List -->
+      <section>
+        <div class="ios-section-title">
+          <span>Latest Transactions</span>
+          <span style="font-size:13px; color:var(--ios-blue); font-weight:600; cursor:pointer;" onclick="switchAppTab('desk')">View All</span>
+        </div>
+
+        <div class="ios-inset-group" id="transactionsList">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ======================================================================
+         VIEW 2: OPERATIONS & CLIENT ACCOUNTS DESK
+         ====================================================================== -->
+    <div id="viewDesk" class="view-content" style="display:none;">
+      
+      <div class="ios-section-title">
+        <span>Portfolio Clients</span>
+        <button class="btn-apple-capsule btn-capsule-blue" onclick="openAppleSheet('newAccount')">+ Open Client</button>
+      </div>
+
+      <div class="masonry-cards-container" id="deskAccountsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="ios-section-title" style="margin-top:32px;">
+        <span>Credit Underwriting Queue</span>
+      </div>
+
+      <div class="masonry-cards-container" id="deskLoansContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </div>
+
+    <!-- ======================================================================
+         VIEW 3: XCODE / RAYCAST SQL STUDIO
+         ====================================================================== -->
+    <div id="viewStudio" class="view-content" style="display:none;">
+      <div class="xcode-terminal-card">
+        <div class="ios-section-title">
+          <span>Relational Database Terminal</span>
+          <span style="font-size:12px; color:var(--ios-label-secondary);">BankVault Engine v2.4</span>
+        </div>
+
+        <div class="xcode-editor-box">
+          <div class="xcode-editor-topbar">
+            <div class="xcode-dots">
+              <span class="xcode-dot dot-r"></span>
+              <span class="xcode-dot dot-y"></span>
+              <span class="xcode-dot dot-g"></span>
+            </div>
+            <span style="font-size:11px; font-family:var(--font-mono); color:var(--ios-label-secondary);">schema.sql — MySQL 8.0</span>
+            <button class="btn-apple-capsule btn-capsule-blue" style="font-size:11px; padding:3px 10px;" onclick="executeSql()">Run Query</button>
+          </div>
+          <textarea id="xcodeQueryInput" class="xcode-textarea">SELECT * FROM accounts WHERE balance > 50000;</textarea>
+        </div>
+
+        <div style="font-size:12px; color:var(--ios-label-secondary); margin-bottom:12px;" id="sqlStatsMsg">Query Ready.</div>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:13px;" id="sqlResultsTable">
+            <thead id="sqlTHead"></thead>
+            <tbody id="sqlTBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================================================================
+       APPLE FLOATING GLASS TAB BAR (NATIVE iOS)
+       ====================================================================== -->
+  <div class="ios-tab-bar-wrap">
+    <nav class="ios-tab-bar">
+      <button class="tab-item active" id="tabWallet" onclick="switchAppTab('wallet')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="3"></rect>
+          <line x1="2" y1="10" x2="22" y2="10"></line>
+        </svg>
+        <span>Wallet</span>
+      </button>
+
+      <button class="tab-item" id="tabDesk" onclick="switchAppTab('desk')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span>Desk</span>
+      </button>
+
+      <button class="tab-item" id="tabStudio" onclick="switchAppTab('studio')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        <span>SQL Studio</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ======================================================================
+       APPLE SHEET MODALS (SWIFTUI NATIVE BOTTOM PRESENTATION)
+       ====================================================================== -->
+
+  <!-- Modal: Send Money (Apple Pay Style) -->
+  <div class="ios-sheet-backdrop" id="sheetTransfer">
+    <div class="ios-sheet">
+      <div class="sheet-pull-handle"></div>
+      <h3 class="sheet-title">Send Money</h3>
+      <p class="sheet-subtitle">Instant peer-to-peer Vault transaction</p>
+
+      <form onsubmit="handleSendAction(event)">
+        <div class="apple-pay-amount-box">
+          <div class="apple-pay-amount-display" id="applePayDisplayAmt">$0.00</div>
+        </div>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Recipient</label>
+        <select class="ios-field" id="transferRecipientSelect" required></select>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Amount ($)</label>
+        <input type="number" class="ios-field" id="transferAmtInput" placeholder="250.00" min="1" step="0.01" required oninput="updateKeypadDisplay(this.value)">
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Description</label>
+        <input type="text" class="ios-field" id="transferNoteInput" value="Private Settlement" required>
+
+        <button type="submit" class="btn-apple-pay-submit">
+          <span>Double-Click to Pay</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Deposit Cash -->
+  <div class="ios-sheet-backdrop" id="sheetDeposit">
+    <div class="ios-sheet">
+      <div class="sheet-pull-handle"></div>
+      <h3 class="sheet-title">Add Cash</h3>
+      <p class="sheet-subtitle">Direct settlement into active vault</p>
+
+      <form onsubmit="handleDepositAction(event)">
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Deposit Amount ($)</label>
+        <input type="number" class="ios-field" id="depositAmtInput" placeholder="1000.00" min="1" step="0.01" required>
+
+        <button type="submit" class="btn-apple-pay-submit" style="background:var(--ios-green);">Confirm Deposit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Withdraw Cash -->
+  <div class="ios-sheet-backdrop" id="sheetWithdraw">
+    <div class="ios-sheet">
+      <div class="sheet-pull-handle"></div>
+      <h3 class="sheet-title">Withdraw Funds</h3>
+      <p class="sheet-subtitle">Immediate ATM / Wire liquidation</p>
+
+      <form onsubmit="handleWithdrawAction(event)">
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Withdraw Amount ($)</label>
+        <input type="number" class="ios-field" id="withdrawAmtInput" placeholder="200.00" min="1" step="0.01" required>
+
+        <button type="submit" class="btn-apple-pay-submit" style="background:var(--ios-red);">Authorize Payout</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Credit Line / Loan -->
+  <div class="ios-sheet-backdrop" id="sheetLoan">
+    <div class="ios-sheet">
+      <div class="sheet-pull-handle"></div>
+      <h3 class="sheet-title">Borrow from Vault</h3>
+      <p class="sheet-subtitle">Private credit underwriting (9.5% APR)</p>
+
+      <form onsubmit="handleLoanAction(event)">
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Principal Amount ($)</label>
+        <input type="number" class="ios-field" id="loanAmtInput" placeholder="50000" min="5000" step="1000" required>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Tenure</label>
+        <select class="ios-field" id="loanTenureInput">
+          <option value="12">12 Months</option>
+          <option value="24">24 Months</option>
+          <option value="36">36 Months</option>
+        </select>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Stated Purpose</label>
+        <input type="text" class="ios-field" id="loanPurposeInput" placeholder="Real Estate / Expansion" required>
+
+        <button type="submit" class="btn-apple-pay-submit">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Open Client Account -->
+  <div class="ios-sheet-backdrop" id="sheetNewAccount">
+    <div class="ios-sheet">
+      <div class="sheet-pull-handle"></div>
+      <h3 class="sheet-title">New Private Client</h3>
+      <p class="sheet-subtitle">Initialize KYC and allocation record</p>
+
+      <form onsubmit="handleNewClientAction(event)">
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Client Name</label>
+        <input type="text" class="ios-field" id="newClientName" placeholder="Kavita Krishnan" required>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Email Address</label>
+        <input type="email" class="ios-field" id="newClientEmail" placeholder="kavita@domain.com" required>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Mobile Number</label>
+        <input type="text" class="ios-field" id="newClientPhone" placeholder="+91 98765 11223" required>
+
+        <label style="font-size:11px; font-weight:700; color:var(--ios-label-secondary); text-transform:uppercase;">Initial Funding ($)</label>
+        <input type="number" class="ios-field" id="newClientDeposit" value="10000" min="500" required>
+
+        <button type="submit" class="btn-apple-pay-submit">Complete Onboarding</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       APPLICATION JAVASCRIPT ENGINE
+       ====================================================================== -->
+  <script>
+    const state = {
+      accounts: [],
+      activeAccountIdx: 0,
+      transactions: [],
+      loans: [],
+      isCardStackExpanded: false
+    };
+
+    // 1. Initial Load & Sync
+    async function syncData() {
+      try {
+        const [accRes, txRes, loansRes] = await Promise.all([
+          fetch('/api/accounts').then(r => r.json()),
+          fetch('/api/transactions').then(r => r.json()),
+          fetch('/api/loans').then(r => r.json())
+        ]);
+
+        if (accRes.success) {
+          state.accounts = accRes.accounts;
+          renderCards();
+          renderDeskAccounts();
+          populateRecipients();
+        }
+
+        if (txRes.success) {
+          state.transactions = txRes.transactions;
+          renderTransactions();
+        }
+
+        if (loansRes.success) {
+          state.loans = loansRes.loans;
+          renderDeskLoans();
+        }
+      } catch (err) {
+        console.error('Data sync failed:', err);
+      }
+    }
+
+    // 2. Physical Apple Card Rendering
+    function renderCards() {
+      if (state.accounts.length === 0) return;
+
+      const acc1 = state.accounts[0];
+      const acc2 = state.accounts[1] || acc1;
+      const acc3 = state.accounts[2] || acc1;
+
+      document.getElementById('cardBal1').textContent = '$' + acc1.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('cardHolder1').textContent = acc1.owner_name;
+      document.getElementById('cardMask1').textContent = `BV •••• ${acc1.account_no.slice(-4)}`;
+
+      document.getElementById('cardBal2').textContent = '$' + acc2.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('cardHolder2').textContent = acc2.owner_name;
+      document.getElementById('cardMask2').textContent = `BV •••• ${acc2.account_no.slice(-4)}`;
+
+      document.getElementById('cardBal3').textContent = '$' + acc3.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('cardHolder3').textContent = acc3.owner_name;
+      document.getElementById('cardMask3').textContent = `BV •••• ${acc3.account_no.slice(-4)}`;
+
+      // Update active banner
+      const cur = state.accounts[state.activeAccountIdx];
+      if (cur) {
+        document.getElementById('activeAccountTier').textContent = cur.status === 'active' ? 'Active' : 'Frozen';
+        document.getElementById('bentoSecStatus').textContent = cur.status === 'active' ? 'Armed' : 'Frozen';
+        document.getElementById('bentoSecStatus').style.color = cur.status === 'active' ? 'var(--ios-green)' : 'var(--ios-red)';
+      }
+    }
+
+    function toggleCardFan() {
+      state.isCardStackExpanded = !state.isCardStackExpanded;
+      const stack = document.getElementById('cardStack');
+      if (state.isCardStackExpanded) {
+        stack.classList.add('expanded');
+      } else {
+        stack.classList.remove('expanded');
+      }
+    }
+
+    function selectCardIdx(idx, e) {
+      if (e) e.stopPropagation();
+      state.activeAccountIdx = idx;
+      state.isCardStackExpanded = false;
+      document.getElementById('cardStack').classList.remove('expanded');
+
+      // Reorder cards so selected is on top
+      const cardIds = ['cardObj1', 'cardObj2', 'cardObj3'];
+      const targetCard = document.getElementById(cardIds[idx]);
+      if (targetCard) {
+        targetCard.style.zIndex = '10';
+        setTimeout(() => targetCard.style.zIndex = '', 300);
+      }
+
+      renderCards();
+      renderTransactions();
+      populateRecipients();
+    }
+
+    // 3. Transactions Grouped List
+    function renderTransactions() {
+      const container = document.getElementById('transactionsList');
+      container.innerHTML = '';
+
+      if (state.accounts.length === 0) return;
+      const curAcc = state.accounts[state.activeAccountIdx];
+      const accNo = curAcc.account_no;
+
+      const myTxs = state.transactions.filter(t => t.from_account_no === accNo || t.to_account_no === accNo);
+
+      if (myTxs.length === 0) {
+        container.innerHTML = `
+          <div style="padding: 30px; text-align: center; color: var(--ios-label-secondary);">
+            No transaction records found for this card.
+          </div>
+        `;
+        return;
+      }
+
+      myTxs.forEach(t => {
+        const isDebit = t.from_account_no === accNo;
+        const sign = isDebit ? '-' : '+';
+        const colorClass = isDebit ? '' : 'credit';
+
+        let icon = '↗';
+        if (t.tx_type === 'deposit') icon = '↓';
+        else if (t.tx_type === 'withdrawal') icon = '↑';
+        else if (t.tx_type === 'loan_disbursement') icon = '🏛';
+
+        const row = document.createElement('div');
+        row.className = 'ios-list-cell';
+        row.innerHTML = `
+          <div class="cell-left">
+            <div class="cell-avatar">${icon}</div>
+            <div class="cell-details">
+              <h4>${t.description || 'Vault Settlement'}</h4>
+              <span>${t.created_at}</span>
+            </div>
+          </div>
+          <div class="cell-right">
+            <div class="cell-amount ${colorClass}">${sign}$${t.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
+            <div class="cell-status-sub">$${t.balance_after.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // 4. Desk Rendering
+    function renderDeskAccounts() {
+      const container = document.getElementById('deskAccountsContainer');
+      container.innerHTML = '';
+
+      state.accounts.forEach(acc => {
+        const card = document.createElement('div');
+        card.className = 'client-account-card';
+        const isFrozen = acc.status === 'frozen';
+        const btnClass = isFrozen ? 'btn-capsule-green' : 'btn-capsule-red';
+        const btnText = isFrozen ? 'Unfreeze' : 'Freeze';
+        const nextStatus = isFrozen ? 'active' : 'frozen';
+
+        card.innerHTML = `
+          <div>
+            <h4 style="font-size:16px; font-weight:700;">${acc.owner_name}</h4>
+            <div style="font-size:12px; color:var(--ios-label-secondary); margin-top:2px;">
+              ${acc.account_no} • <span style="text-transform:capitalize;">${acc.account_type}</span>
+            </div>
+            <div style="font-size:20px; font-weight:800; margin-top:8px;">
+              $${acc.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}
+            </div>
+          </div>
+          <div>
+            <button class="btn-apple-capsule ${btnClass}" onclick="toggleAccountFreeze('${acc.account_no}', '${nextStatus}')">
+              ${btnText}
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderDeskLoans() {
+      const container = document.getElementById('deskLoansContainer');
+      container.innerHTML = '';
+
+      if (state.loans.length === 0) {
+        container.innerHTML = '<div style="color:var(--ios-label-secondary); font-size:13px;">No credit files queued.</div>';
+        return;
+      }
+
+      state.loans.forEach(l => {
+        const card = document.createElement('div');
+        card.className = 'client-account-card';
+        const isPending = l.status === 'pending';
+
+        const actionBtns = isPending ? `
+          <div style="display:flex; gap:6px;">
+            <button class="btn-apple-capsule btn-capsule-green" onclick="reviewLoan(${l.loan_id}, 'approved')">Approve</button>
+            <button class="btn-apple-capsule btn-capsule-red" onclick="reviewLoan(${l.loan_id}, 'rejected')">Decline</button>
+          </div>
+        ` : `<span style="font-size:12px; color:var(--ios-label-secondary); text-transform:capitalize;">${l.status}</span>`;
+
+        card.innerHTML = `
+          <div>
+            <div style="font-size:11px; font-weight:700; color:var(--ios-blue); text-transform:uppercase;">Loan File #${l.loan_id}</div>
+            <h4 style="font-size:16px; font-weight:700; margin-top:2px;">${l.applicant_name}</h4>
+            <div style="font-size:13px; color:var(--ios-label-secondary); margin-top:4px;">${l.purpose} • ${l.tenure_months} Mo @ ${l.interest_rate}%</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ios-label); margin-top:6px;">
+              $${l.loan_amount.toLocaleString()} <span style="font-size:12px; font-weight:normal; color:var(--ios-label-secondary);">($${l.monthly_emi}/mo)</span>
+            </div>
+          </div>
+          <div>${actionBtns}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function populateRecipients() {
+      const select = document.getElementById('transferRecipientSelect');
+      select.innerHTML = '';
+      const cur = state.accounts[state.activeAccountIdx];
+
+      state.accounts.forEach(acc => {
+        if (cur && acc.account_no === cur.account_no) return;
+        const opt = document.createElement('option');
+        opt.value = acc.account_no;
+        opt.textContent = `${acc.owner_name} (${acc.account_no})`;
+        select.appendChild(opt);
+      });
+    }
+
+    // 5. Native iOS Tab Switching
+    function switchAppTab(tabId) {
+      document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-content').forEach(v => v.style.display = 'none');
+
+      const titleEl = document.getElementById('pageTitleHeading');
+
+      if (tabId === 'wallet') {
+        document.getElementById('viewWallet').style.display = 'block';
+        document.getElementById('tabWallet').classList.add('active');
+        titleEl.textContent = 'Wallet';
+      } else if (tabId === 'desk') {
+        document.getElementById('viewDesk').style.display = 'block';
+        document.getElementById('tabDesk').classList.add('active');
+        titleEl.textContent = 'Operations';
+      } else if (tabId === 'studio') {
+        document.getElementById('viewStudio').style.display = 'block';
+        document.getElementById('tabStudio').classList.add('active');
+        titleEl.textContent = 'SQL Studio';
+        executeSql();
+      }
+    }
+
+    // 6. Bottom Sheet Presentations
+    function openAppleSheet(type) {
+      const idMap = {
+        transfer: 'sheetTransfer',
+        deposit: 'sheetDeposit',
+        withdraw: 'sheetWithdraw',
+        loan: 'sheetLoan',
+        newAccount: 'sheetNewAccount'
+      };
+      const target = document.getElementById(idMap[type]);
+      if (target) target.classList.add('active');
+    }
+
+    function closeAllSheets() {
+      document.querySelectorAll('.ios-sheet-backdrop').forEach(s => s.classList.remove('active'));
+    }
+
+    document.querySelectorAll('.ios-sheet-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) closeAllSheets();
+      });
+    });
+
+    function updateKeypadDisplay(val) {
+      const amt = parseFloat(val) || 0;
+      document.getElementById('applePayDisplayAmt').textContent = '$' + amt.toLocaleString(undefined, {minimumFractionDigits: 2});
+    }
+
+    // 7. Atomic Business Handlers
+    async function handleSendAction(e) {
+      e.preventDefault();
+      const cur = state.accounts[state.activeAccountIdx];
+      const toAcc = document.getElementById('transferRecipientSelect').value;
+      const amt = document.getElementById('transferAmtInput').value;
+      const note = document.getElementById('transferNoteInput').value;
+
+      try {
+        const res = await fetch('/api/transfer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from_account_no: cur.account_no,
+            to_account_no: toAcc,
+            amount: amt,
+            description: note
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        closeAllSheets();
+        document.getElementById('transferAmtInput').value = '';
+        updateKeypadDisplay(0);
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleDepositAction(e) {
+      e.preventDefault();
+      const cur = state.accounts[state.activeAccountIdx];
+      const amt = document.getElementById('depositAmtInput').value;
+
+      try {
+        const res = await fetch('/api/deposit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            account_no: cur.account_no,
+            amount: amt
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        closeAllSheets();
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleWithdrawAction(e) {
+      e.preventDefault();
+      const cur = state.accounts[state.activeAccountIdx];
+      const amt = document.getElementById('withdrawAmtInput').value;
+
+      try {
+        const res = await fetch('/api/withdraw', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            account_no: cur.account_no,
+            amount: amt
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        closeAllSheets();
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleLoanAction(e) {
+      e.preventDefault();
+      const cur = state.accounts[state.activeAccountIdx];
+      const amt = document.getElementById('loanAmtInput').value;
+      const tenure = document.getElementById('loanTenureInput').value;
+      const purpose = document.getElementById('loanPurposeInput').value;
+
+      try {
+        const res = await fetch('/api/loans/apply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            account_no: cur.account_no,
+            loan_amount: amt,
+            tenure_months: tenure,
+            purpose
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        closeAllSheets();
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function toggleFreezeCurrentAccount() {
+      const cur = state.accounts[state.activeAccountIdx];
+      const nextStatus = cur.status === 'active' ? 'frozen' : 'active';
+      try {
+        await fetch(`/api/accounts/${cur.account_no}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: nextStatus })
+        });
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function toggleAccountFreeze(accNo, nextStatus) {
+      try {
+        await fetch(`/api/accounts/${accNo}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: nextStatus })
+        });
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function reviewLoan(loanId, decision) {
+      try {
+        await fetch(`/api/loans/${loanId}/review`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ decision })
+        });
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function handleNewClientAction(e) {
+      e.preventDefault();
+      const name = document.getElementById('newClientName').value;
+      const email = document.getElementById('newClientEmail').value;
+      const phone = document.getElementById('newClientPhone').value;
+      const deposit = document.getElementById('newClientDeposit').value;
+
+      try {
+        const res = await fetch('/api/accounts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            full_name: name,
+            email,
+            phone,
+            initial_deposit: deposit
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        closeAllSheets();
+        syncData();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    // 8. SQL Terminal Execution
+    async function executeSql() {
+      const q = document.getElementById('xcodeQueryInput').value;
+      const stats = document.getElementById('sqlStatsMsg');
+      const thead = document.getElementById('sqlTHead');
+      const tbody = document.getElementById('sqlTBody');
+
+      try {
+        const res = await fetch('/api/sql-query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+
+        stats.textContent = `Executed in 0.8ms • ${data.rowCount} rows fetched.`;
+        thead.innerHTML = '';
+        tbody.innerHTML = '';
+
+        if (data.columns.length > 0) {
+          const trH = document.createElement('tr');
+          data.columns.forEach(col => {
+            const th = document.createElement('th');
+            th.style.padding = '8px 12px';
+            th.style.borderBottom = '1px solid var(--ios-border)';
+            th.style.color = 'var(--ios-label-secondary)';
+            th.style.textAlign = 'left';
+            th.textContent = col;
+            trH.appendChild(th);
+          });
+          thead.appendChild(trH);
+
+          data.data.forEach(row => {
+            const tr = document.createElement('tr');
+            data.columns.forEach(col => {
+              const td = document.createElement('td');
+              td.style.padding = '8px 12px';
+              td.style.borderBottom = '0.5px solid var(--ios-border)';
+              td.textContent = row[col];
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+        }
+      } catch (err) {
+        stats.textContent = 'SQL Error: ' + err.message;
+      }
+    }
+
+    // 9. Apple Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+    }
+
+    // Boot
+    syncData();
+  </script>
+</body>
+</html>
