@@ -17,12 +17,13 @@ exports.getProfile = (req, res) => {
 
 exports.setupRealAccount = (req, res) => {
   try {
-    const { full_name, bank_name, account_no, initial_balance, currency } = req.body;
+    const { full_name, bank_name, account_no, initial_balance, balance, currency } = req.body;
+    const finalBalance = initial_balance !== undefined ? initial_balance : balance;
     const result = BankingService.setupRealAccount({
       full_name,
       bank_name,
       account_no,
-      initial_balance,
+      initial_balance: finalBalance,
       currency
     });
     res.json({

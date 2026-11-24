@@ -11,6 +11,7 @@ router.get('/metrics', accountController.getMetrics);
 router.get('/accounts', accountController.getAccounts);
 router.get('/user/profile', accountController.getProfile);
 router.post('/user/setup-real-account', accountController.setupRealAccount);
+router.post('/setup-real-account', accountController.setupRealAccount);
 
 // Transactions Feed & Bulk Statement Import
 router.get('/transactions', transactionController.getAll);
