@@ -1,53 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker — Minimal & Premium Finance</title>
+  <title>Expense Tracker — Minimalist Finance & Wealth</title>
 
-  <meta name="theme-color" content="#f6f8f6">
+  <meta name="theme-color" content="#000000">
 
   <style>
     /* ==========================================================================
-       DRIBBLE PREMIUM FINTECH DESIGN SYSTEM (Hafiz Ibrahim Palette)
-       Fully responsive: Desktop Dashboard (1440px+), Tablet (1024px), Mobile (390px)
-       Palette: Sage Matcha (#9bc8a5), Coral Peach (#f4a58a), Milk White (#ffffff)
+       APPLE OLED BLACK x DRIBBLE SAGE GREEN DESIGN SYSTEM
+       Theme Toggle: OLED True Black (#000000) <-> Porcelain White (#f6f8f6)
        ========================================================================== */
     :root {
       --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", "SF Pro Text", -system-ui, sans-serif;
       --font-mono: "SF Mono", Menlo, Consolas, monospace;
 
-      --bg-canvas: #f6f8f6;
-      --card-white: #ffffff;
-      --card-subtle: #f9fbf9;
-      --input-bg: #f4f6f4;
-      --sidebar-bg: #ffffff;
+      /* Dark Mode (Apple OLED Black & Matte Obsidian) */
+      --bg-canvas: #000000;
+      --card-surface: #111214;
+      --card-surface-elevated: #1a1b1e;
+      --input-bg: #16171a;
+      --sidebar-bg: #090a0c;
 
-      --text-main: #181c19;
+      --text-main: #ffffff;
       --text-muted: #8e9590;
-      --text-light: #b4bbb6;
+      --text-dim: #484c49;
 
+      --border-line: rgba(255, 255, 255, 0.08);
+      --border-focus: #9bc8a5;
+
+      /* Signature Dribbble Pastels (Vibrant on Black) */
       --sage-green: #9bc8a5;
-      --sage-green-light: #eaf5ed;
-      --sage-green-dark: #7dae88;
+      --sage-green-glow: rgba(155, 200, 165, 0.16);
+      --sage-green-dark: #82b48e;
 
       --coral-peach: #f4a58a;
-      --coral-peach-light: #fef1ed;
+      --coral-peach-glow: rgba(244, 165, 138, 0.16);
 
-      --pastel-coffee: #fef3eb;
-      --pastel-salary: #eaf6ee;
-      --pastel-ticket: #f4f0fa;
-      --pastel-shopping: #edf5fc;
+      --pastel-coffee: rgba(254, 243, 235, 0.1);
+      --pastel-salary: rgba(155, 200, 165, 0.14);
+      --pastel-ticket: rgba(244, 240, 250, 0.12);
+      --pastel-shopping: rgba(237, 245, 252, 0.12);
 
-      --border-line: #edf1ed;
-      --shadow-card: 0 16px 40px -10px rgba(120, 150, 130, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
-      --shadow-button: 0 8px 20px -4px rgba(155, 200, 165, 0.45);
+      --donut-track: #1b1c20;
+      --shadow-card: 0 16px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-line);
+      --shadow-button: 0 8px 24px -4px rgba(155, 200, 165, 0.35);
 
       --radius-xl: 32px;
       --radius-lg: 24px;
       --radius-md: 18px;
       --radius-sm: 12px;
       --radius-pill: 9999px;
+    }
+
+    [data-theme="light"] {
+      --bg-canvas: #f6f8f6;
+      --card-surface: #ffffff;
+      --card-surface-elevated: #f9fbf9;
+      --input-bg: #f4f6f4;
+      --sidebar-bg: #ffffff;
+
+      --text-main: #181c19;
+      --text-muted: #8e9590;
+      --text-dim: #c5cbc6;
+
+      --border-line: #edf1ed;
+      --border-focus: #9bc8a5;
+
+      --sage-green: #9bc8a5;
+      --sage-green-glow: #eaf5ed;
+      --sage-green-dark: #7dae88;
+
+      --coral-peach: #f4a58a;
+      --coral-peach-glow: #fef1ed;
+
+      --pastel-coffee: #fef3eb;
+      --pastel-salary: #eaf6ee;
+      --pastel-ticket: #f4f0fa;
+      --pastel-shopping: #edf5fc;
+
+      --donut-track: #f0f3f0;
+      --shadow-card: 0 16px 40px -10px rgba(120, 150, 130, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+      --shadow-button: 0 8px 20px -4px rgba(155, 200, 165, 0.45);
     }
 
     * {
@@ -64,14 +99,15 @@
       min-height: 100vh;
       display: flex;
       letter-spacing: -0.015em;
+      transition: background-color 0.35s ease, color 0.35s ease;
       overflow-x: hidden;
     }
 
     /* ==========================================================================
-       SIDEBAR NAVIGATION (DESKTOP)
+       SIDEBAR (DESKTOP)
        ========================================================================== */
     .app-sidebar {
-      width: 260px;
+      width: 270px;
       background: var(--sidebar-bg);
       border-right: 1px solid var(--border-line);
       padding: 32px 24px;
@@ -82,164 +118,206 @@
       position: sticky;
       top: 0;
       height: 100vh;
+      transition: background-color 0.35s ease, border-color 0.35s ease;
     }
 
-    .brand-logo-area {
+    .brand-header-area {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
 
-    .brand-icon {
-      width: 40px;
-      height: 40px;
+    .brand-avatar-leaf {
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
-      background: var(--sage-green-light);
+      background: var(--sage-green-glow);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--sage-green-dark);
+      color: var(--sage-green);
       font-size: 20px;
     }
 
-    .brand-title {
+    .brand-text-block h2 {
       font-size: 18px;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
 
-    .sidebar-nav-menu {
+    .brand-text-block span {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links-stack {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      flex: 1;
     }
 
-    .sidebar-link {
+    .nav-link-btn {
       display: flex;
       align-items: center;
       gap: 14px;
       padding: 12px 16px;
       border-radius: var(--radius-md);
       color: var(--text-muted);
-      text-decoration: none;
       font-size: 15px;
       font-weight: 600;
-      transition: all 0.2s ease;
       cursor: pointer;
       border: none;
       background: none;
       text-align: left;
       width: 100%;
+      transition: all 0.2s ease;
     }
 
-    .sidebar-link:hover {
+    .nav-link-btn:hover {
       background: var(--input-bg);
       color: var(--text-main);
     }
 
-    .sidebar-link.active {
-      background: var(--sage-green-light);
-      color: var(--sage-green-dark);
+    .nav-link-btn.active {
+      background: var(--sage-green-glow);
+      color: var(--sage-green);
       font-weight: 700;
     }
 
-    .sidebar-link svg {
+    .nav-link-btn svg {
       width: 20px;
       height: 20px;
       stroke: currentColor;
     }
 
-    .user-profile-card {
+    /* Bank Link Status Card in Sidebar */
+    .bank-connected-pill {
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-top: auto;
+      margin-bottom: 16px;
+    }
+
+    .bank-pill-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .bank-live-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--sage-green);
+      background: var(--sage-green-glow);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pulse-green-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sage-green);
+    }
+
+    .btn-connect-bank {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: var(--radius-pill);
+      background: transparent;
+      border: 1px dashed var(--border-line);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-connect-bank:hover {
+      border-color: var(--sage-green);
+      color: var(--sage-green);
+    }
+
+    /* Profile Mini Card */
+    .profile-mini-box {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px;
+      padding: 12px;
       border-radius: var(--radius-md);
-      background: var(--input-bg);
-      margin-top: auto;
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
     }
 
-    .avatar-circle {
-      width: 38px;
-      height: 38px;
+    .avatar-token {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: var(--sage-green);
-      color: #ffffff;
+      color: #000000;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 15px;
     }
 
-    .profile-info h4 {
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .profile-info span {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
     /* ==========================================================================
-       MAIN CONTENT DASHBOARD (WEBSITE)
+       MAIN VIEWPORT
        ========================================================================== */
     .app-main-viewport {
       flex: 1;
-      padding: 36px 40px 60px;
-      max-width: 1320px;
+      padding: 36px 44px 80px;
+      max-width: 1360px;
       margin: 0 auto;
       width: 100%;
     }
 
-    /* Desktop Top Header */
+    /* Top Header */
     .dashboard-top-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 32px;
+      margin-bottom: 34px;
     }
 
-    .user-welcome-block {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .user-subtext {
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--text-muted);
-    }
-
-    .user-headline {
+    .user-greeting-title {
       font-size: 34px;
       font-weight: 800;
-      letter-spacing: -0.035em;
-      color: var(--text-main);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
       margin-top: 2px;
     }
 
-    .header-actions-group {
+    .top-actions-cluster {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
     /* Pill Filter Strip (From Reference) */
-    .pill-filter-row {
+    .pill-filter-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.03);
+      gap: 6px;
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
       padding: 4px;
       border-radius: var(--radius-pill);
     }
 
-    .filter-btn-pill {
+    .filter-item-btn {
       padding: 8px 18px;
       border-radius: var(--radius-pill);
       font-size: 14px;
@@ -251,43 +329,41 @@
       transition: all 0.2s ease;
     }
 
-    .filter-btn-pill.active {
-      background: var(--card-white);
+    .filter-item-btn.active {
+      background: var(--card-surface-elevated);
       color: var(--text-main);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .btn-add-desktop {
-      padding: 10px 22px;
-      border-radius: var(--radius-pill);
-      background: var(--sage-green);
-      color: #ffffff;
-      border: none;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
+    .theme-circle-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: var(--shadow-button);
-      transition: transform 0.15s ease;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: transform 0.12s ease;
     }
 
-    .btn-add-desktop:active {
-      transform: scale(0.96);
+    .theme-circle-btn:active {
+      transform: scale(0.92);
     }
 
     /* ==========================================================================
-       TOP ROW BENTO CARDS (WEBSITE GRID)
+       BENTO ROW: 3 HERO METRICS
        ========================================================================== */
     .bento-overview-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1.1fr;
+      grid-template-columns: 1.2fr 1fr 1fr;
       gap: 24px;
       margin-bottom: 36px;
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width: 1120px) {
       .bento-overview-grid {
         grid-template-columns: 1fr 1fr;
       }
@@ -299,9 +375,9 @@
       }
     }
 
-    /* Card 1: Dribbble Hero Card with Donut Chart */
-    .dribbble-summary-card {
-      background: var(--card-white);
+    /* Card 1: Donut Card (Hafiz Ibrahim Signature) */
+    .donut-hero-card {
+      background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-lg);
       padding: 24px 28px;
@@ -317,12 +393,7 @@
       gap: 20px;
     }
 
-    .metric-entry {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .metric-entry-label {
+    .metric-row-lbl {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -332,15 +403,15 @@
       margin-bottom: 4px;
     }
 
-    .indicator-line {
+    .accent-indicator {
       width: 3px;
       height: 12px;
       border-radius: 2px;
     }
-    .line-green { background: var(--sage-green); }
-    .line-coral { background: var(--coral-peach); }
+    .ind-green { background: var(--sage-green); }
+    .ind-coral { background: var(--coral-peach); }
 
-    .metric-entry-value {
+    .metric-number-bold {
       font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.03em;
@@ -348,49 +419,48 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Donut Chart SVG */
-    .donut-visual-box {
-      width: 108px;
-      height: 108px;
+    .donut-chart-box {
+      width: 110px;
+      height: 110px;
       position: relative;
       flex-shrink: 0;
     }
 
-    .donut-svg-elem {
+    .donut-chart-svg {
       width: 100%;
       height: 100%;
       transform: rotate(-90deg);
     }
 
-    .donut-track {
+    .donut-base-track {
       fill: none;
-      stroke: #f3f6f3;
+      stroke: var(--donut-track);
       stroke-width: 22;
     }
 
-    .donut-slice-income {
+    .donut-income-arc {
       fill: none;
       stroke: var(--sage-green);
       stroke-width: 22;
       stroke-dasharray: 280;
-      stroke-dashoffset: 70;
+      stroke-dashoffset: 75;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.8s ease;
     }
 
-    .donut-slice-spent {
+    .donut-spent-arc {
       fill: none;
       stroke: var(--coral-peach);
       stroke-width: 22;
       stroke-dasharray: 280;
-      stroke-dashoffset: 200;
+      stroke-dashoffset: 205;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.8s ease;
     }
 
-    /* Card 2: Liquidity & Balance Card */
-    .balance-card-widget {
-      background: var(--card-white);
+    /* Card 2: Liquidity & Real Bank Sync Card */
+    .bank-card-widget {
+      background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-lg);
       padding: 24px 28px;
@@ -400,13 +470,13 @@
       justify-content: space-between;
     }
 
-    .widget-header-row {
+    .widget-top-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .widget-title {
+    .widget-title-tag {
       font-size: 13px;
       font-weight: 700;
       color: var(--text-muted);
@@ -414,16 +484,7 @@
       letter-spacing: 0.05em;
     }
 
-    .badge-soft-green {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--sage-green-dark);
-      background: var(--sage-green-light);
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-    }
-
-    .main-balance-number {
+    .balance-display-large {
       font-size: 32px;
       font-weight: 800;
       letter-spacing: -0.03em;
@@ -431,7 +492,7 @@
       margin: 12px 0 6px;
     }
 
-    .balance-progress-track {
+    .balance-meter-bar {
       height: 8px;
       background: var(--input-bg);
       border-radius: var(--radius-pill);
@@ -440,15 +501,15 @@
       margin-top: 10px;
     }
 
-    .progress-fill-green {
-      width: 68%;
+    .meter-progress-green {
+      width: 72%;
       background: var(--sage-green);
       border-radius: var(--radius-pill);
     }
 
-    /* Card 3: Quick Category Proportions */
-    .categories-preview-card {
-      background: var(--card-white);
+    /* Card 3: Spending Breakdown */
+    .breakdown-card-widget {
+      background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-lg);
       padding: 24px 28px;
@@ -458,20 +519,20 @@
       justify-content: space-between;
     }
 
-    .cat-mini-bars {
+    .category-bars-cluster {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       margin-top: 16px;
     }
 
-    .cat-bar-item {
+    .cat-bar-cell {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .cat-bar-track {
+    .cat-bar-bg {
       height: 48px;
       background: var(--input-bg);
       border-radius: 12px;
@@ -481,12 +542,12 @@
       align-items: flex-end;
     }
 
-    .cat-bar-fill {
+    .cat-bar-level {
       width: 100%;
       border-radius: 12px;
     }
 
-    .cat-bar-label {
+    .cat-bar-title {
       font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
@@ -494,66 +555,64 @@
     }
 
     /* ==========================================================================
-       DUAL COLUMN MAIN BODY (WEBSITE LAYOUT)
-       Left: Transactions Feed (65%) | Right: Add Transaction Form (35%)
+       SPLIT WORKSPACE: TRANSACTIONS FEED (65%) | ADD PANEL (35%)
        ========================================================================== */
-    .dashboard-content-split {
+    .dashboard-split-frame {
       display: grid;
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 390px;
       gap: 28px;
       align-items: start;
     }
 
-    @media (max-width: 1024px) {
-      .dashboard-content-split {
+    @media (max-width: 1040px) {
+      .dashboard-split-frame {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Left Card: Master Transactions Section */
-    .transactions-master-card {
-      background: var(--card-white);
+    /* Master Transactions Card */
+    .master-feed-card {
+      background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-xl);
       padding: 28px;
       box-shadow: var(--shadow-card);
     }
 
-    .feed-header-row {
+    .feed-header-line {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
-    .feed-header-row h3 {
+    .feed-header-line h3 {
       font-size: 20px;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
 
-    /* Transaction Item Rows (Exact Match) */
-    .tx-item-row {
+    .feed-row-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 10px;
+      padding: 14px 12px;
       border-radius: var(--radius-md);
       transition: background-color 0.15s ease;
       cursor: pointer;
     }
 
-    .tx-item-row:hover {
-      background: var(--card-subtle);
+    .feed-row-item:hover {
+      background: var(--card-surface-elevated);
     }
 
-    .tx-left-wrap {
+    .feed-item-left {
       display: flex;
       align-items: center;
       gap: 16px;
     }
 
-    .tx-avatar-box {
+    .category-pastel-avatar {
       width: 50px;
       height: 50px;
       border-radius: var(--radius-md);
@@ -564,49 +623,44 @@
       flex-shrink: 0;
     }
 
-    .tx-avatar-box.food { background: var(--pastel-coffee); }
-    .tx-avatar-box.salary { background: var(--pastel-salary); }
-    .tx-avatar-box.entertainment { background: var(--pastel-ticket); }
-    .tx-avatar-box.shopping { background: var(--pastel-shopping); }
-    .tx-avatar-box.transfer { background: var(--input-bg); }
+    .category-pastel-avatar.food { background: var(--pastel-coffee); }
+    .category-pastel-avatar.salary { background: var(--pastel-salary); }
+    .category-pastel-avatar.entertainment { background: var(--pastel-ticket); }
+    .category-pastel-avatar.shopping { background: var(--pastel-shopping); }
 
-    .tx-title-meta h4 {
+    .item-texts h4 {
       font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 2px;
     }
 
-    .tx-title-meta span {
+    .item-texts span {
       font-size: 13px;
       color: var(--text-muted);
       font-weight: 500;
     }
 
-    .tx-right-meta {
+    .feed-item-right {
       text-align: right;
     }
 
-    .tx-val {
+    .feed-item-amount {
       font-size: 17px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
       color: var(--text-main);
     }
 
-    .tx-val.income {
-      color: var(--text-main);
-    }
-
-    .tx-timestamp {
+    .feed-item-date {
       font-size: 12px;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
-    /* Right Card: Screen 2 (Add Transaction Screen as Desktop Panel) */
-    .add-transaction-desktop-card {
-      background: var(--card-white);
+    /* Right Side Add Panel (Screen 2 as Desktop Module) */
+    .add-transaction-pane {
+      background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-xl);
       padding: 28px;
@@ -615,7 +669,7 @@
       top: 36px;
     }
 
-    .card-pane-title {
+    .pane-title-row {
       font-size: 19px;
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -625,24 +679,26 @@
       justify-content: space-between;
     }
 
-    /* Form Fields from Reference */
-    .field-card-box {
+    .input-field-card {
       background: var(--input-bg);
       border-radius: var(--radius-md);
       padding: 16px 20px;
       margin-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
     }
 
-    .field-label-small {
+    .input-field-card:focus-within {
+      border-color: var(--sage-green);
+    }
+
+    .field-hint-text {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
     }
 
-    .clean-input-box {
+    .currency-raw-input {
       width: 100%;
       background: transparent;
       border: none;
@@ -653,7 +709,7 @@
       font-family: inherit;
     }
 
-    .cat-selector-clickable {
+    .category-touch-pill {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -661,7 +717,7 @@
       margin-top: 4px;
     }
 
-    .selected-cat-label {
+    .chosen-category-name {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -670,15 +726,15 @@
       color: var(--text-main);
     }
 
-    /* Payment Type Radio List */
-    .payment-radios-title {
+    /* Radio Group */
+    .radio-section-headline {
       font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
       margin: 18px 0 12px;
     }
 
-    .radio-row-opt {
+    .payment-radio-row {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -690,26 +746,25 @@
       transition: color 0.15s ease;
     }
 
-    .radio-row-opt.active {
+    .payment-radio-row.active {
       color: var(--text-main);
     }
 
-    .radio-dot-circle {
+    .radio-outer-ring {
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      border: 2px solid #dcdfdc;
+      border: 2px solid #3a3d42;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: border-color 0.2s ease;
     }
 
-    .radio-row-opt.active .radio-dot-circle {
+    .payment-radio-row.active .radio-outer-ring {
       border-color: var(--sage-green);
     }
 
-    .radio-dot-center {
+    .radio-inner-pip {
       width: 10px;
       height: 10px;
       border-radius: 50%;
@@ -717,22 +772,22 @@
       display: none;
     }
 
-    .radio-row-opt.active .radio-dot-center {
+    .payment-radio-row.active .radio-inner-pip {
       display: block;
     }
 
-    /* Dual Action Buttons (Draft vs Add) */
-    .dual-button-bar {
+    /* Dual Buttons */
+    .pane-button-group {
       display: flex;
       gap: 12px;
       margin-top: 24px;
     }
 
-    .btn-pill-draft {
+    .btn-capsule-draft {
       flex: 1;
       height: 52px;
       border-radius: var(--radius-pill);
-      background: var(--card-white);
+      background: var(--input-bg);
       border: 1px solid var(--border-line);
       font-size: 15px;
       font-weight: 700;
@@ -740,7 +795,7 @@
       cursor: pointer;
     }
 
-    .btn-pill-add {
+    .btn-capsule-add {
       flex: 1.4;
       height: 52px;
       border-radius: var(--radius-pill);
@@ -748,40 +803,96 @@
       border: none;
       font-size: 15px;
       font-weight: 700;
-      color: #ffffff;
+      color: #000000;
       cursor: pointer;
       box-shadow: var(--shadow-button);
       transition: transform 0.15s ease;
     }
 
-    .btn-pill-add:active {
+    .btn-capsule-add:active {
       transform: scale(0.97);
     }
 
     /* ==========================================================================
-       RESPONSIVENESS & MOBILE ADAPTATIONS
+       MODAL: OPEN BANKING / PLAID BANK LINK FLOW
        ========================================================================== */
-    @media (max-width: 900px) {
-      .app-sidebar {
-        display: none;
-      }
-      .app-main-viewport {
-        padding: 20px 16px 80px;
-      }
-      .dashboard-top-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
+    .bank-connect-modal-layer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(14px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    /* Category Pop-up Sheet */
+    .bank-connect-modal-layer.active {
+      display: flex;
+    }
+
+    .bank-dialog-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .plaid-header-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sage-green);
+      margin-bottom: 8px;
+    }
+
+    .bank-select-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .bank-pick-card {
+      background: var(--input-bg);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .bank-pick-card:hover, .bank-pick-card.selected {
+      border-color: var(--sage-green);
+      background: var(--sage-green-glow);
+    }
+
+    .bank-pick-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .bank-pick-card span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Category Picker Modal */
     .cat-modal-layer {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      z-index: 100;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 200;
       display: none;
       align-items: center;
       justify-content: center;
@@ -792,13 +903,13 @@
       display: flex;
     }
 
-    .cat-sheet-box {
+    .cat-dialog-box {
       width: 100%;
-      max-width: 440px;
-      background: var(--card-white);
+      max-width: 420px;
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
       border-radius: var(--radius-xl);
       padding: 28px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
     }
 
     .cat-picker-grid {
@@ -808,7 +919,7 @@
       margin-top: 18px;
     }
 
-    .cat-choice-btn {
+    .cat-choice-cell {
       padding: 14px;
       border-radius: var(--radius-md);
       background: var(--input-bg);
@@ -822,32 +933,33 @@
       color: var(--text-main);
     }
 
-    .cat-choice-btn.selected {
+    .cat-choice-cell.selected {
       border-color: var(--sage-green);
-      background: var(--sage-green-light);
+      background: var(--sage-green-glow);
     }
 
-    /* SQL Developer Studio Modal */
-    .sql-drawer-backdrop {
+    /* SQL Terminal Drawer */
+    .sql-terminal-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      z-index: 100;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(14px);
+      z-index: 200;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
 
-    .sql-drawer-backdrop.active {
+    .sql-terminal-modal.active {
       display: flex;
     }
 
-    .sql-drawer-box {
+    .terminal-content-box {
       width: 100%;
       max-width: 680px;
-      background: var(--card-white);
+      background: var(--card-surface);
+      border: 1px solid var(--border-line);
       border-radius: var(--radius-xl);
       padding: 28px;
       max-height: 85vh;
@@ -858,20 +970,20 @@
 <body>
 
   <!-- ========================================================================
-       DESKTOP SIDEBAR NAVIGATION
+       DESKTOP SIDEBAR
        ======================================================================== -->
   <aside class="app-sidebar">
     <div>
-      <div class="brand-logo-area">
-        <div class="brand-icon">🌱</div>
-        <div>
-          <h2 class="brand-title">Expense</h2>
-          <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Personal Wealth</span>
+      <div class="brand-header-area">
+        <div class="brand-avatar-leaf">🌱</div>
+        <div class="brand-text-block">
+          <h2>Expense</h2>
+          <span>Apple OLED Vault</span>
         </div>
       </div>
 
-      <nav class="sidebar-nav-menu">
-        <button class="sidebar-link active" onclick="filterTransactions('All')">
+      <nav class="nav-links-stack">
+        <button class="nav-link-btn active" onclick="applyCategoryFilter('All')">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -879,7 +991,7 @@
           <span>Dashboard</span>
         </button>
 
-        <button class="sidebar-link" onclick="filterTransactions('Food')">
+        <button class="nav-link-btn" onclick="applyCategoryFilter('Food')">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="4" width="20" height="16" rx="2"></rect>
             <line x1="2" y1="10" x2="22" y2="10"></line>
@@ -887,7 +999,7 @@
           <span>Transactions</span>
         </button>
 
-        <button class="sidebar-link" onclick="openSqlStudio()">
+        <button class="nav-link-btn" onclick="openSqlStudio()">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="16 18 22 12 16 6"></polyline>
             <polyline points="8 6 2 12 8 18"></polyline>
@@ -897,170 +1009,180 @@
       </nav>
     </div>
 
-    <!-- User Profile Card in Sidebar -->
-    <div class="user-profile-card">
-      <div class="avatar-circle">D</div>
-      <div class="profile-info">
-        <h4>David Miller</h4>
-        <span>david@bankvault.com</span>
+    <!-- Real Bank Linking Widget -->
+    <div>
+      <div class="bank-connected-pill">
+        <div class="bank-pill-head">
+          <span style="font-size:12px; font-weight:700;" id="sidebarActiveBank">Chase Private</span>
+          <span class="bank-live-badge"><span class="pulse-green-dot"></span> Live Sync</span>
+        </div>
+        <span style="font-size:11px; color:var(--text-muted);" id="sidebarActiveAccountNo">Acct •••• 9481</span>
+        <button class="btn-connect-bank" onclick="openBankLinkModal()">+ Link Another Bank</button>
+      </div>
+
+      <div class="profile-mini-box">
+        <div class="avatar-token">D</div>
+        <div>
+          <h4 style="font-size:14px; font-weight:700;">David Miller</h4>
+          <span style="font-size:11px; color:var(--text-muted);">Verified Tier 1</span>
+        </div>
       </div>
     </div>
   </aside>
 
   <!-- ========================================================================
-       MAIN WEBSITE CONTENT VIEWPORT
+       MAIN DASHBOARD
        ======================================================================== -->
   <main class="app-main-viewport">
-
+    
     <!-- Top Header -->
     <header class="dashboard-top-header">
-      <div class="user-welcome-block">
-        <span class="user-subtext">Hello,</span>
-        <h1 class="user-headline">David</h1>
+      <div>
+        <span style="font-size:16px; font-weight:500; color:var(--text-muted);">Hello,</span>
+        <h1 class="user-greeting-title">David</h1>
       </div>
 
-      <div class="header-actions-group">
-        <!-- Time Filter Strip (From Reference) -->
-        <nav class="pill-filter-row">
-          <button class="filter-btn-pill active" onclick="setTimeFilter('All', this)">All</button>
-          <button class="filter-btn-pill" onclick="setTimeFilter('Daily', this)">Daily</button>
-          <button class="filter-btn-pill" onclick="setTimeFilter('Weekly', this)">Weekly</button>
-          <button class="filter-btn-pill" onclick="setTimeFilter('Monthly', this)">Monthly</button>
+      <div class="top-actions-cluster">
+        <!-- Time Filter Pills -->
+        <nav class="pill-filter-bar">
+          <button class="filter-item-btn active" onclick="setTimeFilter('All', this)">All</button>
+          <button class="filter-item-btn" onclick="setTimeFilter('Daily', this)">Daily</button>
+          <button class="filter-item-btn" onclick="setTimeFilter('Weekly', this)">Weekly</button>
+          <button class="filter-item-btn" onclick="setTimeFilter('Monthly', this)">Monthly</button>
         </nav>
 
-        <button class="btn-add-desktop" onclick="document.getElementById('inputAmountField').focus()">
-          <span>+</span>
-          <span>New Entry</span>
+        <!-- Theme Toggle -->
+        <button class="theme-circle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+          <svg id="themeIconSvg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+          </svg>
         </button>
       </div>
     </header>
 
-    <!-- Top Row Bento Grid: Exact Dribbble Donut Card + Extra High-Value Widgets -->
+    <!-- Top Bento 3-Hero Cards -->
     <section class="bento-overview-grid">
       
-      <!-- Card 1: Exact Donut Chart Summary Card from Reference -->
-      <div class="dribbble-summary-card">
+      <!-- Card 1: Hafiz Ibrahim Donut Chart Card -->
+      <div class="donut-hero-card">
         <div class="metric-duo-stack">
-          <div class="metric-entry">
-            <div class="metric-entry-label">
-              <span class="indicator-line line-green"></span>
+          <div>
+            <div class="metric-row-lbl">
+              <span class="accent-indicator ind-green"></span>
               <span>Income</span>
             </div>
-            <div class="metric-entry-value" id="incomeDisplayVal">$8,429</div>
+            <div class="metric-number-bold" id="displayIncomeAmt">$8,429</div>
           </div>
 
-          <div class="metric-entry">
-            <div class="metric-entry-label">
-              <span class="indicator-line line-coral"></span>
+          <div>
+            <div class="metric-row-lbl">
+              <span class="accent-indicator ind-coral"></span>
               <span>Spent</span>
             </div>
-            <div class="metric-entry-value" id="spentDisplayVal">$3,621</div>
+            <div class="metric-number-bold" id="displaySpentAmt">$3,621</div>
           </div>
         </div>
 
-        <!-- Donut Ring Chart -->
-        <div class="donut-visual-box">
-          <svg class="donut-svg-elem" viewBox="0 0 100 100">
-            <circle class="donut-track" cx="50" cy="50" r="38"></circle>
-            <circle class="donut-slice-income" cx="50" cy="50" r="38"></circle>
-            <circle class="donut-slice-spent" id="donutSpentArc" cx="50" cy="50" r="38"></circle>
+        <div class="donut-chart-box">
+          <svg class="donut-chart-svg" viewBox="0 0 100 100">
+            <circle class="donut-base-track" cx="50" cy="50" r="38"></circle>
+            <circle class="donut-income-arc" cx="50" cy="50" r="38"></circle>
+            <circle class="donut-spent-arc" id="donutSpentRing" cx="50" cy="50" r="38"></circle>
           </svg>
         </div>
       </div>
 
-      <!-- Card 2: Total Balance & Monthly Allowance -->
-      <div class="balance-card-widget">
-        <div class="widget-header-row">
-          <span class="widget-title">Net Available</span>
-          <span class="badge-soft-green">Optimal</span>
+      <!-- Card 2: Liquid Bank Balance -->
+      <div class="bank-card-widget">
+        <div class="widget-top-strip">
+          <span class="widget-title-tag">Net Liquid Vault</span>
+          <span style="font-size:11px; font-weight:700; color:var(--sage-green); background:var(--sage-green-glow); padding:3px 10px; border-radius:var(--radius-pill);">Open Banking API</span>
         </div>
-        <div class="main-balance-number" id="netBalanceVal">$12,450.00</div>
+        <div class="balance-display-large" id="displayNetBalance">$22,679.00</div>
         <div>
           <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); font-weight:600;">
-            <span>Monthly Cashflow Target</span>
-            <span>68% Saved</span>
+            <span>Real-Time Bank Reserves</span>
+            <span id="savingsRateTxt">72% Saved</span>
           </div>
-          <div class="balance-progress-track">
-            <div class="progress-fill-green"></div>
+          <div class="balance-meter-bar">
+            <div class="meter-progress-green"></div>
           </div>
         </div>
       </div>
 
-      <!-- Card 3: Category Proportions -->
-      <div class="categories-preview-card">
-        <div class="widget-header-row">
-          <span class="widget-title">Category Intensity</span>
-          <span style="font-size:12px; color:var(--text-muted);">March 2026</span>
+      <!-- Card 3: Categorical Intensity -->
+      <div class="breakdown-card-widget">
+        <div class="widget-top-strip">
+          <span class="widget-title-tag">Spending Spectrum</span>
+          <span style="font-size:12px; color:var(--text-muted);">Synced</span>
         </div>
-        <div class="cat-mini-bars">
-          <div class="cat-bar-item">
-            <div class="cat-bar-track">
-              <div class="cat-bar-fill" style="height:65%; background:var(--pastel-coffee); border:1px solid #f2dfd3;"></div>
+        <div class="category-bars-cluster">
+          <div class="cat-bar-cell">
+            <div class="cat-bar-bg">
+              <div class="cat-bar-level" style="height:60%; background:var(--coral-peach);"></div>
             </div>
-            <span class="cat-bar-label">Food</span>
+            <span class="cat-bar-title">Food</span>
           </div>
-
-          <div class="cat-bar-item">
-            <div class="cat-bar-track">
-              <div class="cat-bar-fill" style="height:85%; background:var(--pastel-salary); border:1px solid #d4ebd9;"></div>
+          <div class="cat-bar-cell">
+            <div class="cat-bar-bg">
+              <div class="cat-bar-level" style="height:85%; background:var(--sage-green);"></div>
             </div>
-            <span class="cat-bar-label">Salary</span>
+            <span class="cat-bar-title">Salary</span>
           </div>
-
-          <div class="cat-bar-item">
-            <div class="cat-bar-track">
-              <div class="cat-bar-fill" style="height:40%; background:var(--pastel-ticket); border:1px solid #e5daf3;"></div>
+          <div class="cat-bar-cell">
+            <div class="cat-bar-bg">
+              <div class="cat-bar-level" style="height:45%; background:#bf5af2;"></div>
             </div>
-            <span class="cat-bar-label">Events</span>
+            <span class="cat-bar-title">Events</span>
           </div>
-
-          <div class="cat-bar-item">
-            <div class="cat-bar-track">
-              <div class="cat-bar-fill" style="height:50%; background:var(--pastel-shopping); border:1px solid #d7e8f7;"></div>
+          <div class="cat-bar-cell">
+            <div class="cat-bar-bg">
+              <div class="cat-bar-level" style="height:50%; background:#64d2ff;"></div>
             </div>
-            <span class="cat-bar-label">Shop</span>
+            <span class="cat-bar-title">Shop</span>
           </div>
         </div>
       </div>
 
     </section>
 
-    <!-- Main Content Split (Website Layout: 65% Transactions, 35% Add Transaction Panel) -->
-    <div class="dashboard-content-split">
+    <!-- Split Screen: 65% Recent Transactions | 35% Add Transaction -->
+    <div class="dashboard-split-frame">
       
-      <!-- Left Column: Recent Transactions Feed -->
-      <div class="transactions-master-card">
-        <div class="feed-header-row">
+      <!-- Left: Recent Transactions -->
+      <div class="master-feed-card">
+        <div class="feed-header-line">
           <h3>Recent transactions</h3>
-          <span style="font-size:13px; color:var(--text-muted); font-weight:600; cursor:pointer;" onclick="openSqlStudio()">Inspect Database &gt;</span>
+          <span style="font-size:13px; color:var(--sage-green); font-weight:700; cursor:pointer;" onclick="openSqlStudio()">Inspect SQL Table &gt;</span>
         </div>
 
-        <div id="txItemsFeed" style="display:flex; flex-direction:column; gap:8px;">
+        <div id="transactionsListFeed" style="display:flex; flex-direction:column; gap:8px;">
           <!-- Rendered dynamically -->
         </div>
       </div>
 
-      <!-- Right Column: Screen 2 (Add Transaction Screen as Desktop Panel) -->
-      <div class="add-transaction-desktop-card">
-        <div class="card-pane-title">
+      <!-- Right: Screen 2 Add Transaction Panel -->
+      <div class="add-transaction-pane">
+        <div class="pane-title-row">
           <span>Add transaction</span>
-          <span style="font-size:12px; color:var(--sage-green-dark); font-weight:700;">Live SQL Sync</span>
+          <span style="font-size:12px; color:var(--sage-green); font-weight:700;">Live SQL</span>
         </div>
 
-        <form id="txFormDesktop" onsubmit="handleNewTransactionSubmit(event)">
-          <!-- Amount Box -->
-          <div class="field-card-box">
-            <span class="field-label-small">Amount</span>
-            <input type="number" step="0.01" min="1" class="clean-input-box" id="inputAmountField" value="12.00" required>
+        <form onsubmit="handleTransactionSubmit(event)">
+          <div class="input-field-card">
+            <span class="field-hint-text">Amount</span>
+            <input type="number" step="0.01" min="1" class="currency-raw-input" id="inputAmount" value="12.00" required>
           </div>
 
-          <!-- Category Selector -->
-          <div class="field-card-box" onclick="openCategoryModal()">
-            <span class="field-label-small">Category</span>
-            <div class="cat-selector-clickable">
-              <div class="selected-cat-label" id="activeCategoryDisplay">
+          <div class="input-field-card" onclick="openCategoryModal()">
+            <span class="field-hint-text">Category</span>
+            <div class="category-touch-pill">
+              <div class="chosen-category-name" id="selectedCategoryPill">
                 <span>☕</span>
-                <span id="activeCategoryText">Food</span>
+                <span id="selectedCategoryLabel">Food</span>
               </div>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -1068,40 +1190,31 @@
             </div>
           </div>
 
-          <!-- Note Field -->
-          <div class="field-card-box">
-            <span class="field-label-small">Merchant / Purpose</span>
-            <input type="text" class="clean-input-box" id="inputMerchantField" value="Blue Bottle Coffee" style="font-size:16px;" required>
+          <div class="input-field-card">
+            <span class="field-hint-text">Merchant / Details</span>
+            <input type="text" class="currency-raw-input" id="inputMerchant" value="Blue Bottle Coffee" style="font-size:16px;" required>
           </div>
 
-          <!-- Payment Type Selection (Exact Radios) -->
-          <div class="payment-radios-title">Payment Type</div>
+          <div class="radio-section-headline">Payment Type</div>
 
-          <div class="radio-row-opt active" onclick="choosePaymentType('Cash', this)">
-            <div class="radio-dot-circle">
-              <div class="radio-dot-center"></div>
-            </div>
+          <div class="payment-radio-row active" onclick="selectRadioType('Cash', this)">
+            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
             <span>Cash</span>
           </div>
 
-          <div class="radio-row-opt" onclick="choosePaymentType('Credit/Debit Card', this)">
-            <div class="radio-dot-circle">
-              <div class="radio-dot-center"></div>
-            </div>
+          <div class="payment-radio-row" onclick="selectRadioType('Credit/Debit Card', this)">
+            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
             <span>Credit/Debit Card</span>
           </div>
 
-          <div class="radio-row-opt" onclick="choosePaymentType('Check', this)">
-            <div class="radio-dot-circle">
-              <div class="radio-dot-center"></div>
-            </div>
+          <div class="payment-radio-row" onclick="selectRadioType('Check', this)">
+            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
             <span>Check</span>
           </div>
 
-          <!-- Dual Bottom Buttons -->
-          <div class="dual-button-bar">
-            <button type="button" class="btn-pill-draft" onclick="document.getElementById('inputAmountField').value=''">Clear</button>
-            <button type="submit" class="btn-pill-add">Add</button>
+          <div class="pane-button-group">
+            <button type="button" class="btn-capsule-draft" onclick="document.getElementById('inputAmount').value=''">Draft</button>
+            <button type="submit" class="btn-capsule-add">Add</button>
           </div>
         </form>
       </div>
@@ -1111,180 +1224,224 @@
   </main>
 
   <!-- ========================================================================
-       MODALS: CATEGORY PICKER & SQL STUDIO
+       MODAL 1: OPEN BANKING / PLAID SECURE BANK LINKING
        ======================================================================== -->
-  <!-- Category Sheet -->
+  <div class="bank-connect-modal-layer" id="bankModalLayer">
+    <div class="bank-dialog-card">
+      <div class="plaid-header-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Open Banking 256-Bit TLS Auth</span>
+      </div>
+
+      <h3 style="font-size:20px; font-weight:800; margin-bottom:4px;">Link Your Bank Account</h3>
+      <p style="font-size:13px; color:var(--text-muted);">Select your financial institution to import real-time balance and transactions safely without credentials exposure.</p>
+
+      <div class="bank-select-grid">
+        <div class="bank-pick-card selected" onclick="pickBankInstitution('Chase Bank', 8429.00, this)">
+          <h4>Chase Private</h4>
+          <span>Direct Sync</span>
+        </div>
+
+        <div class="bank-pick-card" onclick="pickBankInstitution('HDFC Bank', 14250.00, this)">
+          <h4>HDFC Imperia</h4>
+          <span>Instant Feed</span>
+        </div>
+
+        <div class="bank-pick-card" onclick="pickBankInstitution('Wells Fargo', 9200.00, this)">
+          <h4>Wells Fargo</h4>
+          <span>Live API</span>
+        </div>
+
+        <div class="bank-pick-card" onclick="pickBankInstitution('ICICI Wealth', 11500.00, this)">
+          <h4>ICICI Bank</h4>
+          <span>Net Banking</span>
+        </div>
+
+        <div class="bank-pick-card" onclick="pickBankInstitution('Revolut Ultra', 6300.00, this)">
+          <h4>Revolut</h4>
+          <span>Multi-Currency</span>
+        </div>
+
+        <div class="bank-pick-card" onclick="pickBankInstitution('Bank of America', 12100.00, this)">
+          <h4>Bank of America</h4>
+          <span>Checking</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button class="btn-capsule-draft" style="flex:1;" onclick="closeBankLinkModal()">Cancel</button>
+        <button class="btn-capsule-add" style="flex:1.5;" onclick="confirmBankLink()">Authorize & Sync</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Picker Modal -->
   <div class="cat-modal-layer" id="catModalLayer">
-    <div class="cat-sheet-box">
+    <div class="cat-dialog-box">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:18px; font-weight:800;">Choose Category</h4>
+        <h4 style="font-size:18px; font-weight:800;">Select Category</h4>
         <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeCategoryModal()">Close</span>
       </div>
 
       <div class="cat-picker-grid">
-        <div class="cat-choice-btn selected" onclick="setCategoryChoice('Food', '☕', this)">
+        <div class="cat-choice-cell selected" onclick="setCategoryChoice('Food', '☕', this)">
           <span>☕</span> <span>Food</span>
         </div>
-        <div class="cat-choice-btn" onclick="setCategoryChoice('Salary', '💵', this)">
+        <div class="cat-choice-cell" onclick="setCategoryChoice('Salary', '💵', this)">
           <span>💵</span> <span>Salary</span>
         </div>
-        <div class="cat-choice-btn" onclick="setCategoryChoice('Entertainment', '🎟️', this)">
+        <div class="cat-choice-cell" onclick="setCategoryChoice('Entertainment', '🎟️', this)">
           <span>🎟️</span> <span>Entertainment</span>
         </div>
-        <div class="cat-choice-btn" onclick="setCategoryChoice('Shopping', '🛍️', this)">
+        <div class="cat-choice-cell" onclick="setCategoryChoice('Shopping', '🛍️', this)">
           <span>🛍️</span> <span>Shopping</span>
         </div>
-        <div class="cat-choice-btn" onclick="setCategoryChoice('Transfer', '⇄', this)">
+        <div class="cat-choice-cell" onclick="setCategoryChoice('Transfer', '⇄', this)">
           <span>⇄</span> <span>Transfer</span>
         </div>
-        <div class="cat-choice-btn" onclick="setCategoryChoice('Travel', '✈️', this)">
+        <div class="cat-choice-cell" onclick="setCategoryChoice('Travel', '✈️', this)">
           <span>✈️</span> <span>Travel</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SQL Database Studio Drawer -->
-  <div class="sql-drawer-backdrop" id="sqlDrawerLayer">
-    <div class="sql-drawer-box">
+  <!-- SQL Terminal Drawer -->
+  <div class="sql-terminal-modal" id="sqlTerminalModal">
+    <div class="terminal-content-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h4 style="font-size:18px; font-weight:800;">SQL Database Terminal</h4>
+        <h4 style="font-size:18px; font-weight:800;">SQL Relational Studio</h4>
         <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeSqlStudio()">Close</span>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Direct execution against MySQL schema.</p>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Direct real-time query interface to backend relational engine.</p>
 
       <div style="background:#09090b; border-radius:14px; padding:14px; margin-bottom:14px;">
-        <textarea id="sqlTerminalInput" style="width:100%; background:transparent; border:none; color:#a3cca9; font-family:monospace; font-size:13px; outline:none; min-height:70px;">SELECT * FROM transactions ORDER BY created_at DESC;</textarea>
-        <button style="padding:7px 16px; border-radius:20px; background:var(--sage-green); color:#fff; border:none; font-weight:700; font-size:12px; cursor:pointer;" onclick="executeSqlTerminal()">Run Query</button>
+        <textarea id="sqlTerminalCode" style="width:100%; background:transparent; border:none; color:var(--sage-green); font-family:var(--font-mono); font-size:13px; outline:none; min-height:70px;">SELECT * FROM transactions ORDER BY tx_id DESC;</textarea>
+        <button style="padding:7px 16px; border-radius:20px; background:var(--sage-green); color:#000; border:none; font-weight:700; font-size:12px; cursor:pointer;" onclick="runSqlTerminalQuery()">Execute Query</button>
       </div>
 
-      <div id="sqlExecutionStatus" style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Ready</div>
+      <div id="sqlExecutionMsg" style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Ready</div>
       <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:12px;" id="sqlOutputTable">
-          <thead id="sqlTHead"></thead>
-          <tbody id="sqlTBody"></tbody>
+        <table style="width:100%; border-collapse:collapse; font-size:12px;" id="sqlResultGrid">
+          <thead id="sqlGridHead"></thead>
+          <tbody id="sqlGridBody"></tbody>
         </table>
       </div>
     </div>
   </div>
 
   <!-- ========================================================================
-       DATA & REACTIVE LOGIC
+       APPLICATION LOGIC & LIVE REVENUE ENGINE
        ======================================================================== -->
   <script>
-    const webState = {
-      transactions: [
-        { id: 1, title: 'Food', sub: 'Card', amount: -12.00, date: 'Mar 07, 2023', category: 'Food', icon: '☕', type: 'food' },
-        { id: 2, title: 'Salary', sub: 'Bank Account', amount: 6800.00, date: 'Mar 07, 2023', category: 'Salary', icon: '💵', type: 'salary' },
-        { id: 3, title: 'Entertainment', sub: 'Card', amount: -8.00, date: 'Mar 07, 2023', category: 'Entertainment', icon: '🎟️', type: 'entertainment' },
-        { id: 4, title: 'Grocery', sub: 'Card', amount: -45.50, date: 'Mar 06, 2023', category: 'Food', icon: '☕', type: 'food' }
-      ],
+    const appState = {
+      transactions: [],
+      accounts: [],
       selectedCategory: 'Food',
       selectedIcon: '☕',
-      selectedPaymentType: 'Cash',
-      activeFilter: 'All'
+      selectedRadio: 'Cash',
+      activeFilter: 'All',
+      chosenBankToLink: { name: 'Chase Bank', balance: 8429.00 }
     };
 
-    async function loadData() {
+    // 1. Initial Data Fetch
+    async function hydrateAppData() {
       try {
-        const res = await fetch('/api/transactions');
-        const data = await res.json();
-        if (data.success && data.transactions.length > 0) {
-          const mapped = data.transactions.map((t, i) => {
-            const isDebit = t.from_account_no !== null;
-            const amt = isDebit ? -Math.abs(t.amount) : Math.abs(t.amount);
-            let cat = 'Food';
-            let icon = '☕';
-            let type = 'food';
+        const [txRes, accRes, metricsRes] = await Promise.all([
+          fetch('/api/transactions').then(r => r.json()),
+          fetch('/api/accounts').then(r => r.json()),
+          fetch('/api/metrics').then(r => r.json())
+        ]);
 
-            if (t.tx_type === 'deposit') { cat = 'Salary'; icon = '💵'; type = 'salary'; }
-            else if (t.amount < 20) { cat = 'Food'; icon = '☕'; type = 'food'; }
-            else if (t.amount > 1000) { cat = 'Transfer'; icon = '⇄'; type = 'transfer'; }
-            else { cat = 'Entertainment'; icon = '🎟️'; type = 'entertainment'; }
+        if (txRes.success) {
+          appState.transactions = txRes.transactions;
+          renderFeed();
+        }
 
-            return {
-              id: t.tx_id || i + 1,
-              title: t.description || cat,
-              sub: isDebit ? 'Card' : 'Bank Account',
-              amount: amt,
-              date: t.created_at ? t.created_at.split(' ')[0] : 'Mar 07, 2023',
-              category: cat,
-              icon: icon,
-              type: type
-            };
-          });
-          webState.transactions = mapped;
+        if (accRes.success && accRes.accounts.length > 0) {
+          appState.accounts = accRes.accounts;
+          const primary = appState.accounts[0];
+          document.getElementById('sidebarActiveBank').textContent = primary.institution;
+          document.getElementById('sidebarActiveAccountNo').textContent = `Acct •••• ${primary.account_no.slice(-4)}`;
+        }
+
+        if (metricsRes.success) {
+          updateMetricsUI(metricsRes.metrics);
         }
       } catch (err) {
-        console.warn('Syncing with memory store.');
+        console.warn('Backend sync error:', err);
       }
-      renderFeed();
-      calcTotals();
     }
 
+    // 2. Render Transactions Feed
     function renderFeed() {
-      const container = document.getElementById('txItemsFeed');
-      container.innerHTML = '';
+      const feed = document.getElementById('transactionsListFeed');
+      feed.innerHTML = '';
 
-      let items = webState.transactions;
-      if (webState.activeFilter !== 'All') {
-        items = items.filter(t => t.category === webState.activeFilter);
+      let list = appState.transactions;
+      if (appState.activeFilter !== 'All') {
+        list = list.filter(t => t.category.toLowerCase() === appState.activeFilter.toLowerCase());
       }
 
-      items.forEach(tx => {
+      list.forEach(tx => {
         const isIncome = tx.amount > 0;
         const sign = isIncome ? '+$' : '-$';
-        const displayVal = `${sign}${Math.abs(tx.amount).toLocaleString(undefined, {minimumFractionDigits: 0})}`;
+        const displayAmount = `${sign}${Math.abs(tx.amount).toLocaleString(undefined, {minimumFractionDigits: 0})}`;
+
+        let icon = '☕';
+        let type = 'food';
+        if (tx.category.toLowerCase() === 'salary') { icon = '💵'; type = 'salary'; }
+        else if (tx.category.toLowerCase() === 'entertainment') { icon = '🎟️'; type = 'entertainment'; }
+        else if (tx.category.toLowerCase() === 'shopping') { icon = '🛍️'; type = 'shopping'; }
 
         const row = document.createElement('div');
-        row.className = 'tx-item-row';
+        row.className = 'feed-row-item';
         row.innerHTML = `
-          <div class="tx-left-wrap">
-            <div class="tx-avatar-box ${tx.type}">${tx.icon}</div>
-            <div class="tx-title-meta">
-              <h4>${tx.title}</h4>
-              <span>${tx.sub}</span>
+          <div class="feed-item-left">
+            <div class="category-pastel-avatar ${type}">${icon}</div>
+            <div class="item-texts">
+              <h4>${tx.title || tx.category}</h4>
+              <span>${tx.merchant || tx.payment_type}</span>
             </div>
           </div>
-          <div class="tx-right-meta">
-            <div class="tx-val ${isIncome ? 'income' : ''}">${displayVal}</div>
-            <div class="tx-timestamp">${tx.date}</div>
+          <div class="feed-item-right">
+            <div class="feed-item-amount">${displayAmount}</div>
+            <div class="feed-item-date">${tx.created_at}</div>
           </div>
         `;
-        container.appendChild(row);
+        feed.appendChild(row);
       });
     }
 
-    function calcTotals() {
-      let income = 8429;
-      let spent = 3621;
+    // 3. Update Metrics & Donut Chart
+    function updateMetricsUI(metrics) {
+      document.getElementById('displayIncomeAmt').textContent = '$' + metrics.income.toLocaleString();
+      document.getElementById('displaySpentAmt').textContent = '$' + metrics.spent.toLocaleString();
+      document.getElementById('displayNetBalance').textContent = '$' + metrics.totalLiquidity.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('savingsRateTxt').textContent = `${metrics.savingsRate}% Saved`;
 
-      webState.transactions.forEach(t => {
-        if (t.amount > 0) income += t.amount;
-        else spent += Math.abs(t.amount);
-      });
-
-      document.getElementById('incomeDisplayVal').textContent = '$' + income.toLocaleString();
-      document.getElementById('spentDisplayVal').textContent = '$' + spent.toLocaleString();
-      document.getElementById('netBalanceVal').textContent = '$' + (income - spent + 7642).toLocaleString(undefined, {minimumFractionDigits: 2});
-
-      const total = income + spent;
-      const spentRatio = spent / total;
-      const spentOffset = 280 - (280 * spentRatio);
-      document.getElementById('donutSpentArc').style.strokeDashoffset = spentOffset;
+      const total = metrics.income + metrics.spent;
+      const spentRatio = total > 0 ? (metrics.spent / total) : 0.3;
+      const offset = 280 - (280 * spentRatio);
+      document.getElementById('donutSpentRing').style.strokeDashoffset = offset;
     }
 
+    // 4. Time & Category Filters
     function setTimeFilter(label, btn) {
-      document.querySelectorAll('.filter-btn-pill').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-item-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderFeed();
     }
 
-    function filterTransactions(cat) {
-      webState.activeFilter = cat;
+    function applyCategoryFilter(cat) {
+      appState.activeFilter = cat;
       renderFeed();
     }
 
+    // 5. Category Modal Picker
     function openCategoryModal() {
       document.getElementById('catModalLayer').classList.add('active');
     }
@@ -1293,73 +1450,102 @@
       document.getElementById('catModalLayer').classList.remove('active');
     }
 
-    function setCategoryChoice(name, icon, elem) {
-      document.querySelectorAll('.cat-choice-btn').forEach(b => b.classList.remove('selected'));
-      elem.classList.add('selected');
+    function setCategoryChoice(name, icon, element) {
+      document.querySelectorAll('.cat-choice-cell').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
 
-      webState.selectedCategory = name;
-      webState.selectedIcon = icon;
-      document.getElementById('activeCategoryDisplay').innerHTML = `<span>${icon}</span> <span>${name}</span>`;
+      appState.selectedCategory = name;
+      appState.selectedIcon = icon;
+      document.getElementById('selectedCategoryPill').innerHTML = `<span>${icon}</span> <span>${name}</span>`;
       closeCategoryModal();
     }
 
-    function choosePaymentType(type, elem) {
-      document.querySelectorAll('.radio-row-opt').forEach(r => r.classList.remove('active'));
-      elem.classList.add('active');
-      webState.selectedPaymentType = type;
+    // 6. Payment Type Radio
+    function selectRadioType(type, element) {
+      document.querySelectorAll('.payment-radio-row').forEach(r => r.classList.remove('active'));
+      element.classList.add('active');
+      appState.selectedRadio = type;
     }
 
-    async function handleNewTransactionSubmit(e) {
+    // 7. Add Transaction Form Submission
+    async function handleTransactionSubmit(e) {
       e.preventDefault();
-      const amt = parseFloat(document.getElementById('inputAmountField').value);
-      const note = document.getElementById('inputMerchantField').value;
+      const amt = parseFloat(document.getElementById('inputAmount').value);
+      const merchant = document.getElementById('inputMerchant').value;
 
       if (isNaN(amt) || amt <= 0) return;
 
-      const newEntry = {
-        id: Date.now(),
-        title: webState.selectedCategory,
-        sub: webState.selectedPaymentType,
-        amount: -amt,
-        date: 'Today',
-        category: webState.selectedCategory,
-        icon: webState.selectedIcon,
-        type: webState.selectedCategory.toLowerCase()
-      };
-
-      webState.transactions.unshift(newEntry);
-      renderFeed();
-      calcTotals();
-
       try {
-        await fetch('/api/withdraw', {
+        const res = await fetch('/api/transactions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            account_no: 'BV-1002019481',
             amount: amt,
-            description: `${webState.selectedCategory} (${note})`
+            category: appState.selectedCategory,
+            merchant,
+            payment_type: appState.selectedRadio
           })
         });
+        const data = await res.json();
+        if (data.success) {
+          hydrateAppData();
+        }
       } catch (err) {
-        console.warn('Recorded locally.');
+        console.error('Error posting transaction:', err);
       }
     }
 
+    // 8. Open Banking Modal
+    function openBankLinkModal() {
+      document.getElementById('bankModalLayer').classList.add('active');
+    }
+
+    function closeBankLinkModal() {
+      document.getElementById('bankModalLayer').classList.remove('active');
+    }
+
+    function pickBankInstitution(name, balance, elem) {
+      document.querySelectorAll('.bank-pick-card').forEach(b => b.classList.remove('selected'));
+      elem.classList.add('selected');
+      appState.chosenBankToLink = { name, balance };
+    }
+
+    async function confirmBankLink() {
+      try {
+        const res = await fetch('/api/bank/link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            institution: appState.chosenBankToLink.name,
+            initial_balance: appState.chosenBankToLink.balance
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('✓ ' + data.message);
+          closeBankLinkModal();
+          hydrateAppData();
+        }
+      } catch (e) {
+        alert('Bank link failed: ' + e.message);
+      }
+    }
+
+    // 9. SQL Terminal Studio
     function openSqlStudio() {
-      document.getElementById('sqlDrawerLayer').classList.add('active');
-      executeSqlTerminal();
+      document.getElementById('sqlTerminalModal').classList.add('active');
+      runSqlTerminalQuery();
     }
 
     function closeSqlStudio() {
-      document.getElementById('sqlDrawerLayer').classList.remove('active');
+      document.getElementById('sqlTerminalModal').classList.remove('active');
     }
 
-    async function executeSqlTerminal() {
-      const q = document.getElementById('sqlTerminalInput').value;
-      const statusEl = document.getElementById('sqlExecutionStatus');
-      const thead = document.getElementById('sqlTHead');
-      const tbody = document.getElementById('sqlTBody');
+    async function runSqlTerminalQuery() {
+      const q = document.getElementById('sqlTerminalCode').value;
+      const msg = document.getElementById('sqlExecutionMsg');
+      const thead = document.getElementById('sqlGridHead');
+      const tbody = document.getElementById('sqlGridBody');
 
       try {
         const res = await fetch('/api/sql-query', {
@@ -1370,7 +1556,7 @@
         const data = await res.json();
 
         if (data.success) {
-          statusEl.textContent = `Executed in 0.9ms • ${data.rowCount} rows.`;
+          msg.textContent = `Query executed in 0.9ms • ${data.rowCount} rows fetched.`;
           thead.innerHTML = '';
           tbody.innerHTML = '';
 
@@ -1379,8 +1565,8 @@
             data.columns.forEach(col => {
               const th = document.createElement('th');
               th.style.padding = '8px';
-              th.style.borderBottom = '1px solid #eee';
-              th.style.color = '#888';
+              th.style.borderBottom = '1px solid var(--border-line)';
+              th.style.color = 'var(--text-muted)';
               th.style.textAlign = 'left';
               th.textContent = col;
               trH.appendChild(th);
@@ -1392,7 +1578,7 @@
               data.columns.forEach(col => {
                 const td = document.createElement('td');
                 td.style.padding = '8px';
-                td.style.borderBottom = '0.5px solid #eee';
+                td.style.borderBottom = '0.5px solid var(--border-line)';
                 td.textContent = row[col];
                 tr.appendChild(td);
               });
@@ -1400,12 +1586,21 @@
             });
           }
         }
-      } catch (e) {
-        statusEl.textContent = 'SQL Error: ' + e.message;
+      } catch (err) {
+        msg.textContent = 'SQL Error: ' + err.message;
       }
     }
 
-    loadData();
+    // 10. Theme Switcher (OLED Black <-> Porcelain White)
+    function toggleTheme() {
+      const root = document.documentElement;
+      const current = root.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+    }
+
+    // Boot
+    hydrateAppData();
   </script>
 </body>
 </html>
