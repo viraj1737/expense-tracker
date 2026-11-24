@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker — Minimalist Finance & Wealth</title>
+  <title>Expense Tracker — Apple OLED Finance</title>
 
   <meta name="theme-color" content="#000000">
 
@@ -104,7 +104,7 @@
     }
 
     /* ==========================================================================
-       SIDEBAR (DESKTOP)
+       SIDEBAR
        ========================================================================== */
     .app-sidebar {
       width: 270px;
@@ -194,7 +194,7 @@
       stroke: currentColor;
     }
 
-    /* Bank Link Status Card in Sidebar */
+    /* Bank Account Card in Sidebar */
     .bank-connected-pill {
       background: var(--card-surface);
       border: 1px solid var(--border-line);
@@ -258,6 +258,7 @@
       border-radius: var(--radius-md);
       background: var(--card-surface);
       border: 1px solid var(--border-line);
+      cursor: pointer;
     }
 
     .avatar-token {
@@ -306,7 +307,7 @@
       gap: 14px;
     }
 
-    /* Pill Filter Strip (From Reference) */
+    /* Pill Filter Strip */
     .pill-filter-bar {
       display: flex;
       align-items: center;
@@ -353,6 +354,21 @@
       transform: scale(0.92);
     }
 
+    .btn-real-setup {
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      background: var(--sage-green);
+      color: #000000;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-button);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     /* ==========================================================================
        BENTO ROW: 3 HERO METRICS
        ========================================================================== */
@@ -375,7 +391,7 @@
       }
     }
 
-    /* Card 1: Donut Card (Hafiz Ibrahim Signature) */
+    /* Card 1: Donut Card */
     .donut-hero-card {
       background: var(--card-surface);
       border: 1px solid var(--border-line);
@@ -458,7 +474,7 @@
       transition: stroke-dashoffset 0.8s ease;
     }
 
-    /* Card 2: Liquidity & Real Bank Sync Card */
+    /* Card 2: Liquid Bank Balance */
     .bank-card-widget {
       background: var(--card-surface);
       border: 1px solid var(--border-line);
@@ -658,7 +674,7 @@
       margin-top: 2px;
     }
 
-    /* Right Side Add Panel (Screen 2 as Desktop Module) */
+    /* Right Side Add Panel */
     .add-transaction-pane {
       background: var(--card-surface);
       border: 1px solid var(--border-line);
@@ -726,7 +742,6 @@
       color: var(--text-main);
     }
 
-    /* Radio Group */
     .radio-section-headline {
       font-size: 15px;
       font-weight: 700;
@@ -776,7 +791,6 @@
       display: block;
     }
 
-    /* Dual Buttons */
     .pane-button-group {
       display: flex;
       gap: 12px;
@@ -814,83 +828,56 @@
     }
 
     /* ==========================================================================
-       MODAL: OPEN BANKING / PLAID BANK LINK FLOW
+       MODAL: CUSTOM SETUP MY REAL BANK ACCOUNT
        ========================================================================== */
-    .bank-connect-modal-layer {
+    .real-setup-modal-layer {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(14px);
-      z-index: 200;
+      z-index: 210;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
 
-    .bank-connect-modal-layer.active {
+    .real-setup-modal-layer.active {
       display: flex;
     }
 
-    .bank-dialog-card {
+    .real-setup-box {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-xl);
-      padding: 32px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      padding: 34px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
     }
 
-    .plaid-header-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--sage-green);
-      margin-bottom: 8px;
-    }
-
-    .bank-select-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    .bank-pick-card {
+    .real-field-input {
+      width: 100%;
       background: var(--input-bg);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-md);
-      padding: 16px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      transition: all 0.2s ease;
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 14px;
+      font-family: inherit;
     }
 
-    .bank-pick-card:hover, .bank-pick-card.selected {
+    .real-field-input:focus {
       border-color: var(--sage-green);
-      background: var(--sage-green-glow);
     }
 
-    .bank-pick-card h4 {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .bank-pick-card span {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    /* Category Picker Modal */
-    .cat-modal-layer {
+    /* Modal Categories & SQL Terminal */
+    .cat-modal-layer, .sql-terminal-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(10px);
       z-index: 200;
       display: none;
@@ -899,17 +886,23 @@
       padding: 20px;
     }
 
-    .cat-modal-layer.active {
+    .cat-modal-layer.active, .sql-terminal-modal.active {
       display: flex;
     }
 
-    .cat-dialog-box {
+    .cat-dialog-box, .terminal-content-box {
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       background: var(--card-surface);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-xl);
       padding: 28px;
+    }
+
+    .terminal-content-box {
+      max-width: 680px;
+      max-height: 85vh;
+      overflow-y: auto;
     }
 
     .cat-picker-grid {
@@ -936,34 +929,6 @@
     .cat-choice-cell.selected {
       border-color: var(--sage-green);
       background: var(--sage-green-glow);
-    }
-
-    /* SQL Terminal Drawer */
-    .sql-terminal-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(14px);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .sql-terminal-modal.active {
-      display: flex;
-    }
-
-    .terminal-content-box {
-      width: 100%;
-      max-width: 680px;
-      background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-xl);
-      padding: 28px;
-      max-height: 85vh;
-      overflow-y: auto;
     }
   </style>
 </head>
@@ -1009,22 +974,22 @@
       </nav>
     </div>
 
-    <!-- Real Bank Linking Widget -->
+    <!-- Active Bank Account Widget -->
     <div>
       <div class="bank-connected-pill">
         <div class="bank-pill-head">
-          <span style="font-size:12px; font-weight:700;" id="sidebarActiveBank">Chase Private</span>
-          <span class="bank-live-badge"><span class="pulse-green-dot"></span> Live Sync</span>
+          <span style="font-size:12px; font-weight:700;" id="sidebarActiveBank">HDFC Bank</span>
+          <span class="bank-live-badge"><span class="pulse-green-dot"></span> Active</span>
         </div>
-        <span style="font-size:11px; color:var(--text-muted);" id="sidebarActiveAccountNo">Acct •••• 9481</span>
-        <button class="btn-connect-bank" onclick="openBankLinkModal()">+ Link Another Bank</button>
+        <span style="font-size:11px; color:var(--text-muted);" id="sidebarActiveAccountNo">Acct •••• 4092</span>
+        <button class="btn-connect-bank" onclick="openRealAccountSetupModal()">⚙️ Change Real Bank Account</button>
       </div>
 
-      <div class="profile-mini-box">
-        <div class="avatar-token">D</div>
+      <div class="profile-mini-box" onclick="openRealAccountSetupModal()">
+        <div class="avatar-token" id="sidebarAvatarLetter">V</div>
         <div>
-          <h4 style="font-size:14px; font-weight:700;">David Miller</h4>
-          <span style="font-size:11px; color:var(--text-muted);">Verified Tier 1</span>
+          <h4 style="font-size:14px; font-weight:700;" id="sidebarUserName">Viraj Kumar</h4>
+          <span style="font-size:11px; color:var(--text-muted);">Real Portfolio</span>
         </div>
       </div>
     </div>
@@ -1039,10 +1004,16 @@
     <header class="dashboard-top-header">
       <div>
         <span style="font-size:16px; font-weight:500; color:var(--text-muted);">Hello,</span>
-        <h1 class="user-greeting-title">David</h1>
+        <h1 class="user-greeting-title" id="topUserGreeting">Viraj</h1>
       </div>
 
       <div class="top-actions-cluster">
+        <!-- Setup Real Account CTA -->
+        <button class="btn-real-setup" onclick="openRealAccountSetupModal()">
+          <span>🏦</span>
+          <span>My Bank Account</span>
+        </button>
+
         <!-- Time Filter Pills -->
         <nav class="pill-filter-bar">
           <button class="filter-item-btn active" onclick="setTimeFilter('All', this)">All</button>
@@ -1066,7 +1037,7 @@
     <!-- Top Bento 3-Hero Cards -->
     <section class="bento-overview-grid">
       
-      <!-- Card 1: Hafiz Ibrahim Donut Chart Card -->
+      <!-- Card 1: Donut Chart Card -->
       <div class="donut-hero-card">
         <div class="metric-duo-stack">
           <div>
@@ -1074,7 +1045,7 @@
               <span class="accent-indicator ind-green"></span>
               <span>Income</span>
             </div>
-            <div class="metric-number-bold" id="displayIncomeAmt">$8,429</div>
+            <div class="metric-number-bold" id="displayIncomeAmt">₹85,000</div>
           </div>
 
           <div>
@@ -1082,7 +1053,7 @@
               <span class="accent-indicator ind-coral"></span>
               <span>Spent</span>
             </div>
-            <div class="metric-number-bold" id="displaySpentAmt">$3,621</div>
+            <div class="metric-number-bold" id="displaySpentAmt">₹18,420</div>
           </div>
         </div>
 
@@ -1098,14 +1069,14 @@
       <!-- Card 2: Liquid Bank Balance -->
       <div class="bank-card-widget">
         <div class="widget-top-strip">
-          <span class="widget-title-tag">Net Liquid Vault</span>
-          <span style="font-size:11px; font-weight:700; color:var(--sage-green); background:var(--sage-green-glow); padding:3px 10px; border-radius:var(--radius-pill);">Open Banking API</span>
+          <span class="widget-title-tag">Available Bank Balance</span>
+          <span style="font-size:11px; font-weight:700; color:var(--sage-green); background:var(--sage-green-glow); padding:3px 10px; border-radius:var(--radius-pill);" id="realBankBadge">HDFC Live</span>
         </div>
-        <div class="balance-display-large" id="displayNetBalance">$22,679.00</div>
+        <div class="balance-display-large" id="displayNetBalance">₹66,580.00</div>
         <div>
           <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); font-weight:600;">
-            <span>Real-Time Bank Reserves</span>
-            <span id="savingsRateTxt">72% Saved</span>
+            <span>Real Financial Liquidity</span>
+            <span id="savingsRateTxt">78% Retained</span>
           </div>
           <div class="balance-meter-bar">
             <div class="meter-progress-green"></div>
@@ -1116,8 +1087,8 @@
       <!-- Card 3: Categorical Intensity -->
       <div class="breakdown-card-widget">
         <div class="widget-top-strip">
-          <span class="widget-title-tag">Spending Spectrum</span>
-          <span style="font-size:12px; color:var(--text-muted);">Synced</span>
+          <span class="widget-title-tag">Spending Breakdown</span>
+          <span style="font-size:12px; color:var(--text-muted);">Real-Time</span>
         </div>
         <div class="category-bars-cluster">
           <div class="cat-bar-cell">
@@ -1156,7 +1127,10 @@
       <div class="master-feed-card">
         <div class="feed-header-line">
           <h3>Recent transactions</h3>
-          <span style="font-size:13px; color:var(--sage-green); font-weight:700; cursor:pointer;" onclick="openSqlStudio()">Inspect SQL Table &gt;</span>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <span style="font-size:13px; color:var(--sage-green); font-weight:700; cursor:pointer;" onclick="openStatementModal()">📥 Import Statement (CSV)</span>
+            <span style="font-size:13px; color:var(--text-muted); font-weight:600; cursor:pointer;" onclick="openSqlStudio()">SQL Query &gt;</span>
+          </div>
         </div>
 
         <div id="transactionsListFeed" style="display:flex; flex-direction:column; gap:8px;">
@@ -1164,7 +1138,7 @@
         </div>
       </div>
 
-      <!-- Right: Screen 2 Add Transaction Panel -->
+      <!-- Right: Add Transaction Panel -->
       <div class="add-transaction-pane">
         <div class="pane-title-row">
           <span>Add transaction</span>
@@ -1173,8 +1147,8 @@
 
         <form onsubmit="handleTransactionSubmit(event)">
           <div class="input-field-card">
-            <span class="field-hint-text">Amount</span>
-            <input type="number" step="0.01" min="1" class="currency-raw-input" id="inputAmount" value="12.00" required>
+            <span class="field-hint-text">Amount (<span class="currency-symbol-label">₹</span>)</span>
+            <input type="number" step="0.01" min="1" class="currency-raw-input" id="inputAmount" value="350.00" required>
           </div>
 
           <div class="input-field-card" onclick="openCategoryModal()">
@@ -1191,30 +1165,30 @@
           </div>
 
           <div class="input-field-card">
-            <span class="field-hint-text">Merchant / Details</span>
-            <input type="text" class="currency-raw-input" id="inputMerchant" value="Blue Bottle Coffee" style="font-size:16px;" required>
+            <span class="field-hint-text">Merchant / Purpose</span>
+            <input type="text" class="currency-raw-input" id="inputMerchant" value="Swiggy Delivery" style="font-size:16px;" required>
           </div>
 
-          <div class="radio-section-headline">Payment Type</div>
+          <div class="radio-section-headline">Payment Mode</div>
 
-          <div class="payment-radio-row active" onclick="selectRadioType('Cash', this)">
+          <div class="payment-radio-row active" onclick="selectRadioType('UPI / Google Pay', this)">
+            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
+            <span>UPI / Netbanking</span>
+          </div>
+
+          <div class="payment-radio-row" onclick="selectRadioType('Debit/Credit Card', this)">
+            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
+            <span>Debit/Credit Card</span>
+          </div>
+
+          <div class="payment-radio-row" onclick="selectRadioType('Cash', this)">
             <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
             <span>Cash</span>
           </div>
 
-          <div class="payment-radio-row" onclick="selectRadioType('Credit/Debit Card', this)">
-            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
-            <span>Credit/Debit Card</span>
-          </div>
-
-          <div class="payment-radio-row" onclick="selectRadioType('Check', this)">
-            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
-            <span>Check</span>
-          </div>
-
           <div class="pane-button-group">
-            <button type="button" class="btn-capsule-draft" onclick="document.getElementById('inputAmount').value=''">Draft</button>
-            <button type="submit" class="btn-capsule-add">Add</button>
+            <button type="button" class="btn-capsule-draft" onclick="document.getElementById('inputAmount').value=''">Clear</button>
+            <button type="submit" class="btn-capsule-add">Record</button>
           </div>
         </form>
       </div>
@@ -1224,56 +1198,68 @@
   </main>
 
   <!-- ========================================================================
-       MODAL 1: OPEN BANKING / PLAID SECURE BANK LINKING
+       MODAL: SETUP MY REAL BANK ACCOUNT DETAILS
        ======================================================================== -->
-  <div class="bank-connect-modal-layer" id="bankModalLayer">
-    <div class="bank-dialog-card">
-      <div class="plaid-header-badge">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-        </svg>
-        <span>Open Banking 256-Bit TLS Auth</span>
+  <div class="real-setup-modal-layer" id="realSetupModalLayer">
+    <div class="real-setup-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:22px; font-weight:800;">My Real Bank Account Setup</h3>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="closeRealAccountSetupModal()">✕</span>
       </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Apna real bank name, account number, aur opening balance yahan daalein. Website pura data real me configure kar degi.</p>
 
-      <h3 style="font-size:20px; font-weight:800; margin-bottom:4px;">Link Your Bank Account</h3>
-      <p style="font-size:13px; color:var(--text-muted);">Select your financial institution to import real-time balance and transactions safely without credentials exposure.</p>
+      <form onsubmit="handleRealAccountSetup(event)">
+        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Your Name</label>
+        <input type="text" class="real-field-input" id="realUserNameInput" placeholder="Viraj Kumar" value="Viraj Kumar" required>
 
-      <div class="bank-select-grid">
-        <div class="bank-pick-card selected" onclick="pickBankInstitution('Chase Bank', 8429.00, this)">
-          <h4>Chase Private</h4>
-          <span>Direct Sync</span>
+        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Bank Name</label>
+        <input type="text" class="real-field-input" id="realBankNameInput" placeholder="e.g. HDFC Bank, SBI, ICICI, Axis, Chase" value="HDFC Bank" required>
+
+        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Account Number</label>
+        <input type="text" class="real-field-input" id="realAccountNoInput" placeholder="e.g. 501002948192 or XXXX-4092" value="501002948192" required>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Current Balance</label>
+            <input type="number" step="0.01" class="real-field-input" id="realBalanceInput" placeholder="50000" value="75000" required>
+          </div>
+          <div>
+            <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Currency</label>
+            <select class="real-field-input" id="realCurrencyInput" style="height:48px;">
+              <option value="₹" selected>₹ INR (Rupees)</option>
+              <option value="$">$ USD (Dollars)</option>
+              <option value="€">€ EUR (Euros)</option>
+              <option value="£">£ GBP (Pounds)</option>
+            </select>
+          </div>
         </div>
 
-        <div class="bank-pick-card" onclick="pickBankInstitution('HDFC Bank', 14250.00, this)">
-          <h4>HDFC Imperia</h4>
-          <span>Instant Feed</span>
+        <div style="display:flex; gap:12px; margin-top:10px;">
+          <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeRealAccountSetupModal()">Cancel</button>
+          <button type="submit" class="btn-capsule-add" style="flex:1.5;">Save My Real Bank</button>
         </div>
+      </form>
+    </div>
+  </div>
 
-        <div class="bank-pick-card" onclick="pickBankInstitution('Wells Fargo', 9200.00, this)">
-          <h4>Wells Fargo</h4>
-          <span>Live API</span>
-        </div>
-
-        <div class="bank-pick-card" onclick="pickBankInstitution('ICICI Wealth', 11500.00, this)">
-          <h4>ICICI Bank</h4>
-          <span>Net Banking</span>
-        </div>
-
-        <div class="bank-pick-card" onclick="pickBankInstitution('Revolut Ultra', 6300.00, this)">
-          <h4>Revolut</h4>
-          <span>Multi-Currency</span>
-        </div>
-
-        <div class="bank-pick-card" onclick="pickBankInstitution('Bank of America', 12100.00, this)">
-          <h4>Bank of America</h4>
-          <span>Checking</span>
-        </div>
+  <!-- Statement CSV Upload Modal -->
+  <div class="real-setup-modal-layer" id="statementModalLayer">
+    <div class="real-setup-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:20px; font-weight:800;">Import Real Bank Statement</h3>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="closeStatementModal()">✕</span>
       </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Apne bank statement se lines paste karein ya sample data use karein (Date, Merchant, Category, Amount):</p>
+
+      <textarea id="statementCsvText" class="real-field-input" style="min-height:130px; font-family:var(--font-mono); font-size:12px; line-height:1.5;">2026-03-01, Swiggy Orders, Food, -450
+2026-03-02, Amazon India Shopping, Shopping, -1299
+2026-03-03, Monthly Client Salary, Salary, 85000
+2026-03-04, PVR Cinemas Tickets, Entertainment, -680
+2026-03-05, Petrol Pump Fuel, Travel, -2100</textarea>
 
       <div style="display:flex; gap:12px;">
-        <button class="btn-capsule-draft" style="flex:1;" onclick="closeBankLinkModal()">Cancel</button>
-        <button class="btn-capsule-add" style="flex:1.5;" onclick="confirmBankLink()">Authorize & Sync</button>
+        <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeStatementModal()">Cancel</button>
+        <button type="button" class="btn-capsule-add" style="flex:1.5;" onclick="importStatementCsv()">Import Transactions</button>
       </div>
     </div>
   </div>
@@ -1299,11 +1285,11 @@
         <div class="cat-choice-cell" onclick="setCategoryChoice('Shopping', '🛍️', this)">
           <span>🛍️</span> <span>Shopping</span>
         </div>
-        <div class="cat-choice-cell" onclick="setCategoryChoice('Transfer', '⇄', this)">
-          <span>⇄</span> <span>Transfer</span>
-        </div>
         <div class="cat-choice-cell" onclick="setCategoryChoice('Travel', '✈️', this)">
           <span>✈️</span> <span>Travel</span>
+        </div>
+        <div class="cat-choice-cell" onclick="setCategoryChoice('Transfer', '⇄', this)">
+          <span>⇄</span> <span>Transfer</span>
         </div>
       </div>
     </div>
@@ -1340,32 +1326,46 @@
     const appState = {
       transactions: [],
       accounts: [],
+      user: { full_name: 'Viraj Kumar' },
+      currency: '₹',
       selectedCategory: 'Food',
       selectedIcon: '☕',
-      selectedRadio: 'Cash',
-      activeFilter: 'All',
-      chosenBankToLink: { name: 'Chase Bank', balance: 8429.00 }
+      selectedRadio: 'UPI / Google Pay',
+      activeFilter: 'All'
     };
 
     // 1. Initial Data Fetch
     async function hydrateAppData() {
       try {
-        const [txRes, accRes, metricsRes] = await Promise.all([
+        const [txRes, accRes, metricsRes, profileRes] = await Promise.all([
           fetch('/api/transactions').then(r => r.json()),
           fetch('/api/accounts').then(r => r.json()),
-          fetch('/api/metrics').then(r => r.json())
+          fetch('/api/metrics').then(r => r.json()),
+          fetch('/api/user/profile').then(r => r.json())
         ]);
 
-        if (txRes.success) {
-          appState.transactions = txRes.transactions;
-          renderFeed();
+        if (profileRes.success && profileRes.profile.user) {
+          appState.user = profileRes.profile.user;
+          const firstName = appState.user.full_name.split(' ')[0];
+          document.getElementById('topUserGreeting').textContent = firstName;
+          document.getElementById('sidebarUserName').textContent = appState.user.full_name;
+          document.getElementById('sidebarAvatarLetter').textContent = firstName.charAt(0).toUpperCase();
         }
 
         if (accRes.success && accRes.accounts.length > 0) {
           appState.accounts = accRes.accounts;
           const primary = appState.accounts[0];
+          appState.currency = primary.currency || '₹';
           document.getElementById('sidebarActiveBank').textContent = primary.institution;
           document.getElementById('sidebarActiveAccountNo').textContent = `Acct •••• ${primary.account_no.slice(-4)}`;
+          document.getElementById('realBankBadge').textContent = `${primary.institution} Live`;
+
+          document.querySelectorAll('.currency-symbol-label').forEach(el => el.textContent = appState.currency);
+        }
+
+        if (txRes.success) {
+          appState.transactions = txRes.transactions;
+          renderFeed();
         }
 
         if (metricsRes.success) {
@@ -1388,7 +1388,7 @@
 
       list.forEach(tx => {
         const isIncome = tx.amount > 0;
-        const sign = isIncome ? '+$' : '-$';
+        const sign = isIncome ? `+${appState.currency}` : `-${appState.currency}`;
         const displayAmount = `${sign}${Math.abs(tx.amount).toLocaleString(undefined, {minimumFractionDigits: 0})}`;
 
         let icon = '☕';
@@ -1396,6 +1396,7 @@
         if (tx.category.toLowerCase() === 'salary') { icon = '💵'; type = 'salary'; }
         else if (tx.category.toLowerCase() === 'entertainment') { icon = '🎟️'; type = 'entertainment'; }
         else if (tx.category.toLowerCase() === 'shopping') { icon = '🛍️'; type = 'shopping'; }
+        else if (tx.category.toLowerCase() === 'travel') { icon = '✈️'; type = 'shopping'; }
 
         const row = document.createElement('div');
         row.className = 'feed-row-item';
@@ -1418,10 +1419,11 @@
 
     // 3. Update Metrics & Donut Chart
     function updateMetricsUI(metrics) {
-      document.getElementById('displayIncomeAmt').textContent = '$' + metrics.income.toLocaleString();
-      document.getElementById('displaySpentAmt').textContent = '$' + metrics.spent.toLocaleString();
-      document.getElementById('displayNetBalance').textContent = '$' + metrics.totalLiquidity.toLocaleString(undefined, {minimumFractionDigits: 2});
-      document.getElementById('savingsRateTxt').textContent = `${metrics.savingsRate}% Saved`;
+      const cur = appState.currency;
+      document.getElementById('displayIncomeAmt').textContent = `${cur}${metrics.income.toLocaleString()}`;
+      document.getElementById('displaySpentAmt').textContent = `${cur}${metrics.spent.toLocaleString()}`;
+      document.getElementById('displayNetBalance').textContent = `${cur}${metrics.totalLiquidity.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+      document.getElementById('savingsRateTxt').textContent = `${metrics.savingsRate}% Retained`;
 
       const total = metrics.income + metrics.spent;
       const spentRatio = total > 0 ? (metrics.spent / total) : 0.3;
@@ -1429,7 +1431,95 @@
       document.getElementById('donutSpentRing').style.strokeDashoffset = offset;
     }
 
-    // 4. Time & Category Filters
+    // 4. Setup My Real Bank Account
+    function openRealAccountSetupModal() {
+      document.getElementById('realSetupModalLayer').classList.add('active');
+    }
+
+    function closeRealAccountSetupModal() {
+      document.getElementById('realSetupModalLayer').classList.remove('active');
+    }
+
+    async function handleRealAccountSetup(e) {
+      e.preventDefault();
+      const fullName = document.getElementById('realUserNameInput').value;
+      const bankName = document.getElementById('realBankNameInput').value;
+      const accountNo = document.getElementById('realAccountNoInput').value;
+      const balance = parseFloat(document.getElementById('realBalanceInput').value);
+      const currency = document.getElementById('realCurrencyInput').value;
+
+      try {
+        const res = await fetch('/api/user/setup-real-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            full_name: fullName,
+            bank_name: bankName,
+            account_no: accountNo,
+            initial_balance: balance,
+            currency: currency
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('✓ ' + data.message);
+          closeRealAccountSetupModal();
+          hydrateAppData();
+        }
+      } catch (err) {
+        alert('Error setting up bank account: ' + err.message);
+      }
+    }
+
+    // 5. Statement CSV Import
+    function openStatementModal() {
+      document.getElementById('statementModalLayer').classList.add('active');
+    }
+
+    function closeStatementModal() {
+      document.getElementById('statementModalLayer').classList.remove('active');
+    }
+
+    async function importStatementCsv() {
+      const rawText = document.getElementById('statementCsvText').value.trim();
+      const lines = rawText.split('\n');
+      const items = [];
+
+      lines.forEach(line => {
+        const parts = line.split(',').map(p => p.trim());
+        if (parts.length >= 4) {
+          items.push({
+            date: parts[0],
+            merchant: parts[1],
+            category: parts[2],
+            amount: parseFloat(parts[3])
+          });
+        }
+      });
+
+      if (items.length === 0) {
+        alert('Invalid statement format. Example: 2026-03-01, Swiggy, Food, -450');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/transactions/import-statement', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('✓ ' + data.message);
+          closeStatementModal();
+          hydrateAppData();
+        }
+      } catch (e) {
+        alert('Import error: ' + e.message);
+      }
+    }
+
+    // 6. Time & Category Filters
     function setTimeFilter(label, btn) {
       document.querySelectorAll('.filter-item-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -1441,7 +1531,7 @@
       renderFeed();
     }
 
-    // 5. Category Modal Picker
+    // 7. Category Modal Picker
     function openCategoryModal() {
       document.getElementById('catModalLayer').classList.add('active');
     }
@@ -1460,14 +1550,14 @@
       closeCategoryModal();
     }
 
-    // 6. Payment Type Radio
+    // 8. Payment Type Radio
     function selectRadioType(type, element) {
       document.querySelectorAll('.payment-radio-row').forEach(r => r.classList.remove('active'));
       element.classList.add('active');
       appState.selectedRadio = type;
     }
 
-    // 7. Add Transaction Form Submission
+    // 9. Add Transaction Form Submission
     async function handleTransactionSubmit(e) {
       e.preventDefault();
       const amt = parseFloat(document.getElementById('inputAmount').value);
@@ -1495,43 +1585,7 @@
       }
     }
 
-    // 8. Open Banking Modal
-    function openBankLinkModal() {
-      document.getElementById('bankModalLayer').classList.add('active');
-    }
-
-    function closeBankLinkModal() {
-      document.getElementById('bankModalLayer').classList.remove('active');
-    }
-
-    function pickBankInstitution(name, balance, elem) {
-      document.querySelectorAll('.bank-pick-card').forEach(b => b.classList.remove('selected'));
-      elem.classList.add('selected');
-      appState.chosenBankToLink = { name, balance };
-    }
-
-    async function confirmBankLink() {
-      try {
-        const res = await fetch('/api/bank/link', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            institution: appState.chosenBankToLink.name,
-            initial_balance: appState.chosenBankToLink.balance
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          alert('✓ ' + data.message);
-          closeBankLinkModal();
-          hydrateAppData();
-        }
-      } catch (e) {
-        alert('Bank link failed: ' + e.message);
-      }
-    }
-
-    // 9. SQL Terminal Studio
+    // 10. SQL Terminal Studio
     function openSqlStudio() {
       document.getElementById('sqlTerminalModal').classList.add('active');
       runSqlTerminalQuery();
@@ -1591,7 +1645,7 @@
       }
     }
 
-    // 10. Theme Switcher (OLED Black <-> Porcelain White)
+    // 11. Theme Switcher (OLED Black <-> Porcelain White)
     function toggleTheme() {
       const root = document.documentElement;
       const current = root.getAttribute('data-theme') || 'dark';

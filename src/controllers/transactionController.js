@@ -15,3 +15,17 @@ exports.create = (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+exports.importStatement = (req, res) => {
+  try {
+    const { items } = req.body;
+    const result = BankingService.importStatement(items);
+    res.json({
+      success: true,
+      message: `Successfully parsed and imported ${result.importedCount} transactions from statement.`,
+      result
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
