@@ -3,88 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker — Apple OLED Finance</title>
+  <title>Expense Tracker — Apple Obsidian Edition</title>
 
+  <!-- Apple Status Bar & PWA Theme -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#000000">
 
   <style>
     /* ==========================================================================
-       APPLE OLED BLACK x DRIBBLE SAGE GREEN DESIGN SYSTEM
-       Theme Toggle: OLED True Black (#000000) <-> Porcelain White (#f6f8f6)
+       APPLE HIG SQUIRCLE (G2 CONTINUOUS CURVATURE) & OLED OBSIDIAN DESIGN SYSTEM
+       Continuous squircle curves, specular glass highlights, SwiftUI spring physics
        ========================================================================== */
     :root {
       --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", "SF Pro Text", -system-ui, sans-serif;
       --font-mono: "SF Mono", Menlo, Consolas, monospace;
 
-      /* Dark Mode (Apple OLED Black & Matte Obsidian) */
+      /* Apple OLED True Black & Titanium Obsidian Palette */
       --bg-canvas: #000000;
-      --card-surface: #111214;
-      --card-surface-elevated: #1a1b1e;
-      --input-bg: #16171a;
-      --sidebar-bg: #090a0c;
+      --bg-sidebar: #060708;
+      --card-surface: #0e0f12;
+      --card-elevated: #15171b;
+      --input-bg: #121316;
+      --input-hover: #18191d;
 
       --text-main: #ffffff;
       --text-muted: #8e9590;
-      --text-dim: #484c49;
+      --text-dim: #3f4240;
 
-      --border-line: rgba(255, 255, 255, 0.08);
-      --border-focus: #9bc8a5;
+      /* Specular Hairline Highlights & Borders */
+      --border-apple: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(255, 255, 255, 0.14);
+      --glass-glow: rgba(255, 255, 255, 0.03);
 
-      /* Signature Dribbble Pastels (Vibrant on Black) */
+      /* Dribbble Signature Pastels with Apple Neon Luminescence */
       --sage-green: #9bc8a5;
-      --sage-green-glow: rgba(155, 200, 165, 0.16);
+      --sage-green-glow: rgba(155, 200, 165, 0.18);
       --sage-green-dark: #82b48e;
 
       --coral-peach: #f4a58a;
-      --coral-peach-glow: rgba(244, 165, 138, 0.16);
+      --coral-peach-glow: rgba(244, 165, 138, 0.18);
 
-      --pastel-coffee: rgba(254, 243, 235, 0.1);
-      --pastel-salary: rgba(155, 200, 165, 0.14);
-      --pastel-ticket: rgba(244, 240, 250, 0.12);
-      --pastel-shopping: rgba(237, 245, 252, 0.12);
+      --pastel-coffee: rgba(254, 243, 235, 0.12);
+      --pastel-salary: rgba(155, 200, 165, 0.16);
+      --pastel-ticket: rgba(244, 240, 250, 0.14);
+      --pastel-shopping: rgba(237, 245, 252, 0.14);
 
-      --donut-track: #1b1c20;
-      --shadow-card: 0 16px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-line);
-      --shadow-button: 0 8px 24px -4px rgba(155, 200, 165, 0.35);
-
+      /* Apple Squircle Continuous Curvatures */
+      --radius-super: 38px;
       --radius-xl: 32px;
       --radius-lg: 24px;
       --radius-md: 18px;
       --radius-sm: 12px;
-      --radius-pill: 9999px;
+      --radius-capsule: 9999px;
+
+      /* Apple Specular Edge Shadows (Top-Lit Glass) */
+      --shadow-apple-card: 
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.11),
+        0 24px 50px -15px rgba(0, 0, 0, 0.8),
+        0 0 0 1px var(--border-apple);
+      
+      --shadow-button-glow: 
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+        0 10px 28px -6px rgba(155, 200, 165, 0.45);
+
+      /* SwiftUI Spring Motion Curves */
+      --spring-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --spring-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    [data-theme="light"] {
-      --bg-canvas: #f6f8f6;
-      --card-surface: #ffffff;
-      --card-surface-elevated: #f9fbf9;
-      --input-bg: #f4f6f4;
-      --sidebar-bg: #ffffff;
-
-      --text-main: #181c19;
-      --text-muted: #8e9590;
-      --text-dim: #c5cbc6;
-
-      --border-line: #edf1ed;
-      --border-focus: #9bc8a5;
-
-      --sage-green: #9bc8a5;
-      --sage-green-glow: #eaf5ed;
-      --sage-green-dark: #7dae88;
-
-      --coral-peach: #f4a58a;
-      --coral-peach-glow: #fef1ed;
-
-      --pastel-coffee: #fef3eb;
-      --pastel-salary: #eaf6ee;
-      --pastel-ticket: #f4f0fa;
-      --pastel-shopping: #edf5fc;
-
-      --donut-track: #f0f3f0;
-      --shadow-card: 0 16px 40px -10px rgba(120, 150, 130, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
-      --shadow-button: 0 8px 20px -4px rgba(155, 200, 165, 0.45);
-    }
-
+    /* Reset */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -99,18 +87,26 @@
       min-height: 100vh;
       display: flex;
       letter-spacing: -0.015em;
-      transition: background-color 0.35s ease, color 0.35s ease;
       overflow-x: hidden;
+      background-image: radial-gradient(circle at 50% 0%, rgba(155, 200, 165, 0.04) 0%, transparent 60%);
+      background-repeat: no-repeat;
+    }
+
+    /* Continuous Squircle Support */
+    @supports (corner-shape: squircle) {
+      .squircle-super, .squircle-card, .squircle-pill, .squircle-btn, .squircle-input {
+        corner-shape: squircle;
+      }
     }
 
     /* ==========================================================================
-       SIDEBAR
+       SIDEBAR WITH APPLE CURVED ELEVATION
        ========================================================================== */
     .app-sidebar {
-      width: 270px;
-      background: var(--sidebar-bg);
-      border-right: 1px solid var(--border-line);
-      padding: 32px 24px;
+      width: 280px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-apple);
+      padding: 36px 26px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -118,32 +114,35 @@
       position: sticky;
       top: 0;
       height: 100vh;
-      transition: background-color 0.35s ease, border-color 0.35s ease;
+      z-index: 20;
     }
 
     .brand-header-area {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 36px;
+      gap: 14px;
+      margin-bottom: 40px;
     }
 
     .brand-avatar-leaf {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
       background: var(--sage-green-glow);
+      border: 1px solid rgba(155, 200, 165, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--sage-green);
-      font-size: 20px;
+      font-size: 22px;
+      box-shadow: 0 4px 16px rgba(155, 200, 165, 0.15);
     }
 
     .brand-text-block h2 {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
     }
 
     .brand-text-block span {
@@ -151,20 +150,20 @@
       color: var(--text-muted);
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .nav-links-stack {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .nav-link-btn {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 12px 16px;
+      padding: 13px 18px;
       border-radius: var(--radius-md);
       color: var(--text-muted);
       font-size: 15px;
@@ -174,18 +173,20 @@
       background: none;
       text-align: left;
       width: 100%;
-      transition: all 0.2s ease;
+      transition: all 0.25s var(--spring-smooth);
     }
 
     .nav-link-btn:hover {
       background: var(--input-bg);
       color: var(--text-main);
+      transform: translateX(2px);
     }
 
     .nav-link-btn.active {
       background: var(--sage-green-glow);
       color: var(--sage-green);
       font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .nav-link-btn svg {
@@ -194,21 +195,22 @@
       stroke: currentColor;
     }
 
-    /* Bank Account Card in Sidebar */
+    /* Apple Squircle Bank Card in Sidebar */
     .bank-connected-pill {
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-md);
-      padding: 14px;
+      border: 1px solid var(--border-apple);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-lg);
+      padding: 18px;
       margin-top: auto;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .bank-pill-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .bank-live-badge {
@@ -216,62 +218,68 @@
       font-weight: 700;
       color: var(--sage-green);
       background: var(--sage-green-glow);
-      padding: 2px 8px;
-      border-radius: var(--radius-pill);
-      display: flex;
+      padding: 3px 10px;
+      border-radius: var(--radius-capsule);
+      display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
 
     .pulse-green-dot {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--sage-green);
+      box-shadow: 0 0 8px var(--sage-green);
     }
 
     .btn-connect-bank {
       width: 100%;
-      margin-top: 8px;
-      padding: 8px;
-      border-radius: var(--radius-pill);
-      background: transparent;
-      border: 1px dashed var(--border-line);
-      color: var(--text-muted);
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: var(--radius-capsule);
+      background: var(--card-elevated);
+      border: 1px solid var(--border-apple);
+      color: var(--sage-green);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .btn-connect-bank:hover {
-      border-color: var(--sage-green);
-      color: var(--sage-green);
+      background: var(--sage-green-glow);
+      transform: translateY(-1px);
     }
 
-    /* Profile Mini Card */
     .profile-mini-box {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px;
+      padding: 14px;
       border-radius: var(--radius-md);
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
+      border: 1px solid var(--border-apple);
       cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .profile-mini-box:active {
+      transform: scale(0.97);
     }
 
     .avatar-token {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: var(--sage-green);
+      background: linear-gradient(135deg, var(--sage-green), var(--sage-green-dark));
       color: #000000;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(155, 200, 165, 0.3);
     }
 
     /* ==========================================================================
@@ -279,24 +287,24 @@
        ========================================================================== */
     .app-main-viewport {
       flex: 1;
-      padding: 36px 44px 80px;
-      max-width: 1360px;
+      padding: 40px 48px 90px;
+      max-width: 1380px;
       margin: 0 auto;
       width: 100%;
     }
 
-    /* Top Header */
+    /* Header */
     .dashboard-top-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 34px;
+      margin-bottom: 38px;
     }
 
     .user-greeting-title {
-      font-size: 34px;
+      font-size: 38px;
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.045em;
       line-height: 1.1;
       margin-top: 2px;
     }
@@ -304,79 +312,67 @@
     .top-actions-cluster {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
 
-    /* Pill Filter Strip */
+    /* Apple Capsule Filter Strip */
     .pill-filter-bar {
       display: flex;
       align-items: center;
       gap: 6px;
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
+      border: 1px solid var(--border-apple);
       padding: 4px;
-      border-radius: var(--radius-pill);
+      border-radius: var(--radius-capsule);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     .filter-item-btn {
-      padding: 8px 18px;
-      border-radius: var(--radius-pill);
+      padding: 9px 20px;
+      border-radius: var(--radius-capsule);
       font-size: 14px;
       font-weight: 600;
       border: none;
       background: transparent;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s var(--spring-smooth);
     }
 
     .filter-item-btn.active {
-      background: var(--card-surface-elevated);
+      background: var(--card-elevated);
       color: var(--text-main);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .theme-circle-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-main);
-      cursor: pointer;
-      transition: transform 0.12s ease;
-    }
-
-    .theme-circle-btn:active {
-      transform: scale(0.92);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .btn-real-setup {
-      padding: 10px 20px;
-      border-radius: var(--radius-pill);
-      background: var(--sage-green);
+      padding: 12px 24px;
+      border-radius: var(--radius-capsule);
+      background: linear-gradient(135deg, var(--sage-green), var(--sage-green-dark));
       color: #000000;
       border: none;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: var(--shadow-button);
+      box-shadow: var(--shadow-button-glow);
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: transform 0.15s var(--spring-smooth);
+    }
+
+    .btn-real-setup:active {
+      transform: scale(0.96);
     }
 
     /* ==========================================================================
-       BENTO ROW: 3 HERO METRICS
+       BENTO SQUIRCLE HERO CARDS (APPLE G2 CONTINUOUS CURVE)
        ========================================================================== */
     .bento-overview-grid {
       display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 24px;
-      margin-bottom: 36px;
+      grid-template-columns: 1.25fr 1fr 1fr;
+      gap: 26px;
+      margin-bottom: 40px;
     }
 
     @media (max-width: 1120px) {
@@ -391,28 +387,40 @@
       }
     }
 
-    /* Card 1: Donut Card */
+    /* Card 1: Donut Card with Apple Curved Ring & Glow */
     .donut-hero-card {
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-lg);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-card);
+      border-radius: var(--radius-xl);
+      padding: 26px 30px;
+      box-shadow: var(--shadow-apple-card);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .donut-hero-card::after {
+      content: "";
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(155, 200, 165, 0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     .metric-duo-stack {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 22px;
     }
 
     .metric-row-lbl {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 13px;
       font-weight: 600;
       color: var(--text-muted);
@@ -420,24 +428,31 @@
     }
 
     .accent-indicator {
-      width: 3px;
-      height: 12px;
+      width: 3.5px;
+      height: 14px;
       border-radius: 2px;
     }
-    .ind-green { background: var(--sage-green); }
-    .ind-coral { background: var(--coral-peach); }
+    .ind-green { 
+      background: var(--sage-green); 
+      box-shadow: 0 0 10px rgba(155, 200, 165, 0.5); 
+    }
+    .ind-coral { 
+      background: var(--coral-peach); 
+      box-shadow: 0 0 10px rgba(244, 165, 138, 0.5); 
+    }
 
     .metric-number-bold {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
       color: var(--text-main);
       font-variant-numeric: tabular-nums;
     }
 
+    /* Apple Activity Ring Curvature */
     .donut-chart-box {
-      width: 110px;
-      height: 110px;
+      width: 118px;
+      height: 118px;
       position: relative;
       flex-shrink: 0;
     }
@@ -446,11 +461,12 @@
       width: 100%;
       height: 100%;
       transform: rotate(-90deg);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
     }
 
     .donut-base-track {
       fill: none;
-      stroke: var(--donut-track);
+      stroke: #16181d;
       stroke-width: 22;
     }
 
@@ -460,8 +476,8 @@
       stroke-width: 22;
       stroke-dasharray: 280;
       stroke-dashoffset: 75;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 0.8s ease;
+      stroke-linecap: round; /* Apple Rounded Pill Ring End */
+      transition: stroke-dashoffset 0.9s var(--spring-smooth);
     }
 
     .donut-spent-arc {
@@ -470,17 +486,16 @@
       stroke-width: 22;
       stroke-dasharray: 280;
       stroke-dashoffset: 205;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 0.8s ease;
+      stroke-linecap: round; /* Apple Rounded Pill Ring End */
+      transition: stroke-dashoffset 0.9s var(--spring-smooth);
     }
 
     /* Card 2: Liquid Bank Balance */
     .bank-card-widget {
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-lg);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-card);
+      border-radius: var(--radius-xl);
+      padding: 26px 30px;
+      box-shadow: var(--shadow-apple-card);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -497,39 +512,40 @@
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .balance-display-large {
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
       color: var(--text-main);
-      margin: 12px 0 6px;
+      margin: 14px 0 8px;
     }
 
     .balance-meter-bar {
-      height: 8px;
+      height: 9px;
       background: var(--input-bg);
-      border-radius: var(--radius-pill);
+      border-radius: var(--radius-capsule);
       overflow: hidden;
       display: flex;
-      margin-top: 10px;
+      margin-top: 12px;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .meter-progress-green {
       width: 72%;
-      background: var(--sage-green);
-      border-radius: var(--radius-pill);
+      background: linear-gradient(90deg, var(--sage-green), #7eb88b);
+      border-radius: var(--radius-capsule);
+      box-shadow: 0 0 12px rgba(155, 200, 165, 0.4);
     }
 
     /* Card 3: Spending Breakdown */
     .breakdown-card-widget {
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-lg);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-card);
+      border-radius: var(--radius-xl);
+      padding: 26px 30px;
+      box-shadow: var(--shadow-apple-card);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -537,46 +553,48 @@
 
     .category-bars-cluster {
       display: flex;
-      gap: 10px;
-      margin-top: 16px;
+      gap: 12px;
+      margin-top: 18px;
     }
 
     .cat-bar-cell {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .cat-bar-bg {
-      height: 48px;
+      height: 52px;
       background: var(--input-bg);
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       position: relative;
       overflow: hidden;
       display: flex;
       align-items: flex-end;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     .cat-bar-level {
       width: 100%;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
+      transition: height 0.6s var(--spring-smooth);
     }
 
     .cat-bar-title {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
       text-align: center;
     }
 
     /* ==========================================================================
-       SPLIT WORKSPACE: TRANSACTIONS FEED (65%) | ADD PANEL (35%)
+       SPLIT WORKSPACE: 65% RECENT TRANSACTIONS | 35% ADD PANE
        ========================================================================== */
     .dashboard-split-frame {
       display: grid;
-      grid-template-columns: 1fr 390px;
-      gap: 28px;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
       align-items: start;
     }
 
@@ -589,54 +607,55 @@
     /* Master Transactions Card */
     .master-feed-card {
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-xl);
-      padding: 28px;
-      box-shadow: var(--shadow-card);
+      border-radius: var(--radius-super);
+      padding: 32px;
+      box-shadow: var(--shadow-apple-card);
     }
 
     .feed-header-line {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .feed-header-line h3 {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
 
     .feed-row-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 12px;
-      border-radius: var(--radius-md);
-      transition: background-color 0.15s ease;
+      padding: 16px 14px;
+      border-radius: var(--radius-lg);
+      transition: background-color 0.18s ease, transform 0.18s ease;
       cursor: pointer;
     }
 
     .feed-row-item:hover {
-      background: var(--card-surface-elevated);
+      background: var(--card-elevated);
+      transform: translateX(2px);
     }
 
     .feed-item-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
     }
 
     .category-pastel-avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: var(--radius-md);
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-lg);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 24px;
       flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .category-pastel-avatar.food { background: var(--pastel-coffee); }
@@ -648,7 +667,7 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .item-texts span {
@@ -662,7 +681,7 @@
     }
 
     .feed-item-amount {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
       color: var(--text-main);
@@ -671,25 +690,24 @@
     .feed-item-date {
       font-size: 12px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
-    /* Right Side Add Panel */
+    /* Right Side Add Panel (Screen 2 as Desktop Module) */
     .add-transaction-pane {
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-xl);
-      padding: 28px;
-      box-shadow: var(--shadow-card);
+      border-radius: var(--radius-super);
+      padding: 32px;
+      box-shadow: var(--shadow-apple-card);
       position: sticky;
       top: 36px;
     }
 
     .pane-title-row {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+      margin-bottom: 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -697,15 +715,17 @@
 
     .input-field-card {
       background: var(--input-bg);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
       padding: 16px 20px;
-      margin-bottom: 16px;
-      border: 1px solid transparent;
-      transition: border-color 0.2s ease;
+      margin-bottom: 18px;
+      border: 1px solid var(--border-apple);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease, background-color 0.2s ease;
     }
 
     .input-field-card:focus-within {
       border-color: var(--sage-green);
+      background: var(--input-hover);
     }
 
     .field-hint-text {
@@ -718,11 +738,12 @@
       width: 100%;
       background: transparent;
       border: none;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--text-main);
       outline: none;
       font-family: inherit;
+      letter-spacing: -0.02em;
     }
 
     .category-touch-pill {
@@ -746,13 +767,13 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
-      margin: 18px 0 12px;
+      margin: 20px 0 12px;
     }
 
     .payment-radio-row {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       padding: 10px 0;
       cursor: pointer;
       color: var(--text-muted);
@@ -769,10 +790,11 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      border: 2px solid #3a3d42;
+      border: 2px solid #363940;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: border-color 0.2s ease;
     }
 
     .payment-radio-row.active .radio-outer-ring {
@@ -793,92 +815,55 @@
 
     .pane-button-group {
       display: flex;
-      gap: 12px;
-      margin-top: 24px;
+      gap: 14px;
+      margin-top: 26px;
     }
 
     .btn-capsule-draft {
       flex: 1;
-      height: 52px;
-      border-radius: var(--radius-pill);
+      height: 54px;
+      border-radius: var(--radius-capsule);
       background: var(--input-bg);
-      border: 1px solid var(--border-line);
+      border: 1px solid var(--border-apple);
       font-size: 15px;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-capsule-draft:hover {
+      background: var(--card-elevated);
+      color: var(--text-main);
     }
 
     .btn-capsule-add {
       flex: 1.4;
-      height: 52px;
-      border-radius: var(--radius-pill);
-      background: var(--sage-green);
+      height: 54px;
+      border-radius: var(--radius-capsule);
+      background: linear-gradient(135deg, var(--sage-green), var(--sage-green-dark));
       border: none;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 800;
       color: #000000;
       cursor: pointer;
-      box-shadow: var(--shadow-button);
-      transition: transform 0.15s ease;
+      box-shadow: var(--shadow-button-glow);
+      transition: transform 0.15s var(--spring-smooth);
     }
 
     .btn-capsule-add:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
 
     /* ==========================================================================
-       MODAL: CUSTOM SETUP MY REAL BANK ACCOUNT
+       MODALS WITH APPLE BLUR & SQUIRCLE DIALOGS
        ========================================================================== */
-    .real-setup-modal-layer {
+    .real-setup-modal-layer, .cat-modal-layer, .sql-terminal-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(14px);
-      z-index: 210;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .real-setup-modal-layer.active {
-      display: flex;
-    }
-
-    .real-setup-box {
-      width: 100%;
-      max-width: 520px;
-      background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-xl);
-      padding: 34px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-    }
-
-    .real-field-input {
-      width: 100%;
-      background: var(--input-bg);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      color: var(--text-main);
-      font-size: 15px;
-      outline: none;
-      margin-bottom: 14px;
-      font-family: inherit;
-    }
-
-    .real-field-input:focus {
-      border-color: var(--sage-green);
-    }
-
-    /* Modal Categories & SQL Terminal */
-    .cat-modal-layer, .sql-terminal-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       z-index: 200;
       display: none;
       align-items: center;
@@ -886,47 +871,69 @@
       padding: 20px;
     }
 
-    .cat-modal-layer.active, .sql-terminal-modal.active {
+    .real-setup-modal-layer.active, .cat-modal-layer.active, .sql-terminal-modal.active {
       display: flex;
     }
 
-    .cat-dialog-box, .terminal-content-box {
+    .real-setup-box, .cat-dialog-box, .terminal-content-box {
       width: 100%;
-      max-width: 440px;
+      max-width: 520px;
       background: var(--card-surface);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius-xl);
-      padding: 28px;
+      border-radius: var(--radius-super);
+      padding: 36px;
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 35px 80px rgba(0, 0, 0, 0.8),
+        0 0 0 1px var(--border-apple);
     }
 
     .terminal-content-box {
-      max-width: 680px;
+      max-width: 700px;
       max-height: 85vh;
       overflow-y: auto;
+    }
+
+    .real-field-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-apple);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      color: var(--text-main);
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 16px;
+      font-family: inherit;
+      transition: border-color 0.2s ease;
+    }
+
+    .real-field-input:focus {
+      border-color: var(--sage-green);
     }
 
     .cat-picker-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 20px;
     }
 
     .cat-choice-cell {
-      padding: 14px;
-      border-radius: var(--radius-md);
+      padding: 16px;
+      border-radius: var(--radius-lg);
       background: var(--input-bg);
-      border: 1px solid transparent;
+      border: 1px solid var(--border-apple);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       cursor: pointer;
       font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
+      transition: all 0.2s var(--spring-smooth);
     }
 
-    .cat-choice-cell.selected {
+    .cat-choice-cell.selected, .cat-choice-cell:hover {
       border-color: var(--sage-green);
       background: var(--sage-green-glow);
     }
@@ -935,7 +942,7 @@
 <body>
 
   <!-- ========================================================================
-       DESKTOP SIDEBAR
+       SIDEBAR
        ======================================================================== -->
   <aside class="app-sidebar">
     <div>
@@ -943,7 +950,7 @@
         <div class="brand-avatar-leaf">🌱</div>
         <div class="brand-text-block">
           <h2>Expense</h2>
-          <span>Apple OLED Vault</span>
+          <span>Apple Obsidian Vault</span>
         </div>
       </div>
 
@@ -978,7 +985,7 @@
     <div>
       <div class="bank-connected-pill">
         <div class="bank-pill-head">
-          <span style="font-size:12px; font-weight:700;" id="sidebarActiveBank">HDFC Bank</span>
+          <span style="font-size:13px; font-weight:800;" id="sidebarActiveBank">HDFC Bank</span>
           <span class="bank-live-badge"><span class="pulse-green-dot"></span> Active</span>
         </div>
         <span style="font-size:11px; color:var(--text-muted);" id="sidebarActiveAccountNo">Acct •••• 4092</span>
@@ -988,8 +995,8 @@
       <div class="profile-mini-box" onclick="openRealAccountSetupModal()">
         <div class="avatar-token" id="sidebarAvatarLetter">V</div>
         <div>
-          <h4 style="font-size:14px; font-weight:700;" id="sidebarUserName">Viraj Kumar</h4>
-          <span style="font-size:11px; color:var(--text-muted);">Real Portfolio</span>
+          <h4 style="font-size:14px; font-weight:800;" id="sidebarUserName">Viraj Kumar</h4>
+          <span style="font-size:11px; color:var(--text-muted);">Real Portfolio Sync</span>
         </div>
       </div>
     </div>
@@ -1003,7 +1010,7 @@
     <!-- Top Header -->
     <header class="dashboard-top-header">
       <div>
-        <span style="font-size:16px; font-weight:500; color:var(--text-muted);">Hello,</span>
+        <span style="font-size:16px; font-weight:600; color:var(--text-muted);">Hello,</span>
         <h1 class="user-greeting-title" id="topUserGreeting">Viraj</h1>
       </div>
 
@@ -1011,7 +1018,7 @@
         <!-- Setup Real Account CTA -->
         <button class="btn-real-setup" onclick="openRealAccountSetupModal()">
           <span>🏦</span>
-          <span>My Bank Account</span>
+          <span>My Real Bank</span>
         </button>
 
         <!-- Time Filter Pills -->
@@ -1021,20 +1028,10 @@
           <button class="filter-item-btn" onclick="setTimeFilter('Weekly', this)">Weekly</button>
           <button class="filter-item-btn" onclick="setTimeFilter('Monthly', this)">Monthly</button>
         </nav>
-
-        <!-- Theme Toggle -->
-        <button class="theme-circle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
-          <svg id="themeIconSvg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
-          </svg>
-        </button>
       </div>
     </header>
 
-    <!-- Top Bento 3-Hero Cards -->
+    <!-- Top Bento 3-Hero Cards (Apple Squircle G2 Curves) -->
     <section class="bento-overview-grid">
       
       <!-- Card 1: Donut Chart Card -->
@@ -1070,7 +1067,7 @@
       <div class="bank-card-widget">
         <div class="widget-top-strip">
           <span class="widget-title-tag">Available Bank Balance</span>
-          <span style="font-size:11px; font-weight:700; color:var(--sage-green); background:var(--sage-green-glow); padding:3px 10px; border-radius:var(--radius-pill);" id="realBankBadge">HDFC Live</span>
+          <span style="font-size:11px; font-weight:800; color:var(--sage-green); background:var(--sage-green-glow); padding:3px 10px; border-radius:var(--radius-capsule);" id="realBankBadge">HDFC Live</span>
         </div>
         <div class="balance-display-large" id="displayNetBalance">₹66,580.00</div>
         <div>
@@ -1088,30 +1085,30 @@
       <div class="breakdown-card-widget">
         <div class="widget-top-strip">
           <span class="widget-title-tag">Spending Breakdown</span>
-          <span style="font-size:12px; color:var(--text-muted);">Real-Time</span>
+          <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Curved Rings</span>
         </div>
         <div class="category-bars-cluster">
           <div class="cat-bar-cell">
             <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:60%; background:var(--coral-peach);"></div>
+              <div class="cat-bar-level" style="height:60%; background:var(--coral-peach); box-shadow:0 0 10px rgba(244, 165, 138, 0.4);"></div>
             </div>
             <span class="cat-bar-title">Food</span>
           </div>
           <div class="cat-bar-cell">
             <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:85%; background:var(--sage-green);"></div>
+              <div class="cat-bar-level" style="height:85%; background:var(--sage-green); box-shadow:0 0 10px rgba(155, 200, 165, 0.4);"></div>
             </div>
             <span class="cat-bar-title">Salary</span>
           </div>
           <div class="cat-bar-cell">
             <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:45%; background:#bf5af2;"></div>
+              <div class="cat-bar-level" style="height:45%; background:#bf5af2; box-shadow:0 0 10px rgba(191, 90, 242, 0.4);"></div>
             </div>
             <span class="cat-bar-title">Events</span>
           </div>
           <div class="cat-bar-cell">
             <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:50%; background:#64d2ff;"></div>
+              <div class="cat-bar-level" style="height:50%; background:#64d2ff; box-shadow:0 0 10px rgba(100, 210, 255, 0.4);"></div>
             </div>
             <span class="cat-bar-title">Shop</span>
           </div>
@@ -1123,17 +1120,17 @@
     <!-- Split Screen: 65% Recent Transactions | 35% Add Transaction -->
     <div class="dashboard-split-frame">
       
-      <!-- Left: Recent Transactions -->
+      <!-- Left: Recent Transactions Feed -->
       <div class="master-feed-card">
         <div class="feed-header-line">
           <h3>Recent transactions</h3>
-          <div style="display:flex; gap:12px; align-items:center;">
-            <span style="font-size:13px; color:var(--sage-green); font-weight:700; cursor:pointer;" onclick="openStatementModal()">📥 Import Statement (CSV)</span>
-            <span style="font-size:13px; color:var(--text-muted); font-weight:600; cursor:pointer;" onclick="openSqlStudio()">SQL Query &gt;</span>
+          <div style="display:flex; gap:14px; align-items:center;">
+            <span style="font-size:13px; color:var(--sage-green); font-weight:800; cursor:pointer;" onclick="openStatementModal()">📥 Import Statement (CSV)</span>
+            <span style="font-size:13px; color:var(--text-muted); font-weight:700; cursor:pointer;" onclick="openSqlStudio()">SQL Query &gt;</span>
           </div>
         </div>
 
-        <div id="transactionsListFeed" style="display:flex; flex-direction:column; gap:8px;">
+        <div id="transactionsListFeed" style="display:flex; flex-direction:column; gap:10px;">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -1142,7 +1139,7 @@
       <div class="add-transaction-pane">
         <div class="pane-title-row">
           <span>Add transaction</span>
-          <span style="font-size:12px; color:var(--sage-green); font-weight:700;">Live SQL</span>
+          <span style="font-size:12px; color:var(--sage-green); font-weight:800;">Live SQL</span>
         </div>
 
         <form onsubmit="handleTransactionSubmit(event)">
@@ -1198,15 +1195,15 @@
   </main>
 
   <!-- ========================================================================
-       MODAL: SETUP MY REAL BANK ACCOUNT DETAILS
+       MODAL 1: SETUP MY REAL BANK ACCOUNT DETAILS
        ======================================================================== -->
   <div class="real-setup-modal-layer" id="realSetupModalLayer">
     <div class="real-setup-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-size:22px; font-weight:800;">My Real Bank Account Setup</h3>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="closeRealAccountSetupModal()">✕</span>
+        <h3 style="font-size:22px; font-weight:800;">My Real Bank Account</h3>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closeRealAccountSetupModal()">✕</span>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Apna real bank name, account number, aur opening balance yahan daalein. Website pura data real me configure kar degi.</p>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:22px;">Apna real bank name, account number, aur opening balance yahan set karein. Interface instantly real data me update ho jayega.</p>
 
       <form onsubmit="handleRealAccountSetup(event)">
         <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Your Name</label>
@@ -1218,14 +1215,14 @@
         <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Account Number</label>
         <input type="text" class="real-field-input" id="realAccountNoInput" placeholder="e.g. 501002948192 or XXXX-4092" value="501002948192" required>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Current Balance</label>
             <input type="number" step="0.01" class="real-field-input" id="realBalanceInput" placeholder="50000" value="75000" required>
           </div>
           <div>
             <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Currency</label>
-            <select class="real-field-input" id="realCurrencyInput" style="height:48px;">
+            <select class="real-field-input" id="realCurrencyInput" style="height:50px;">
               <option value="₹" selected>₹ INR (Rupees)</option>
               <option value="$">$ USD (Dollars)</option>
               <option value="€">€ EUR (Euros)</option>
@@ -1234,9 +1231,9 @@
           </div>
         </div>
 
-        <div style="display:flex; gap:12px; margin-top:10px;">
+        <div style="display:flex; gap:14px; margin-top:14px;">
           <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeRealAccountSetupModal()">Cancel</button>
-          <button type="submit" class="btn-capsule-add" style="flex:1.5;">Save My Real Bank</button>
+          <button type="submit" class="btn-capsule-add" style="flex:1.5;">Save Real Bank</button>
         </div>
       </form>
     </div>
@@ -1246,18 +1243,18 @@
   <div class="real-setup-modal-layer" id="statementModalLayer">
     <div class="real-setup-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-size:20px; font-weight:800;">Import Real Bank Statement</h3>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="closeStatementModal()">✕</span>
+        <h3 style="font-size:22px; font-weight:800;">Import Bank Statement</h3>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closeStatementModal()">✕</span>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Apne bank statement se lines paste karein ya sample data use karein (Date, Merchant, Category, Amount):</p>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Apne bank statement se lines paste karein (Date, Merchant, Category, Amount):</p>
 
-      <textarea id="statementCsvText" class="real-field-input" style="min-height:130px; font-family:var(--font-mono); font-size:12px; line-height:1.5;">2026-03-01, Swiggy Orders, Food, -450
-2026-03-02, Amazon India Shopping, Shopping, -1299
+      <textarea id="statementCsvText" class="real-field-input" style="min-height:140px; font-family:var(--font-mono); font-size:12px; line-height:1.6;">2026-03-01, Swiggy Food Orders, Food, -450
+2026-03-02, Amazon India Electronics, Shopping, -1299
 2026-03-03, Monthly Client Salary, Salary, 85000
-2026-03-04, PVR Cinemas Tickets, Entertainment, -680
+2026-03-04, PVR Cinemas Movie Tickets, Entertainment, -680
 2026-03-05, Petrol Pump Fuel, Travel, -2100</textarea>
 
-      <div style="display:flex; gap:12px;">
+      <div style="display:flex; gap:14px;">
         <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeStatementModal()">Cancel</button>
         <button type="button" class="btn-capsule-add" style="flex:1.5;" onclick="importStatementCsv()">Import Transactions</button>
       </div>
@@ -1268,8 +1265,8 @@
   <div class="cat-modal-layer" id="catModalLayer">
     <div class="cat-dialog-box">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:18px; font-weight:800;">Select Category</h4>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeCategoryModal()">Close</span>
+        <h4 style="font-size:19px; font-weight:800;">Select Category</h4>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:16px; font-weight:600;" onclick="closeCategoryModal()">✕</span>
       </div>
 
       <div class="cat-picker-grid">
@@ -1299,17 +1296,17 @@
   <div class="sql-terminal-modal" id="sqlTerminalModal">
     <div class="terminal-content-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h4 style="font-size:18px; font-weight:800;">SQL Relational Studio</h4>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeSqlStudio()">Close</span>
+        <h4 style="font-size:20px; font-weight:800;">SQL Relational Studio</h4>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:16px; font-weight:600;" onclick="closeSqlStudio()">✕</span>
       </div>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Direct real-time query interface to backend relational engine.</p>
 
-      <div style="background:#09090b; border-radius:14px; padding:14px; margin-bottom:14px;">
-        <textarea id="sqlTerminalCode" style="width:100%; background:transparent; border:none; color:var(--sage-green); font-family:var(--font-mono); font-size:13px; outline:none; min-height:70px;">SELECT * FROM transactions ORDER BY tx_id DESC;</textarea>
-        <button style="padding:7px 16px; border-radius:20px; background:var(--sage-green); color:#000; border:none; font-weight:700; font-size:12px; cursor:pointer;" onclick="runSqlTerminalQuery()">Execute Query</button>
+      <div style="background:#09090b; border-radius:var(--radius-lg); padding:16px; margin-bottom:16px; border:1px solid var(--border-apple);">
+        <textarea id="sqlTerminalCode" style="width:100%; background:transparent; border:none; color:var(--sage-green); font-family:var(--font-mono); font-size:13px; outline:none; min-height:75px;">SELECT * FROM transactions ORDER BY tx_id DESC;</textarea>
+        <button style="padding:8px 18px; border-radius:var(--radius-capsule); background:var(--sage-green); color:#000; border:none; font-weight:800; font-size:12px; cursor:pointer;" onclick="runSqlTerminalQuery()">Execute Query</button>
       </div>
 
-      <div id="sqlExecutionMsg" style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Ready</div>
+      <div id="sqlExecutionMsg" style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Ready</div>
       <div style="overflow-x:auto;">
         <table style="width:100%; border-collapse:collapse; font-size:12px;" id="sqlResultGrid">
           <thead id="sqlGridHead"></thead>
@@ -1619,7 +1616,7 @@
             data.columns.forEach(col => {
               const th = document.createElement('th');
               th.style.padding = '8px';
-              th.style.borderBottom = '1px solid var(--border-line)';
+              th.style.borderBottom = '1px solid var(--border-apple)';
               th.style.color = 'var(--text-muted)';
               th.style.textAlign = 'left';
               th.textContent = col;
@@ -1632,7 +1629,7 @@
               data.columns.forEach(col => {
                 const td = document.createElement('td');
                 td.style.padding = '8px';
-                td.style.borderBottom = '0.5px solid var(--border-line)';
+                td.style.borderBottom = '0.5px solid var(--border-apple)';
                 td.textContent = row[col];
                 tr.appendChild(td);
               });
@@ -1643,14 +1640,6 @@
       } catch (err) {
         msg.textContent = 'SQL Error: ' + err.message;
       }
-    }
-
-    // 11. Theme Switcher (OLED Black <-> Porcelain White)
-    function toggleTheme() {
-      const root = document.documentElement;
-      const current = root.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
     }
 
     // Boot
