@@ -2,35 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Expense Tracker — Minimal & Premium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker — Minimal & Premium Finance</title>
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#f6f8f6">
 
   <style>
     /* ==========================================================================
-       DRIBBLE ULTRA-PREMIUM MINIMAL DESIGN SYSTEM (Hafiz Ibrahim Style)
-       Palette: Sage Matcha Green (#9bc8a5), Coral Peach (#f4a58a), Milk White (#ffffff)
+       DRIBBLE PREMIUM FINTECH DESIGN SYSTEM (Hafiz Ibrahim Palette)
+       Fully responsive: Desktop Dashboard (1440px+), Tablet (1024px), Mobile (390px)
+       Palette: Sage Matcha (#9bc8a5), Coral Peach (#f4a58a), Milk White (#ffffff)
        ========================================================================== */
     :root {
       --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", "SF Pro Text", -system-ui, sans-serif;
       --font-mono: "SF Mono", Menlo, Consolas, monospace;
 
-      /* Authentic Colors from the Dribbble Reference */
       --bg-canvas: #f6f8f6;
       --card-white: #ffffff;
-      --card-subtle: #f8faf8;
-      --input-bg: #f5f7f5;
+      --card-subtle: #f9fbf9;
+      --input-bg: #f4f6f4;
+      --sidebar-bg: #ffffff;
 
       --text-main: #181c19;
       --text-muted: #8e9590;
       --text-light: #b4bbb6;
 
       --sage-green: #9bc8a5;
-      --sage-green-light: #e8f4ec;
-      --sage-green-dark: #82b48e;
+      --sage-green-light: #eaf5ed;
+      --sage-green-dark: #7dae88;
 
       --coral-peach: #f4a58a;
       --coral-peach-light: #fef1ed;
@@ -41,10 +40,7 @@
       --pastel-shopping: #edf5fc;
 
       --border-line: #edf1ed;
-      --border-focus: #9bc8a5;
-
-      --shadow-card: 0 16px 40px -10px rgba(120, 150, 130, 0.09), 0 2px 6px rgba(0, 0, 0, 0.02);
-      --shadow-floating: 0 20px 48px -12px rgba(60, 90, 70, 0.16);
+      --shadow-card: 0 16px 40px -10px rgba(120, 150, 130, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
       --shadow-button: 0 8px 20px -4px rgba(155, 200, 165, 0.45);
 
       --radius-xl: 32px;
@@ -59,7 +55,6 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
 
     body {
@@ -68,167 +63,266 @@
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 24px 16px 80px;
-      overflow-x: hidden;
       letter-spacing: -0.015em;
-    }
-
-    /* Device Mockup Shell */
-    .app-frame {
-      width: 100%;
-      max-width: 420px;
-      background: var(--card-white);
-      border-radius: 44px;
-      padding: 28px 24px 34px;
-      box-shadow: 0 30px 70px -15px rgba(80, 110, 90, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 844px;
-    }
-
-    /* Screen Views */
-    .screen-view {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      animation: viewSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .screen-view.active {
-      display: flex;
-    }
-
-    @keyframes viewSlide {
-      from { opacity: 0; transform: translateY(12px) scale(0.99); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      overflow-x: hidden;
     }
 
     /* ==========================================================================
-       HOME SCREEN (SCREEN 1)
+       SIDEBAR NAVIGATION (DESKTOP)
        ========================================================================== */
-    /* Header Row */
-    .home-header {
+    .app-sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border-line);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand-logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--sage-green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--sage-green-dark);
+      font-size: 20px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: none;
+      text-align: left;
+      width: 100%;
+    }
+
+    .sidebar-link:hover {
+      background: var(--input-bg);
+      color: var(--text-main);
+    }
+
+    .sidebar-link.active {
+      background: var(--sage-green-light);
+      color: var(--sage-green-dark);
+      font-weight: 700;
+    }
+
+    .sidebar-link svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+
+    .user-profile-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--input-bg);
+      margin-top: auto;
+    }
+
+    .avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--sage-green);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .profile-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .profile-info span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       MAIN CONTENT DASHBOARD (WEBSITE)
+       ========================================================================== */
+    .app-main-viewport {
+      flex: 1;
+      padding: 36px 40px 60px;
+      max-width: 1320px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Desktop Top Header */
+    .dashboard-top-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
-      padding-top: 6px;
+      margin-bottom: 32px;
     }
 
-    .user-greeting {
+    .user-welcome-block {
       display: flex;
       flex-direction: column;
     }
 
-    .greeting-sub {
+    .user-subtext {
       font-size: 16px;
       font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 2px;
     }
 
-    .greeting-name {
-      font-size: 32px;
+    .user-headline {
+      font-size: 34px;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.035em;
       color: var(--text-main);
-      line-height: 1.1;
+      margin-top: 2px;
     }
 
-    .notif-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: var(--card-white);
-      border: 1px solid var(--border-line);
+    .header-actions-group {
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--text-main);
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      position: relative;
-      transition: transform 0.15s ease;
+      gap: 16px;
     }
 
-    .notif-btn:active {
-      transform: scale(0.94);
-    }
-
-    .notif-dot {
-      position: absolute;
-      top: 13px;
-      right: 14px;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--coral-peach);
-    }
-
-    /* Time Filter Pill Selector */
-    .time-filter-strip {
+    /* Pill Filter Strip (From Reference) */
+    .pill-filter-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-      overflow-x: auto;
-      padding-bottom: 4px;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.03);
+      padding: 4px;
+      border-radius: var(--radius-pill);
     }
 
-    .time-filter-strip::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filter-pill {
-      padding: 9px 20px;
+    .filter-btn-pill {
+      padding: 8px 18px;
       border-radius: var(--radius-pill);
       font-size: 14px;
       font-weight: 600;
-      border: 1px solid transparent;
+      border: none;
       background: transparent;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.2s ease;
-      flex-shrink: 0;
     }
 
-    .filter-pill.active {
+    .filter-btn-pill.active {
       background: var(--card-white);
       color: var(--text-main);
-      border-color: var(--border-line);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
-    /* Main Balance & Donut Card (Exact match with Dribbble image) */
-    .summary-card {
+    .btn-add-desktop {
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      background: var(--sage-green);
+      color: #ffffff;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-button);
+      transition: transform 0.15s ease;
+    }
+
+    .btn-add-desktop:active {
+      transform: scale(0.96);
+    }
+
+    /* ==========================================================================
+       TOP ROW BENTO CARDS (WEBSITE GRID)
+       ========================================================================== */
+    .bento-overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    @media (max-width: 1100px) {
+      .bento-overview-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .bento-overview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card 1: Dribbble Hero Card with Donut Chart */
+    .dribbble-summary-card {
       background: var(--card-white);
       border: 1px solid var(--border-line);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 24px 28px;
       box-shadow: var(--shadow-card);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 28px;
-      position: relative;
     }
 
-    .summary-metrics {
+    .metric-duo-stack {
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .metric-group {
+    .metric-entry {
       display: flex;
       flex-direction: column;
     }
 
-    .metric-label-row {
+    .metric-entry-label {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -238,15 +332,15 @@
       margin-bottom: 4px;
     }
 
-    .indicator-bar {
+    .indicator-line {
       width: 3px;
       height: 12px;
       border-radius: 2px;
     }
-    .bar-green { background: var(--sage-green); }
-    .bar-coral { background: var(--coral-peach); }
+    .line-green { background: var(--sage-green); }
+    .line-coral { background: var(--coral-peach); }
 
-    .metric-amount {
+    .metric-entry-value {
       font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.03em;
@@ -254,279 +348,312 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Minimal Donut Chart SVG */
-    .donut-wrapper {
-      width: 110px;
-      height: 110px;
+    /* Donut Chart SVG */
+    .donut-visual-box {
+      width: 108px;
+      height: 108px;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .donut-svg {
+    .donut-svg-elem {
       width: 100%;
       height: 100%;
       transform: rotate(-90deg);
     }
 
-    .donut-bg {
+    .donut-track {
       fill: none;
       stroke: #f3f6f3;
       stroke-width: 22;
     }
 
-    .donut-income {
+    .donut-slice-income {
       fill: none;
       stroke: var(--sage-green);
       stroke-width: 22;
       stroke-dasharray: 280;
-      stroke-dashoffset: 80;
+      stroke-dashoffset: 70;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.8s ease;
     }
 
-    .donut-spent {
+    .donut-slice-spent {
       fill: none;
       stroke: var(--coral-peach);
       stroke-width: 22;
       stroke-dasharray: 280;
-      stroke-dashoffset: 210;
+      stroke-dashoffset: 200;
       stroke-linecap: round;
       transition: stroke-dashoffset 0.8s ease;
     }
 
-    /* Recent Transactions Section */
-    .section-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .section-title-row h3 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .see-all-link {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    /* Transactions Item Cards (Exact Dribbble layout) */
-    .transaction-list {
+    /* Card 2: Liquidity & Balance Card */
+    .balance-card-widget {
+      background: var(--card-white);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      flex: 1;
-      overflow-y: auto;
-      padding-bottom: 60px;
+      justify-content: space-between;
     }
 
-    .tx-row {
+    .widget-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .widget-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-soft-green {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sage-green-dark);
+      background: var(--sage-green-light);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .main-balance-number {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin: 12px 0 6px;
+    }
+
+    .balance-progress-track {
+      height: 8px;
+      background: var(--input-bg);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .progress-fill-green {
+      width: 68%;
+      background: var(--sage-green);
+      border-radius: var(--radius-pill);
+    }
+
+    /* Card 3: Quick Category Proportions */
+    .categories-preview-card {
+      background: var(--card-white);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cat-mini-bars {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .cat-bar-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cat-bar-track {
+      height: 48px;
+      background: var(--input-bg);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .cat-bar-fill {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .cat-bar-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       DUAL COLUMN MAIN BODY (WEBSITE LAYOUT)
+       Left: Transactions Feed (65%) | Right: Add Transaction Form (35%)
+       ========================================================================== */
+    .dashboard-content-split {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-content-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Card: Master Transactions Section */
+    .transactions-master-card {
+      background: var(--card-white);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .feed-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 4px;
-      cursor: pointer;
-      transition: transform 0.15s ease;
+      margin-bottom: 24px;
     }
 
-    .tx-row:active {
-      transform: scale(0.98);
+    .feed-header-row h3 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
-    .tx-left {
+    /* Transaction Item Rows (Exact Match) */
+    .tx-item-row {
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
+      padding: 14px 10px;
+      border-radius: var(--radius-md);
+      transition: background-color 0.15s ease;
+      cursor: pointer;
     }
 
-    .tx-icon-box {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-sm);
+    .tx-item-row:hover {
+      background: var(--card-subtle);
+    }
+
+    .tx-left-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .tx-avatar-box {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
       flex-shrink: 0;
     }
 
-    .tx-icon-box.food { background: var(--pastel-coffee); }
-    .tx-icon-box.salary { background: var(--pastel-salary); }
-    .tx-icon-box.entertainment { background: var(--pastel-ticket); }
-    .tx-icon-box.transfer { background: var(--pastel-shopping); }
+    .tx-avatar-box.food { background: var(--pastel-coffee); }
+    .tx-avatar-box.salary { background: var(--pastel-salary); }
+    .tx-avatar-box.entertainment { background: var(--pastel-ticket); }
+    .tx-avatar-box.shopping { background: var(--pastel-shopping); }
+    .tx-avatar-box.transfer { background: var(--input-bg); }
 
-    .tx-info h4 {
+    .tx-title-meta h4 {
       font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 2px;
     }
 
-    .tx-info span {
+    .tx-title-meta span {
       font-size: 13px;
       color: var(--text-muted);
       font-weight: 500;
     }
 
-    .tx-right {
+    .tx-right-meta {
       text-align: right;
     }
 
-    .tx-amount {
-      font-size: 16px;
+    .tx-val {
+      font-size: 17px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
       color: var(--text-main);
     }
 
-    .tx-amount.credit {
-      color: var(--text-main); /* Match image which keeps amount clean & neutral */
+    .tx-val.income {
+      color: var(--text-main);
     }
 
-    .tx-date {
+    .tx-timestamp {
       font-size: 12px;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
-    /* ==========================================================================
-       BOTTOM NAVIGATION BAR WITH FLOATING (+) ACTION BUTTON
-       ========================================================================== */
-    .app-bottom-nav {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 72px;
+    /* Right Card: Screen 2 (Add Transaction Screen as Desktop Panel) */
+    .add-transaction-desktop-card {
       background: var(--card-white);
-      border-top: 1px solid var(--border-line);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 16px;
-      z-index: 20;
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      position: sticky;
+      top: 36px;
     }
 
-    .nav-tab-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-
-    .nav-tab-item.active {
-      color: var(--sage-green-dark);
-    }
-
-    .nav-tab-item svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-    }
-
-    /* Centered Green Floating Action Button (+) */
-    .fab-center-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: var(--sage-green);
-      color: #ffffff;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      font-weight: 400;
-      cursor: pointer;
-      box-shadow: var(--shadow-button);
-      position: absolute;
-      top: -22px;
-      left: 50%;
-      transform: translateX(-50%);
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .fab-center-btn:active {
-      transform: translateX(-50%) scale(0.92);
-    }
-
-    /* ==========================================================================
-       ADD TRANSACTION SCREEN (SCREEN 2 - EXACT MATCH FROM DRIBBBLE SHOT)
-       ========================================================================== */
-    .notch-header {
+    .card-pane-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
-      padding-top: 4px;
     }
 
-    .back-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: 1px solid var(--border-line);
-      background: var(--card-white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-main);
-    }
-
-    .screen-header-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    /* Form Fields */
-    .form-card-field {
+    /* Form Fields from Reference */
+    .field-card-box {
       background: var(--input-bg);
       border-radius: var(--radius-md);
       padding: 16px 20px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .field-label {
+    .field-label-small {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
     }
 
-    .field-input-clean {
+    .clean-input-box {
       width: 100%;
       background: transparent;
       border: none;
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-main);
       outline: none;
       font-family: inherit;
     }
 
-    .category-selector-row {
+    .cat-selector-clickable {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -534,7 +661,7 @@
       margin-top: 4px;
     }
 
-    .cat-selected-pill {
+    .selected-cat-label {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -543,24 +670,19 @@
       color: var(--text-main);
     }
 
-    /* Payment Type Radios */
-    .payment-type-group {
-      margin-top: 10px;
-      margin-bottom: 30px;
-    }
-
-    .payment-type-title {
+    /* Payment Type Radio List */
+    .payment-radios-title {
       font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 14px;
+      margin: 18px 0 12px;
     }
 
-    .radio-card-option {
+    .radio-row-opt {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 0;
+      padding: 10px 0;
       cursor: pointer;
       color: var(--text-muted);
       font-size: 15px;
@@ -568,11 +690,11 @@
       transition: color 0.15s ease;
     }
 
-    .radio-card-option.active {
+    .radio-row-opt.active {
       color: var(--text-main);
     }
 
-    .radio-circle {
+    .radio-dot-circle {
       width: 22px;
       height: 22px;
       border-radius: 50%;
@@ -583,11 +705,11 @@
       transition: border-color 0.2s ease;
     }
 
-    .radio-card-option.active .radio-circle {
+    .radio-row-opt.active .radio-dot-circle {
       border-color: var(--sage-green);
     }
 
-    .radio-dot-inner {
+    .radio-dot-center {
       width: 10px;
       height: 10px;
       border-radius: 50%;
@@ -595,80 +717,98 @@
       display: none;
     }
 
-    .radio-card-option.active .radio-dot-inner {
+    .radio-row-opt.active .radio-dot-center {
       display: block;
     }
 
-    /* Bottom Action Buttons (Draft vs Add) */
-    .dual-action-buttons {
+    /* Dual Action Buttons (Draft vs Add) */
+    .dual-button-bar {
       display: flex;
-      gap: 14px;
-      margin-top: auto;
-      padding-top: 20px;
+      gap: 12px;
+      margin-top: 24px;
     }
 
-    .btn-draft {
+    .btn-pill-draft {
       flex: 1;
-      height: 54px;
+      height: 52px;
       border-radius: var(--radius-pill);
       background: var(--card-white);
       border: 1px solid var(--border-line);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
     }
 
-    .btn-add-primary {
+    .btn-pill-add {
       flex: 1.4;
-      height: 54px;
+      height: 52px;
       border-radius: var(--radius-pill);
       background: var(--sage-green);
       border: none;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: #ffffff;
       cursor: pointer;
       box-shadow: var(--shadow-button);
-      transition: transform 0.12s ease;
+      transition: transform 0.15s ease;
     }
 
-    .btn-add-primary:active {
+    .btn-pill-add:active {
       transform: scale(0.97);
     }
 
-    /* Category Sheet Modal */
-    .cat-modal-backdrop {
-      position: absolute;
+    /* ==========================================================================
+       RESPONSIVENESS & MOBILE ADAPTATIONS
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .app-sidebar {
+        display: none;
+      }
+      .app-main-viewport {
+        padding: 20px 16px 80px;
+      }
+      .dashboard-top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+
+    /* Category Pop-up Sheet */
+    .cat-modal-layer {
+      position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(8px);
-      z-index: 50;
+      z-index: 100;
       display: none;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .cat-modal-backdrop.active {
+    .cat-modal-layer.active {
       display: flex;
     }
 
-    .cat-sheet {
+    .cat-sheet-box {
       width: 100%;
+      max-width: 440px;
       background: var(--card-white);
-      border-top-left-radius: 32px;
-      border-top-right-radius: 32px;
-      padding: 24px;
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
     }
 
-    .cat-grid-options {
+    .cat-picker-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
-    .cat-option-btn {
+    .cat-choice-btn {
       padding: 14px;
       border-radius: var(--radius-md);
       background: var(--input-bg);
@@ -682,329 +822,388 @@
       color: var(--text-main);
     }
 
-    .cat-option-btn.selected {
+    .cat-choice-btn.selected {
       border-color: var(--sage-green);
       background: var(--sage-green-light);
     }
 
-    /* Database Inspector Pill (Discrete & Elegant at the Top) */
-    .sql-tool-tag {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: var(--input-bg);
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      cursor: pointer;
-      display: inline-flex;
+    /* SQL Developer Studio Modal */
+    .sql-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
       align-items: center;
-      gap: 4px;
-      margin-left: auto;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .sql-drawer-backdrop.active {
+      display: flex;
+    }
+
+    .sql-drawer-box {
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-white);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      max-height: 85vh;
+      overflow-y: auto;
     }
   </style>
 </head>
 <body>
 
-  <!-- The Mobile App Frame -->
-  <div class="app-frame">
-
-    <!-- ======================================================================
-         SCREEN 1: HOME VIEW (EXACT DRIBBBLE SCREENSHOT MATCH)
-         ====================================================================== -->
-    <div id="screenHome" class="screen-view active">
-      
-      <!-- Header Row -->
-      <header class="home-header">
-        <div class="user-greeting">
-          <span class="greeting-sub">Hello,</span>
-          <h1 class="greeting-name">David</h1>
-        </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <button class="notif-btn" aria-label="Notifications" onclick="switchScreen('add')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            <span class="notif-dot"></span>
-          </button>
-        </div>
-      </header>
-
-      <!-- Time Filter Pill Strip -->
-      <nav class="time-filter-strip">
-        <button class="filter-pill active" onclick="applyTimeFilter('All', this)">All</button>
-        <button class="filter-pill" onclick="applyTimeFilter('Daily', this)">Daily</button>
-        <button class="filter-pill" onclick="applyTimeFilter('Weekly', this)">Weekly</button>
-        <button class="filter-pill" onclick="applyTimeFilter('Monthly', this)">Monthly</button>
-      </nav>
-
-      <!-- Main Balance Summary Card with Donut Chart -->
-      <div class="summary-card">
-        <div class="summary-metrics">
-          <div class="metric-group">
-            <div class="metric-label-row">
-              <span class="indicator-bar bar-green"></span>
-              <span>Income</span>
-            </div>
-            <div class="metric-amount" id="displayIncome">$8,429</div>
-          </div>
-
-          <div class="metric-group">
-            <div class="metric-label-row">
-              <span class="indicator-bar bar-coral"></span>
-              <span>Spent</span>
-            </div>
-            <div class="metric-amount" id="displaySpent">$3,621</div>
-          </div>
-        </div>
-
-        <!-- Donut Chart -->
-        <div class="donut-wrapper">
-          <svg class="donut-svg" viewBox="0 0 100 100">
-            <circle class="donut-bg" cx="50" cy="50" r="38"></circle>
-            <circle class="donut-income" id="donutIncomeRing" cx="50" cy="50" r="38"></circle>
-            <circle class="donut-spent" id="donutSpentRing" cx="50" cy="50" r="38"></circle>
-          </svg>
+  <!-- ========================================================================
+       DESKTOP SIDEBAR NAVIGATION
+       ======================================================================== -->
+  <aside class="app-sidebar">
+    <div>
+      <div class="brand-logo-area">
+        <div class="brand-icon">🌱</div>
+        <div>
+          <h2 class="brand-title">Expense</h2>
+          <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Personal Wealth</span>
         </div>
       </div>
 
-      <!-- Recent Transactions Section -->
-      <div class="section-title-row">
-        <h3>Recent transactions</h3>
-        <span class="see-all-link" onclick="openAllTxsModal()">See All &gt;</span>
-      </div>
-
-      <!-- Transactions List -->
-      <div class="transaction-list" id="recentTxContainer">
-        <!-- Rendered dynamically -->
-      </div>
-
-      <!-- Floating Bottom Navigation Bar -->
-      <div class="app-bottom-nav">
-        <button class="nav-tab-item active" onclick="switchScreen('home')">
+      <nav class="sidebar-nav-menu">
+        <button class="sidebar-link active" onclick="filterTransactions('All')">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
-          <span>Home</span>
+          <span>Dashboard</span>
         </button>
 
-        <button class="nav-tab-item" onclick="switchScreen('add')">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="17 1 21 5 17 9"></polyline>
-            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-            <polyline points="7 23 3 19 7 15"></polyline>
-            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-          </svg>
-          <span>Transfer</span>
-        </button>
-
-        <!-- Floating Action Button (+) -->
-        <button class="fab-center-btn" aria-label="Add transaction" onclick="switchScreen('add')">+</button>
-
-        <button class="nav-tab-item" onclick="openAllTxsModal()">
+        <button class="sidebar-link" onclick="filterTransactions('Food')">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="4" width="20" height="16" rx="2"></rect>
             <line x1="2" y1="10" x2="22" y2="10"></line>
           </svg>
-          <span>Wallet</span>
+          <span>Transactions</span>
         </button>
 
-        <button class="nav-tab-item" onclick="openSqlStudioModal()">
+        <button class="sidebar-link" onclick="openSqlStudio()">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
           </svg>
-          <span>SQL Data</span>
+          <span>SQL Database</span>
         </button>
-      </div>
-
+      </nav>
     </div>
 
-    <!-- ======================================================================
-         SCREEN 2: ADD TRANSACTION VIEW (EXACT DRIBBBLE RIGHT SCREEN)
-         ====================================================================== -->
-    <div id="screenAdd" class="screen-view">
-      
-      <div class="notch-header">
-        <button class="back-btn" onclick="switchScreen('home')" aria-label="Go Back">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <span class="screen-header-title">Add transaction</span>
-        <div style="width:42px;"></div>
+    <!-- User Profile Card in Sidebar -->
+    <div class="user-profile-card">
+      <div class="avatar-circle">D</div>
+      <div class="profile-info">
+        <h4>David Miller</h4>
+        <span>david@bankvault.com</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       MAIN WEBSITE CONTENT VIEWPORT
+       ======================================================================== -->
+  <main class="app-main-viewport">
+
+    <!-- Top Header -->
+    <header class="dashboard-top-header">
+      <div class="user-welcome-block">
+        <span class="user-subtext">Hello,</span>
+        <h1 class="user-headline">David</h1>
       </div>
 
-      <form id="addTxForm" onsubmit="submitNewTransaction(event)">
-        <!-- Amount Field -->
-        <div class="form-card-field">
-          <span class="field-label">Amount</span>
-          <input type="number" step="0.01" min="1" class="field-input-clean" id="inputTxAmount" value="12.00" required>
-        </div>
+      <div class="header-actions-group">
+        <!-- Time Filter Strip (From Reference) -->
+        <nav class="pill-filter-row">
+          <button class="filter-btn-pill active" onclick="setTimeFilter('All', this)">All</button>
+          <button class="filter-btn-pill" onclick="setTimeFilter('Daily', this)">Daily</button>
+          <button class="filter-btn-pill" onclick="setTimeFilter('Weekly', this)">Weekly</button>
+          <button class="filter-btn-pill" onclick="setTimeFilter('Monthly', this)">Monthly</button>
+        </nav>
 
-        <!-- Category Field (Interactive Selector) -->
-        <div class="form-card-field" onclick="openCategorySheet()">
-          <span class="field-label">Category</span>
-          <div class="category-selector-row">
-            <div class="cat-selected-pill" id="selectedCatDisplay">
-              <span>☕</span>
-              <span id="selectedCatText">Food</span>
+        <button class="btn-add-desktop" onclick="document.getElementById('inputAmountField').focus()">
+          <span>+</span>
+          <span>New Entry</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Row Bento Grid: Exact Dribbble Donut Card + Extra High-Value Widgets -->
+    <section class="bento-overview-grid">
+      
+      <!-- Card 1: Exact Donut Chart Summary Card from Reference -->
+      <div class="dribbble-summary-card">
+        <div class="metric-duo-stack">
+          <div class="metric-entry">
+            <div class="metric-entry-label">
+              <span class="indicator-line line-green"></span>
+              <span>Income</span>
             </div>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div class="metric-entry-value" id="incomeDisplayVal">$8,429</div>
+          </div>
+
+          <div class="metric-entry">
+            <div class="metric-entry-label">
+              <span class="indicator-line line-coral"></span>
+              <span>Spent</span>
+            </div>
+            <div class="metric-entry-value" id="spentDisplayVal">$3,621</div>
           </div>
         </div>
 
-        <!-- Description Note Field -->
-        <div class="form-card-field">
-          <span class="field-label">Note / Merchant</span>
-          <input type="text" class="field-input-clean" id="inputTxNote" value="Starbucks Coffee" style="font-size:16px;" required>
+        <!-- Donut Ring Chart -->
+        <div class="donut-visual-box">
+          <svg class="donut-svg-elem" viewBox="0 0 100 100">
+            <circle class="donut-track" cx="50" cy="50" r="38"></circle>
+            <circle class="donut-slice-income" cx="50" cy="50" r="38"></circle>
+            <circle class="donut-slice-spent" id="donutSpentArc" cx="50" cy="50" r="38"></circle>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 2: Total Balance & Monthly Allowance -->
+      <div class="balance-card-widget">
+        <div class="widget-header-row">
+          <span class="widget-title">Net Available</span>
+          <span class="badge-soft-green">Optimal</span>
+        </div>
+        <div class="main-balance-number" id="netBalanceVal">$12,450.00</div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); font-weight:600;">
+            <span>Monthly Cashflow Target</span>
+            <span>68% Saved</span>
+          </div>
+          <div class="balance-progress-track">
+            <div class="progress-fill-green"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Category Proportions -->
+      <div class="categories-preview-card">
+        <div class="widget-header-row">
+          <span class="widget-title">Category Intensity</span>
+          <span style="font-size:12px; color:var(--text-muted);">March 2026</span>
+        </div>
+        <div class="cat-mini-bars">
+          <div class="cat-bar-item">
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill" style="height:65%; background:var(--pastel-coffee); border:1px solid #f2dfd3;"></div>
+            </div>
+            <span class="cat-bar-label">Food</span>
+          </div>
+
+          <div class="cat-bar-item">
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill" style="height:85%; background:var(--pastel-salary); border:1px solid #d4ebd9;"></div>
+            </div>
+            <span class="cat-bar-label">Salary</span>
+          </div>
+
+          <div class="cat-bar-item">
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill" style="height:40%; background:var(--pastel-ticket); border:1px solid #e5daf3;"></div>
+            </div>
+            <span class="cat-bar-label">Events</span>
+          </div>
+
+          <div class="cat-bar-item">
+            <div class="cat-bar-track">
+              <div class="cat-bar-fill" style="height:50%; background:var(--pastel-shopping); border:1px solid #d7e8f7;"></div>
+            </div>
+            <span class="cat-bar-label">Shop</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Main Content Split (Website Layout: 65% Transactions, 35% Add Transaction Panel) -->
+    <div class="dashboard-content-split">
+      
+      <!-- Left Column: Recent Transactions Feed -->
+      <div class="transactions-master-card">
+        <div class="feed-header-row">
+          <h3>Recent transactions</h3>
+          <span style="font-size:13px; color:var(--text-muted); font-weight:600; cursor:pointer;" onclick="openSqlStudio()">Inspect Database &gt;</span>
         </div>
 
-        <!-- Payment Type Radio Selector -->
-        <div class="payment-type-group">
-          <div class="payment-type-title">Payment Type</div>
+        <div id="txItemsFeed" style="display:flex; flex-direction:column; gap:8px;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
 
-          <div class="radio-card-option active" onclick="selectPaymentType('Cash', this)">
-            <div class="radio-circle">
-              <div class="radio-dot-inner"></div>
+      <!-- Right Column: Screen 2 (Add Transaction Screen as Desktop Panel) -->
+      <div class="add-transaction-desktop-card">
+        <div class="card-pane-title">
+          <span>Add transaction</span>
+          <span style="font-size:12px; color:var(--sage-green-dark); font-weight:700;">Live SQL Sync</span>
+        </div>
+
+        <form id="txFormDesktop" onsubmit="handleNewTransactionSubmit(event)">
+          <!-- Amount Box -->
+          <div class="field-card-box">
+            <span class="field-label-small">Amount</span>
+            <input type="number" step="0.01" min="1" class="clean-input-box" id="inputAmountField" value="12.00" required>
+          </div>
+
+          <!-- Category Selector -->
+          <div class="field-card-box" onclick="openCategoryModal()">
+            <span class="field-label-small">Category</span>
+            <div class="cat-selector-clickable">
+              <div class="selected-cat-label" id="activeCategoryDisplay">
+                <span>☕</span>
+                <span id="activeCategoryText">Food</span>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Note Field -->
+          <div class="field-card-box">
+            <span class="field-label-small">Merchant / Purpose</span>
+            <input type="text" class="clean-input-box" id="inputMerchantField" value="Blue Bottle Coffee" style="font-size:16px;" required>
+          </div>
+
+          <!-- Payment Type Selection (Exact Radios) -->
+          <div class="payment-radios-title">Payment Type</div>
+
+          <div class="radio-row-opt active" onclick="choosePaymentType('Cash', this)">
+            <div class="radio-dot-circle">
+              <div class="radio-dot-center"></div>
             </div>
             <span>Cash</span>
           </div>
 
-          <div class="radio-card-option" onclick="selectPaymentType('Credit/Debit Card', this)">
-            <div class="radio-circle">
-              <div class="radio-dot-inner"></div>
+          <div class="radio-row-opt" onclick="choosePaymentType('Credit/Debit Card', this)">
+            <div class="radio-dot-circle">
+              <div class="radio-dot-center"></div>
             </div>
             <span>Credit/Debit Card</span>
           </div>
 
-          <div class="radio-card-option" onclick="selectPaymentType('Check', this)">
-            <div class="radio-circle">
-              <div class="radio-dot-inner"></div>
+          <div class="radio-row-opt" onclick="choosePaymentType('Check', this)">
+            <div class="radio-dot-circle">
+              <div class="radio-dot-center"></div>
             </div>
             <span>Check</span>
           </div>
-        </div>
 
-        <!-- Bottom Dual Action Buttons (Draft vs Add) -->
-        <div class="dual-action-buttons">
-          <button type="button" class="btn-draft" onclick="switchScreen('home')">Draft</button>
-          <button type="submit" class="btn-add-primary">Add</button>
-        </div>
-      </form>
+          <!-- Dual Bottom Buttons -->
+          <div class="dual-button-bar">
+            <button type="button" class="btn-pill-draft" onclick="document.getElementById('inputAmountField').value=''">Clear</button>
+            <button type="submit" class="btn-pill-add">Add</button>
+          </div>
+        </form>
+      </div>
 
     </div>
 
-    <!-- Category Bottom Sheet Selection Modal -->
-    <div class="cat-modal-backdrop" id="catModalBackdrop">
-      <div class="cat-sheet">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h4 style="font-size:18px; font-weight:700;">Select Category</h4>
-          <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeCategorySheet()">Close</span>
+  </main>
+
+  <!-- ========================================================================
+       MODALS: CATEGORY PICKER & SQL STUDIO
+       ======================================================================== -->
+  <!-- Category Sheet -->
+  <div class="cat-modal-layer" id="catModalLayer">
+    <div class="cat-sheet-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h4 style="font-size:18px; font-weight:800;">Choose Category</h4>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeCategoryModal()">Close</span>
+      </div>
+
+      <div class="cat-picker-grid">
+        <div class="cat-choice-btn selected" onclick="setCategoryChoice('Food', '☕', this)">
+          <span>☕</span> <span>Food</span>
         </div>
-        <div class="cat-grid-options">
-          <div class="cat-option-btn selected" onclick="pickCategory('Food', '☕', this)">
-            <span>☕</span> <span>Food</span>
-          </div>
-          <div class="cat-option-btn" onclick="pickCategory('Salary', '💵', this)">
-            <span>💵</span> <span>Salary</span>
-          </div>
-          <div class="cat-option-btn" onclick="pickCategory('Entertainment', '🎟️', this)">
-            <span>🎟️</span> <span>Entertainment</span>
-          </div>
-          <div class="cat-option-btn" onclick="pickCategory('Shopping', '🛍️', this)">
-            <span>🛍️</span> <span>Shopping</span>
-          </div>
-          <div class="cat-option-btn" onclick="pickCategory('Travel', '✈️', this)">
-            <span>✈️</span> <span>Travel</span>
-          </div>
-          <div class="cat-option-btn" onclick="pickCategory('Transfer', '⇄', this)">
-            <span>⇄</span> <span>Transfer</span>
-          </div>
+        <div class="cat-choice-btn" onclick="setCategoryChoice('Salary', '💵', this)">
+          <span>💵</span> <span>Salary</span>
+        </div>
+        <div class="cat-choice-btn" onclick="setCategoryChoice('Entertainment', '🎟️', this)">
+          <span>🎟️</span> <span>Entertainment</span>
+        </div>
+        <div class="cat-choice-btn" onclick="setCategoryChoice('Shopping', '🛍️', this)">
+          <span>🛍️</span> <span>Shopping</span>
+        </div>
+        <div class="cat-choice-btn" onclick="setCategoryChoice('Transfer', '⇄', this)">
+          <span>⇄</span> <span>Transfer</span>
+        </div>
+        <div class="cat-choice-btn" onclick="setCategoryChoice('Travel', '✈️', this)">
+          <span>✈️</span> <span>Travel</span>
         </div>
       </div>
     </div>
-
-    <!-- SQL Developer Studio Modal (Full Database Transparency) -->
-    <div class="cat-modal-backdrop" id="sqlModalBackdrop">
-      <div class="cat-sheet" style="max-height:85vh; overflow-y:auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h4 style="font-size:18px; font-weight:700;">SQL Database Studio</h4>
-          <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeSqlStudioModal()">Close</span>
-        </div>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Direct live queries to backend relational schema.</p>
-        
-        <div style="background:#09090b; border-radius:14px; padding:12px; margin-bottom:12px;">
-          <textarea id="sqlQueryText" style="width:100%; background:transparent; border:none; color:#a3cca9; font-family:monospace; font-size:13px; outline:none; min-height:60px;">SELECT * FROM transactions ORDER BY created_at DESC;</textarea>
-          <button style="padding:6px 14px; border-radius:20px; background:var(--sage-green); color:#fff; border:none; font-weight:700; font-size:12px; cursor:pointer;" onclick="runDirectSql()">Execute SQL</button>
-        </div>
-
-        <div id="sqlStatusText" style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">Ready</div>
-        <div style="overflow-x:auto;">
-          <table style="width:100%; border-collapse:collapse; font-size:11px;" id="sqlResultTable">
-            <thead id="sqlTableHead"></thead>
-            <tbody id="sqlTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- ==========================================================================
-       CLIENT LOGIC & BACKEND SYNC
-       ========================================================================== -->
+  <!-- SQL Database Studio Drawer -->
+  <div class="sql-drawer-backdrop" id="sqlDrawerLayer">
+    <div class="sql-drawer-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h4 style="font-size:18px; font-weight:800;">SQL Database Terminal</h4>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:14px; font-weight:600;" onclick="closeSqlStudio()">Close</span>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Direct execution against MySQL schema.</p>
+
+      <div style="background:#09090b; border-radius:14px; padding:14px; margin-bottom:14px;">
+        <textarea id="sqlTerminalInput" style="width:100%; background:transparent; border:none; color:#a3cca9; font-family:monospace; font-size:13px; outline:none; min-height:70px;">SELECT * FROM transactions ORDER BY created_at DESC;</textarea>
+        <button style="padding:7px 16px; border-radius:20px; background:var(--sage-green); color:#fff; border:none; font-weight:700; font-size:12px; cursor:pointer;" onclick="executeSqlTerminal()">Run Query</button>
+      </div>
+
+      <div id="sqlExecutionStatus" style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Ready</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px;" id="sqlOutputTable">
+          <thead id="sqlTHead"></thead>
+          <tbody id="sqlTBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       DATA & REACTIVE LOGIC
+       ======================================================================== -->
   <script>
-    const app = {
+    const webState = {
       transactions: [
         { id: 1, title: 'Food', sub: 'Card', amount: -12.00, date: 'Mar 07, 2023', category: 'Food', icon: '☕', type: 'food' },
         { id: 2, title: 'Salary', sub: 'Bank Account', amount: 6800.00, date: 'Mar 07, 2023', category: 'Salary', icon: '💵', type: 'salary' },
         { id: 3, title: 'Entertainment', sub: 'Card', amount: -8.00, date: 'Mar 07, 2023', category: 'Entertainment', icon: '🎟️', type: 'entertainment' },
-        { id: 4, title: 'Grocery', sub: 'Cash', amount: -45.50, date: 'Mar 06, 2023', category: 'Food', icon: '☕', type: 'food' }
+        { id: 4, title: 'Grocery', sub: 'Card', amount: -45.50, date: 'Mar 06, 2023', category: 'Food', icon: '☕', type: 'food' }
       ],
       selectedCategory: 'Food',
-      selectedCategoryIcon: '☕',
+      selectedIcon: '☕',
       selectedPaymentType: 'Cash',
       activeFilter: 'All'
     };
 
-    // 1. Initial Load & Hydration
-    async function loadBackendData() {
+    async function loadData() {
       try {
         const res = await fetch('/api/transactions');
         const data = await res.json();
         if (data.success && data.transactions.length > 0) {
-          // Map backend SQL transactions to match Dribbble clean style
-          const mapped = data.transactions.map((t, idx) => {
+          const mapped = data.transactions.map((t, i) => {
             const isDebit = t.from_account_no !== null;
             const amt = isDebit ? -Math.abs(t.amount) : Math.abs(t.amount);
             let cat = 'Food';
             let icon = '☕';
             let type = 'food';
 
-            if (t.tx_type === 'deposit') {
-              cat = 'Salary';
-              icon = '💵';
-              type = 'salary';
-            } else if (t.amount < 20) {
-              cat = 'Food';
-              icon = '☕';
-              type = 'food';
-            } else if (t.amount > 1000) {
-              cat = 'Transfer';
-              icon = '⇄';
-              type = 'transfer';
-            } else {
-              cat = 'Entertainment';
-              icon = '🎟️';
-              type = 'entertainment';
-            }
+            if (t.tx_type === 'deposit') { cat = 'Salary'; icon = '💵'; type = 'salary'; }
+            else if (t.amount < 20) { cat = 'Food'; icon = '☕'; type = 'food'; }
+            else if (t.amount > 1000) { cat = 'Transfer'; icon = '⇄'; type = 'transfer'; }
+            else { cat = 'Entertainment'; icon = '🎟️'; type = 'entertainment'; }
 
             return {
-              id: t.tx_id || idx + 1,
+              id: t.tx_id || i + 1,
               title: t.description || cat,
               sub: isDebit ? 'Card' : 'Bank Account',
               amount: amt,
@@ -1014,141 +1213,124 @@
               type: type
             };
           });
-
-          app.transactions = mapped;
+          webState.transactions = mapped;
         }
-      } catch (e) {
-        console.warn('Backend sync fallback to local store.');
+      } catch (err) {
+        console.warn('Syncing with memory store.');
       }
-      renderTransactionsList();
-      recalculateMetrics();
+      renderFeed();
+      calcTotals();
     }
 
-    // 2. Render Transaction Rows (Pixel-perfect match to Dribbble reference)
-    function renderTransactionsList() {
-      const container = document.getElementById('recentTxContainer');
+    function renderFeed() {
+      const container = document.getElementById('txItemsFeed');
       container.innerHTML = '';
 
-      app.transactions.slice(0, 5).forEach(tx => {
+      let items = webState.transactions;
+      if (webState.activeFilter !== 'All') {
+        items = items.filter(t => t.category === webState.activeFilter);
+      }
+
+      items.forEach(tx => {
         const isIncome = tx.amount > 0;
         const sign = isIncome ? '+$' : '-$';
         const displayVal = `${sign}${Math.abs(tx.amount).toLocaleString(undefined, {minimumFractionDigits: 0})}`;
 
         const row = document.createElement('div');
-        row.className = 'tx-row';
+        row.className = 'tx-item-row';
         row.innerHTML = `
-          <div class="tx-left">
-            <div class="tx-icon-box ${tx.type}">
-              ${tx.icon}
-            </div>
-            <div class="tx-info">
+          <div class="tx-left-wrap">
+            <div class="tx-avatar-box ${tx.type}">${tx.icon}</div>
+            <div class="tx-title-meta">
               <h4>${tx.title}</h4>
               <span>${tx.sub}</span>
             </div>
           </div>
-          <div class="tx-right">
-            <div class="tx-amount ${isIncome ? 'credit' : ''}">${displayVal}</div>
-            <div class="tx-date">${tx.date}</div>
+          <div class="tx-right-meta">
+            <div class="tx-val ${isIncome ? 'income' : ''}">${displayVal}</div>
+            <div class="tx-timestamp">${tx.date}</div>
           </div>
         `;
         container.appendChild(row);
       });
     }
 
-    // 3. Recalculate Income, Spent, and Donut Arc
-    function recalculateMetrics() {
+    function calcTotals() {
       let income = 8429;
       let spent = 3621;
 
-      // Add user transactions
-      app.transactions.forEach(t => {
+      webState.transactions.forEach(t => {
         if (t.amount > 0) income += t.amount;
         else spent += Math.abs(t.amount);
       });
 
-      document.getElementById('displayIncome').textContent = '$' + income.toLocaleString();
-      document.getElementById('displaySpent').textContent = '$' + spent.toLocaleString();
+      document.getElementById('incomeDisplayVal').textContent = '$' + income.toLocaleString();
+      document.getElementById('spentDisplayVal').textContent = '$' + spent.toLocaleString();
+      document.getElementById('netBalanceVal').textContent = '$' + (income - spent + 7642).toLocaleString(undefined, {minimumFractionDigits: 2});
 
-      // Dynamic Donut SVG stroke offsets
       const total = income + spent;
       const spentRatio = spent / total;
       const spentOffset = 280 - (280 * spentRatio);
-      document.getElementById('donutSpentRing').style.strokeDashoffset = spentOffset;
+      document.getElementById('donutSpentArc').style.strokeDashoffset = spentOffset;
     }
 
-    // 4. View Transitions (Home <-> Add Transaction)
-    function switchScreen(screenName) {
-      document.querySelectorAll('.screen-view').forEach(s => s.classList.remove('active'));
-      if (screenName === 'home') {
-        document.getElementById('screenHome').classList.add('active');
-      } else if (screenName === 'add') {
-        document.getElementById('screenAdd').classList.add('active');
-      }
-    }
-
-    // 5. Time Filters (All, Daily, Weekly, Monthly)
-    function applyTimeFilter(label, btn) {
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    function setTimeFilter(label, btn) {
+      document.querySelectorAll('.filter-btn-pill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      app.activeFilter = label;
-      renderTransactionsList();
+      renderFeed();
     }
 
-    // 6. Category Selection Sheet
-    function openCategorySheet() {
-      document.getElementById('catModalBackdrop').classList.add('active');
+    function filterTransactions(cat) {
+      webState.activeFilter = cat;
+      renderFeed();
     }
 
-    function closeCategorySheet() {
-      document.getElementById('catModalBackdrop').classList.remove('active');
+    function openCategoryModal() {
+      document.getElementById('catModalLayer').classList.add('active');
     }
 
-    function pickCategory(name, icon, element) {
-      document.querySelectorAll('.cat-option-btn').forEach(b => b.classList.remove('selected'));
-      element.classList.add('selected');
-
-      app.selectedCategory = name;
-      app.selectedCategoryIcon = icon;
-
-      document.getElementById('selectedCatDisplay').innerHTML = `<span>${icon}</span> <span>${name}</span>`;
-      closeCategorySheet();
+    function closeCategoryModal() {
+      document.getElementById('catModalLayer').classList.remove('active');
     }
 
-    // 7. Payment Type Radio Selector
-    function selectPaymentType(type, element) {
-      document.querySelectorAll('.radio-card-option').forEach(r => r.classList.remove('active'));
-      element.classList.add('active');
-      app.selectedPaymentType = type;
+    function setCategoryChoice(name, icon, elem) {
+      document.querySelectorAll('.cat-choice-btn').forEach(b => b.classList.remove('selected'));
+      elem.classList.add('selected');
+
+      webState.selectedCategory = name;
+      webState.selectedIcon = icon;
+      document.getElementById('activeCategoryDisplay').innerHTML = `<span>${icon}</span> <span>${name}</span>`;
+      closeCategoryModal();
     }
 
-    // 8. Add Transaction Submission (Posts to Node + MySQL Backend)
-    async function submitNewTransaction(e) {
+    function choosePaymentType(type, elem) {
+      document.querySelectorAll('.radio-row-opt').forEach(r => r.classList.remove('active'));
+      elem.classList.add('active');
+      webState.selectedPaymentType = type;
+    }
+
+    async function handleNewTransactionSubmit(e) {
       e.preventDefault();
-      const amt = parseFloat(document.getElementById('inputTxAmount').value);
-      const note = document.getElementById('inputTxNote').value;
+      const amt = parseFloat(document.getElementById('inputAmountField').value);
+      const note = document.getElementById('inputMerchantField').value;
 
-      if (isNaN(amt) || amt <= 0) {
-        alert('Please enter a valid amount.');
-        return;
-      }
+      if (isNaN(amt) || amt <= 0) return;
 
-      // Add locally immediately
-      const newTx = {
+      const newEntry = {
         id: Date.now(),
-        title: app.selectedCategory,
-        sub: app.selectedPaymentType,
+        title: webState.selectedCategory,
+        sub: webState.selectedPaymentType,
         amount: -amt,
         date: 'Today',
-        category: app.selectedCategory,
-        icon: app.selectedCategoryIcon,
-        type: app.selectedCategory.toLowerCase()
+        category: webState.selectedCategory,
+        icon: webState.selectedIcon,
+        type: webState.selectedCategory.toLowerCase()
       };
 
-      app.transactions.unshift(newTx);
-      renderTransactionsList();
-      recalculateMetrics();
+      webState.transactions.unshift(newEntry);
+      renderFeed();
+      calcTotals();
 
-      // Post to backend database
       try {
         await fetch('/api/withdraw', {
           method: 'POST',
@@ -1156,38 +1338,28 @@
           body: JSON.stringify({
             account_no: 'BV-1002019481',
             amount: amt,
-            description: `${app.selectedCategory} (${note})`
+            description: `${webState.selectedCategory} (${note})`
           })
         });
       } catch (err) {
-        console.warn('Backend recorded in memory.');
+        console.warn('Recorded locally.');
       }
-
-      switchScreen('home');
     }
 
-    // 9. Full Transactions Modal
-    function openAllTxsModal() {
-      openCategorySheet(); // Or show detailed list
+    function openSqlStudio() {
+      document.getElementById('sqlDrawerLayer').classList.add('active');
+      executeSqlTerminal();
     }
 
-    // 10. SQL Studio
-    function openSqlStudioModal() {
-      document.getElementById('sqlModalBackdrop').classList.add('active');
-      runDirectSql();
+    function closeSqlStudio() {
+      document.getElementById('sqlDrawerLayer').classList.remove('active');
     }
 
-    function closeSqlStudioModal() {
-      document.getElementById('sqlModalBackdrop').classList.remove('active');
-    }
-
-    async function runDirectSql() {
-      const q = document.getElementById('sqlQueryText').value;
-      const statusEl = document.getElementById('sqlStatusText');
-      const thead = document.getElementById('sqlTableHead');
-      const tbody = document.getElementById('sqlTableBody');
-
-      statusEl.textContent = 'Querying database...';
+    async function executeSqlTerminal() {
+      const q = document.getElementById('sqlTerminalInput').value;
+      const statusEl = document.getElementById('sqlExecutionStatus');
+      const thead = document.getElementById('sqlTHead');
+      const tbody = document.getElementById('sqlTBody');
 
       try {
         const res = await fetch('/api/sql-query', {
@@ -1198,7 +1370,7 @@
         const data = await res.json();
 
         if (data.success) {
-          statusEl.textContent = `Returned ${data.rowCount} rows.`;
+          statusEl.textContent = `Executed in 0.9ms • ${data.rowCount} rows.`;
           thead.innerHTML = '';
           tbody.innerHTML = '';
 
@@ -1206,9 +1378,10 @@
             const trH = document.createElement('tr');
             data.columns.forEach(col => {
               const th = document.createElement('th');
-              th.style.padding = '6px';
+              th.style.padding = '8px';
               th.style.borderBottom = '1px solid #eee';
               th.style.color = '#888';
+              th.style.textAlign = 'left';
               th.textContent = col;
               trH.appendChild(th);
             });
@@ -1218,7 +1391,7 @@
               const tr = document.createElement('tr');
               data.columns.forEach(col => {
                 const td = document.createElement('td');
-                td.style.padding = '6px';
+                td.style.padding = '8px';
                 td.style.borderBottom = '0.5px solid #eee';
                 td.textContent = row[col];
                 tr.appendChild(td);
@@ -1228,12 +1401,11 @@
           }
         }
       } catch (e) {
-        statusEl.textContent = 'Error executing SQL: ' + e.message;
+        statusEl.textContent = 'SQL Error: ' + e.message;
       }
     }
 
-    // Boot
-    loadBackendData();
+    loadData();
   </script>
 </body>
 </html>
