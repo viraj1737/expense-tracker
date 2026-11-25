@@ -2,10 +2,9 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker — Apple Obsidian Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Vault — Personal Wealth</title>
 
-  <!-- Apple Status Bar & PWA Theme -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Vault">
@@ -15,1746 +14,1382 @@
   <link rel="icon" type="image/png" href="/icon.png">
 
   <style>
-    /* ==========================================================================
-       APPLE HIG SQUIRCLE (G2 CONTINUOUS CURVATURE) & OLED OBSIDIAN DESIGN SYSTEM
-       Continuous squircle curves, specular glass highlights, SwiftUI spring physics
-       ========================================================================== */
+    /* =====================================================================
+       VAULT — OBSIDIAN GLASS
+       Design language: minimal, quiet surfaces, continuous curvature,
+       one accent, motion that responds to intent.
+       ===================================================================== */
     :root {
-      --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", "SF Pro Text", -system-ui, sans-serif;
-      --font-mono: "SF Mono", Menlo, Consolas, monospace;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+              "Helvetica Neue", -system-ui, sans-serif;
+      --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
 
-      /* Apple OLED True Black & Titanium Obsidian Palette */
-      --bg-canvas: #000000;
-      --bg-sidebar: #060708;
-      --card-surface: #0e0f12;
-      --card-elevated: #15171b;
-      --input-bg: #121316;
-      --input-hover: #18191d;
+      --canvas: #000000;
+      --surface: rgba(18, 20, 24, 0.66);
+      --surface-solid: #101216;
+      --fill: rgba(255, 255, 255, 0.045);
+      --fill-strong: rgba(255, 255, 255, 0.085);
+      --line: rgba(255, 255, 255, 0.075);
+      --line-bright: rgba(255, 255, 255, 0.15);
 
-      --text-main: #ffffff;
-      --text-muted: #8e9590;
-      --text-dim: #3f4240;
+      --text: #f5f5f7;
+      --text-2: rgba(235, 235, 245, 0.58);
+      --text-3: rgba(235, 235, 245, 0.32);
 
-      /* Specular Hairline Highlights & Borders */
-      --border-apple: rgba(255, 255, 255, 0.08);
-      --border-highlight: rgba(255, 255, 255, 0.14);
-      --glass-glow: rgba(255, 255, 255, 0.03);
+      --mint: #b9e6cd;
+      --mint-soft: rgba(185, 230, 205, 0.11);
+      --mint-line: rgba(185, 230, 205, 0.3);
+      --warm: #e6a98f;
+      --warm-soft: rgba(230, 169, 143, 0.1);
+      --violet: #c4b8e6;
+      --sky: #a0c8e6;
 
-      /* Dribbble Signature Pastels with Apple Neon Luminescence */
-      --sage-green: #9bc8a5;
-      --sage-green-glow: rgba(155, 200, 165, 0.18);
-      --sage-green-dark: #82b48e;
+      --r-pill: 999px;
+      --r-lg: 30px;
+      --r-md: 20px;
+      --r-sm: 13px;
 
-      --coral-peach: #f4a58a;
-      --coral-peach-glow: rgba(244, 165, 138, 0.18);
-
-      --pastel-coffee: rgba(254, 243, 235, 0.12);
-      --pastel-salary: rgba(155, 200, 165, 0.16);
-      --pastel-ticket: rgba(244, 240, 250, 0.14);
-      --pastel-shopping: rgba(237, 245, 252, 0.14);
-
-      /* Apple Squircle Continuous Curvatures */
-      --radius-super: 38px;
-      --radius-xl: 32px;
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --radius-sm: 12px;
-      --radius-capsule: 9999px;
-
-      /* Apple Specular Edge Shadows (Top-Lit Glass) */
-      --shadow-apple-card: 
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.11),
-        0 24px 50px -15px rgba(0, 0, 0, 0.8),
-        0 0 0 1px var(--border-apple);
-      
-      --shadow-button-glow: 
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
-        0 10px 28px -6px rgba(155, 200, 165, 0.45);
-
-      /* SwiftUI Spring Motion Curves */
-      --spring-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --spring-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --blur: saturate(180%) blur(26px);
+      --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      --ease: cubic-bezier(0.32, 0.72, 0, 1);
     }
 
-    /* Reset */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
+    @supports (corner-shape: squircle) {
+      .sq, .sq-lg, .sq-md, .sq-sm { corner-shape: squircle; }
     }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font-family);
-      background-color: var(--bg-canvas);
-      color: var(--text-main);
+      font-family: var(--font);
+      background: var(--canvas);
+      color: var(--text);
       min-height: 100vh;
-      display: flex;
-      letter-spacing: -0.015em;
       overflow-x: hidden;
-      background-image: radial-gradient(circle at 50% 0%, rgba(155, 200, 165, 0.04) 0%, transparent 60%);
-      background-repeat: no-repeat;
+      letter-spacing: -0.015em;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Continuous Squircle Support */
-    @supports (corner-shape: squircle) {
-      .squircle-super, .squircle-card, .squircle-pill, .squircle-btn, .squircle-input {
-        corner-shape: squircle;
-      }
-    }
+    /* Slow ambient movement — the only continuous background motion. */
+    .ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .ambient span { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; will-change: transform; }
+    .ambient .a1 { width: 520px; height: 520px; top: -260px; left: 18%; background: rgba(185, 230, 205, 0.07); animation: drift1 24s ease-in-out infinite alternate; }
+    .ambient .a2 { width: 460px; height: 460px; top: 32%; right: -200px; background: rgba(160, 200, 230, 0.055); animation: drift2 28s ease-in-out infinite alternate; }
+    @keyframes drift1 { to { transform: translate3d(120px, 90px, 0) scale(1.15); } }
+    @keyframes drift2 { to { transform: translate3d(-110px, -70px, 0) scale(1.1); } }
 
-    /* ==========================================================================
-       SIDEBAR WITH APPLE CURVED ELEVATION
-       ========================================================================== */
-    .app-sidebar {
-      width: 280px;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border-apple);
-      padding: 36px 26px;
+    button, input, select, textarea { font-family: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: rgba(185, 230, 205, 0.25); }
+    :focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+
+    /* =====================================================================
+       FLOATING GLASS NAVIGATION
+       ===================================================================== */
+    .nav-wrap {
+      position: fixed;
+      top: 18px;
+      left: 0;
+      right: 0;
+      z-index: 60;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      z-index: 20;
-    }
-
-    .brand-header-area {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 40px;
-    }
-
-    .brand-avatar-leaf {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
-      background: var(--sage-green-glow);
-      border: 1px solid rgba(155, 200, 165, 0.25);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      color: var(--sage-green);
-      font-size: 22px;
-      box-shadow: 0 4px 16px rgba(155, 200, 165, 0.15);
-    }
-
-    .brand-text-block h2 {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.035em;
-      line-height: 1.1;
-    }
-
-    .brand-text-block span {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .nav-links-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .nav-link-btn {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 13px 18px;
-      border-radius: var(--radius-md);
-      color: var(--text-muted);
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      background: none;
-      text-align: left;
-      width: 100%;
-      transition: all 0.25s var(--spring-smooth);
-    }
-
-    .nav-link-btn:hover {
-      background: var(--input-bg);
-      color: var(--text-main);
-      transform: translateX(2px);
-    }
-
-    .nav-link-btn.active {
-      background: var(--sage-green-glow);
-      color: var(--sage-green);
-      font-weight: 700;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-
-    .nav-link-btn svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-    }
-
-    /* Apple Squircle Bank Card in Sidebar */
-    .bank-connected-pill {
-      background: var(--card-surface);
-      border: 1px solid var(--border-apple);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-top: auto;
-      margin-bottom: 18px;
-    }
-
-    .bank-pill-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .bank-live-badge {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--sage-green);
-      background: var(--sage-green-glow);
-      padding: 3px 10px;
-      border-radius: var(--radius-capsule);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .pulse-green-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--sage-green);
-      box-shadow: 0 0 8px var(--sage-green);
-    }
-
-    .btn-connect-bank {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: var(--radius-capsule);
-      background: var(--card-elevated);
-      border: 1px solid var(--border-apple);
-      color: var(--sage-green);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-connect-bank:hover {
-      background: var(--sage-green-glow);
-      transform: translateY(-1px);
-    }
-
-    .profile-mini-box {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      background: var(--card-surface);
-      border: 1px solid var(--border-apple);
-      cursor: pointer;
-      transition: transform 0.15s ease;
-    }
-
-    .profile-mini-box:active {
-      transform: scale(0.97);
-    }
-
-    .avatar-token {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sage-green), var(--sage-green-dark));
-      color: #000000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 16px;
-      box-shadow: 0 4px 12px rgba(155, 200, 165, 0.3);
-    }
-
-    /* ==========================================================================
-       MAIN VIEWPORT
-       ========================================================================== */
-    .app-main-viewport {
-      flex: 1;
-      padding: 40px 48px 90px;
-      max-width: 1380px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    /* Header */
-    .dashboard-top-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 38px;
-    }
-
-    .user-greeting-title {
-      font-size: 38px;
-      font-weight: 800;
-      letter-spacing: -0.045em;
-      line-height: 1.1;
-      margin-top: 2px;
-    }
-
-    .top-actions-cluster {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    /* Apple Capsule Filter Strip */
-    .pill-filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--card-surface);
-      border: 1px solid var(--border-apple);
-      padding: 4px;
-      border-radius: var(--radius-capsule);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .filter-item-btn {
-      padding: 9px 20px;
-      border-radius: var(--radius-capsule);
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.25s var(--spring-smooth);
-    }
-
-    .filter-item-btn.active {
-      background: var(--card-elevated);
-      color: var(--text-main);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-real-setup {
-      padding: 12px 24px;
-      border-radius: var(--radius-capsule);
-      background: linear-gradient(135deg, var(--sage-green), var(--sage-green-dark));
-      color: #000000;
-      border: none;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: var(--shadow-button-glow);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.15s var(--spring-smooth);
-    }
-
-    .btn-real-setup:active {
-      transform: scale(0.96);
-    }
-
-    /* ==========================================================================
-       BENTO SQUIRCLE HERO CARDS (APPLE G2 CONTINUOUS CURVE)
-       ========================================================================== */
-    .bento-overview-grid {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr 1fr;
-      gap: 26px;
-      margin-bottom: 40px;
-    }
-
-    @media (max-width: 1120px) {
-      .bento-overview-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .bento-overview-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Card 1: Donut Card with Apple Curved Ring & Glow */
-    .donut-hero-card {
-      background: var(--card-surface);
-      border-radius: var(--radius-xl);
-      padding: 26px 30px;
-      box-shadow: var(--shadow-apple-card);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .donut-hero-card::after {
-      content: "";
-      position: absolute;
-      top: -30%;
-      right: -10%;
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(155, 200, 165, 0.08) 0%, transparent 70%);
+      padding: 0 20px;
       pointer-events: none;
     }
 
-    .metric-duo-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
-
-    .metric-row-lbl {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .accent-indicator {
-      width: 3.5px;
-      height: 14px;
-      border-radius: 2px;
-    }
-    .ind-green { 
-      background: var(--sage-green); 
-      box-shadow: 0 0 10px rgba(155, 200, 165, 0.5); 
-    }
-    .ind-coral { 
-      background: var(--coral-peach); 
-      box-shadow: 0 0 10px rgba(244, 165, 138, 0.5); 
-    }
-
-    .metric-number-bold {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--text-main);
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* Apple Activity Ring Curvature */
-    .donut-chart-box {
-      width: 118px;
-      height: 118px;
+    .glass-nav {
+      pointer-events: auto;
       position: relative;
-      flex-shrink: 0;
-    }
-
-    .donut-chart-svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
-    }
-
-    .donut-base-track {
-      fill: none;
-      stroke: #16181d;
-      stroke-width: 22;
-    }
-
-    .donut-income-arc {
-      fill: none;
-      stroke: var(--sage-green);
-      stroke-width: 22;
-      stroke-dasharray: 280;
-      stroke-dashoffset: 75;
-      stroke-linecap: round; /* Apple Rounded Pill Ring End */
-      transition: stroke-dashoffset 0.9s var(--spring-smooth);
-    }
-
-    .donut-spent-arc {
-      fill: none;
-      stroke: var(--coral-peach);
-      stroke-width: 22;
-      stroke-dasharray: 280;
-      stroke-dashoffset: 205;
-      stroke-linecap: round; /* Apple Rounded Pill Ring End */
-      transition: stroke-dashoffset 0.9s var(--spring-smooth);
-    }
-
-    /* Card 2: Liquid Bank Balance */
-    .bank-card-widget {
-      background: var(--card-surface);
-      border-radius: var(--radius-xl);
-      padding: 26px 30px;
-      box-shadow: var(--shadow-apple-card);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .widget-top-strip {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .widget-title-tag {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .balance-display-large {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--text-main);
-      margin: 14px 0 8px;
-    }
-
-    .balance-meter-bar {
-      height: 9px;
-      background: var(--input-bg);
-      border-radius: var(--radius-capsule);
-      overflow: hidden;
-      display: flex;
-      margin-top: 12px;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    .meter-progress-green {
-      width: 72%;
-      background: linear-gradient(90deg, var(--sage-green), #7eb88b);
-      border-radius: var(--radius-capsule);
-      box-shadow: 0 0 12px rgba(155, 200, 165, 0.4);
-    }
-
-    /* Card 3: Spending Breakdown */
-    .breakdown-card-widget {
-      background: var(--card-surface);
-      border-radius: var(--radius-xl);
-      padding: 26px 30px;
-      box-shadow: var(--shadow-apple-card);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .category-bars-cluster {
-      display: flex;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .cat-bar-cell {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .cat-bar-bg {
-      height: 52px;
-      background: var(--input-bg);
-      border-radius: var(--radius-md);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-    }
-
-    .cat-bar-level {
-      width: 100%;
-      border-radius: var(--radius-md);
-      transition: height 0.6s var(--spring-smooth);
-    }
-
-    .cat-bar-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    /* ==========================================================================
-       SPLIT WORKSPACE: 65% RECENT TRANSACTIONS | 35% ADD PANE
-       ========================================================================== */
-    .dashboard-split-frame {
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 30px;
-      align-items: start;
-    }
-
-    @media (max-width: 1040px) {
-      .dashboard-split-frame {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Master Transactions Card */
-    .master-feed-card {
-      background: var(--card-surface);
-      border-radius: var(--radius-super);
-      padding: 32px;
-      box-shadow: var(--shadow-apple-card);
-    }
-
-    .feed-header-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
-
-    .feed-header-line h3 {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-
-    .feed-row-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 14px;
-      border-radius: var(--radius-lg);
-      transition: background-color 0.18s ease, transform 0.18s ease;
-      cursor: pointer;
-    }
-
-    .feed-row-item:hover {
-      background: var(--card-elevated);
-      transform: translateX(2px);
-    }
-
-    .feed-item-left {
+      width: min(1080px, 100%);
+      height: 64px;
       display: flex;
       align-items: center;
       gap: 18px;
+      padding: 7px 9px 7px 18px;
+      border-radius: var(--r-pill);
+      background: rgba(16, 18, 22, 0.58);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 18px 50px -24px rgba(0, 0, 0, 0.9);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      transition: height 0.45s var(--ease), background 0.45s var(--ease),
+                  box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
+      overflow: hidden;
     }
 
-    .category-pastel-avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: var(--radius-lg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .category-pastel-avatar.food { background: var(--pastel-coffee); }
-    .category-pastel-avatar.salary { background: var(--pastel-salary); }
-    .category-pastel-avatar.entertainment { background: var(--pastel-ticket); }
-    .category-pastel-avatar.shopping { background: var(--pastel-shopping); }
-
-    .item-texts h4 {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 3px;
-    }
-
-    .item-texts span {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .feed-item-right {
-      text-align: right;
-    }
-
-    .feed-item-amount {
-      font-size: 18px;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      color: var(--text-main);
-    }
-
-    .feed-item-date {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    /* Right Side Add Panel (Screen 2 as Desktop Module) */
-    .add-transaction-pane {
-      background: var(--card-surface);
-      border-radius: var(--radius-super);
-      padding: 32px;
-      box-shadow: var(--shadow-apple-card);
-      position: sticky;
-      top: 36px;
-    }
-
-    .pane-title-row {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .input-field-card {
-      background: var(--input-bg);
-      border-radius: var(--radius-lg);
-      padding: 16px 20px;
-      margin-bottom: 18px;
-      border: 1px solid var(--border-apple);
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-      transition: border-color 0.2s ease, background-color 0.2s ease;
-    }
-
-    .input-field-card:focus-within {
-      border-color: var(--sage-green);
-      background: var(--input-hover);
-    }
-
-    .field-hint-text {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .currency-raw-input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text-main);
-      outline: none;
-      font-family: inherit;
-      letter-spacing: -0.02em;
-    }
-
-    .category-touch-pill {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-
-    .chosen-category-name {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .radio-section-headline {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin: 20px 0 12px;
-    }
-
-    .payment-radio-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 0;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 15px;
-      font-weight: 600;
-      transition: color 0.15s ease;
-    }
-
-    .payment-radio-row.active {
-      color: var(--text-main);
-    }
-
-    .radio-outer-ring {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 2px solid #363940;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.2s ease;
-    }
-
-    .payment-radio-row.active .radio-outer-ring {
-      border-color: var(--sage-green);
-    }
-
-    .radio-inner-pip {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--sage-green);
-      display: none;
-    }
-
-    .payment-radio-row.active .radio-inner-pip {
-      display: block;
-    }
-
-    .pane-button-group {
-      display: flex;
-      gap: 14px;
-      margin-top: 26px;
-    }
-
-    .btn-capsule-draft {
-      flex: 1;
-      height: 54px;
-      border-radius: var(--radius-capsule);
-      background: var(--input-bg);
-      border: 1px solid var(--border-apple);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: background-color 0.15s ease;
-    }
-
-    .btn-capsule-draft:hover {
-      background: var(--card-elevated);
-      color: var(--text-main);
-    }
-
-    .btn-capsule-add {
-      flex: 1.4;
-      height: 54px;
-      border-radius: var(--radius-capsule);
-      background: linear-gradient(135deg, var(--sage-green), var(--sage-green-dark));
-      border: none;
-      font-size: 15px;
-      font-weight: 800;
-      color: #000000;
-      cursor: pointer;
-      box-shadow: var(--shadow-button-glow);
-      transition: transform 0.15s var(--spring-smooth);
-    }
-
-    .btn-capsule-add:active {
-      transform: scale(0.96);
-    }
-
-    /* ==========================================================================
-       MODALS WITH APPLE BLUR & SQUIRCLE DIALOGS
-       ========================================================================== */
-    .real-setup-modal-layer, .cat-modal-layer, .sql-terminal-modal {
-      position: fixed;
+    .glass-nav::before {
+      content: "";
+      position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.78);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.07), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
     }
 
-    .real-setup-modal-layer.active, .cat-modal-layer.active, .sql-terminal-modal.active {
-      display: flex;
+    .glass-nav:hover::before { opacity: 1; }
+
+    .glass-nav.scrolled {
+      height: 54px;
+      background: rgba(10, 11, 14, 0.86);
+      border-color: var(--line-bright);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 22px 60px -18px rgba(0, 0, 0, 0.95);
     }
 
-    .real-setup-box, .cat-dialog-box, .terminal-content-box {
-      width: 100%;
-      max-width: 520px;
-      background: var(--card-surface);
-      border-radius: var(--radius-super);
-      padding: 36px;
-      box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        0 35px 80px rgba(0, 0, 0, 0.8),
-        0 0 0 1px var(--border-apple);
-    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; position: relative; z-index: 2; }
 
-    .terminal-content-box {
-      max-width: 700px;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    .real-field-input {
-      width: 100%;
-      background: var(--input-bg);
-      border: 1px solid var(--border-apple);
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
-      color: var(--text-main);
-      font-size: 15px;
-      outline: none;
-      margin-bottom: 16px;
-      font-family: inherit;
-      transition: border-color 0.2s ease;
-    }
-
-    .real-field-input:focus {
-      border-color: var(--sage-green);
-    }
-
-    .cat-picker-grid {
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 20px;
+      place-items: center;
+      color: var(--mint);
+      background: var(--mint-soft);
+      border: 1px solid var(--mint-line);
+      transition: transform 0.5s var(--spring);
     }
 
-    .cat-choice-cell {
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      background: var(--input-bg);
-      border: 1px solid var(--border-apple);
+    .nav-brand:hover .brand-mark { transform: rotate(-12deg) scale(1.06); }
+    .brand-mark svg { width: 18px; height: 18px; }
+    .brand-name { font-size: 15px; font-weight: 700; letter-spacing: -0.04em; }
+
+    .nav-links { position: relative; display: flex; align-items: center; gap: 2px; margin: 0 auto; z-index: 2; }
+
+    .nav-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      border-radius: var(--r-pill);
+      background: rgba(255, 255, 255, 0.09);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 14px rgba(0, 0, 0, 0.35);
+      transform: translateX(0);
+      transition: transform 0.5s var(--spring), width 0.5s var(--spring);
+      pointer-events: none;
+    }
+
+    .nav-link {
+      position: relative;
+      z-index: 3;
       display: flex;
       align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-      transition: all 0.2s var(--spring-smooth);
+      gap: 7px;
+      padding: 10px 15px;
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 550;
+      color: var(--text-2);
+      white-space: nowrap;
+      transition: color 0.3s var(--ease), transform 0.35s var(--spring);
     }
 
-    .cat-choice-cell.selected, .cat-choice-cell:hover {
-      border-color: var(--sage-green);
-      background: var(--sage-green-glow);
+    .nav-ico { width: 15px; height: 15px; flex: 0 0 auto; }
+
+    .nav-link:hover { color: var(--text); transform: translateY(-1px); }
+    .nav-link.active { color: var(--text); }
+
+    .nav-right { display: flex; align-items: center; gap: 7px; flex: 0 0 auto; position: relative; z-index: 2; }
+
+    .bank-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: var(--r-pill);
+      background: var(--fill);
+      border: 1px solid var(--line);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-2);
+      transition: background 0.25s ease, color 0.25s ease;
     }
+
+    .bank-chip:hover { background: var(--fill-strong); color: var(--text); }
+    .bank-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 9px var(--mint); }
+
+    .avatar-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 750;
+      color: #0b1210;
+      background: linear-gradient(145deg, #d3f2df, #8fc8aa);
+      transition: transform 0.4s var(--spring);
+    }
+
+    .avatar-btn:hover { transform: scale(1.08); }
+
+    .scroll-progress {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1.5px;
+      width: 0;
+      background: linear-gradient(90deg, transparent, var(--mint));
+      border-radius: var(--r-pill);
+      transition: width 0.12s linear;
+    }
+
+    /* =====================================================================
+       PAGE SHELL
+       ===================================================================== */
+    .page { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 132px 32px 110px; }
+
+    .eyebrow { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.02em; }
+
+    .hero-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .greeting { font-size: clamp(36px, 5vw, 54px); font-weight: 750; letter-spacing: -0.055em; line-height: 1.02; margin-top: 8px; }
+    .greeting .mint { color: var(--mint); }
+
+    .periods {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px;
+      border-radius: var(--r-pill);
+      background: var(--fill);
+      border: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .period {
+      padding: 8px 15px;
+      border-radius: var(--r-pill);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-3);
+      transition: color 0.3s var(--ease), background 0.3s var(--ease);
+    }
+
+    .period:hover { color: var(--text); }
+    .period.active { color: var(--text); background: var(--fill-strong); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+
+    /* ---------- Hero balance ---------- */
+    .hero-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; margin-bottom: 18px; }
+
+    .panel {
+      position: relative;
+      border-radius: var(--r-lg);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055), 0 24px 60px -34px rgba(0, 0, 0, 0.95);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      overflow: hidden;
+      transition: transform 0.5s var(--ease), border-color 0.4s ease;
+    }
+
+    .panel:hover { transform: translateY(-2px); border-color: var(--line-bright); }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.035) 48%, transparent 62%);
+      transform: translateX(-120%);
+      transition: transform 0.9s var(--ease);
+      pointer-events: none;
+    }
+
+    .panel:hover::after { transform: translateX(120%); }
+
+    .balance-card { padding: 38px 40px 34px; min-height: 320px; display: flex; flex-direction: column; }
+    .balance-card::before { content: ""; position: absolute; width: 360px; height: 360px; right: -160px; top: -200px; border-radius: 50%; background: radial-gradient(circle, rgba(185, 230, 205, 0.08), transparent 68%); pointer-events: none; }
+
+    .balance-value {
+      font-size: clamp(42px, 5.5vw, 66px);
+      font-weight: 750;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      margin: 16px 0 10px;
+    }
+
+    .balance-note { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--text-3); }
+    .balance-note .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); }
+    .balance-note b { color: var(--mint); font-weight: 600; }
+
+    .ring-row { margin-top: auto; padding-top: 30px; display: flex; align-items: center; gap: 30px; }
+
+    .ring { width: 116px; height: 116px; position: relative; flex: 0 0 auto; }
+    .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5)); }
+    .ring-track { fill: none; stroke: rgba(255, 255, 255, 0.06); stroke-width: 14; }
+    .ring-arc { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 264; transition: stroke-dashoffset 1.2s var(--ease); }
+    .ring-income { stroke: var(--mint); stroke-dashoffset: 264; }
+    .ring-spent { stroke: var(--warm); stroke-dashoffset: 264; }
+    .ring-center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+    .ring-center strong { display: block; font-size: 20px; font-weight: 720; letter-spacing: -0.05em; }
+    .ring-center span { font-size: 10px; color: var(--text-3); }
+
+    .flows { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+    .flow { display: flex; gap: 12px; align-items: flex-start; }
+    .flow .bullet { width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; flex: 0 0 auto; }
+    .flow.in .bullet { background: var(--mint); }
+    .flow.out .bullet { background: var(--warm); }
+    .flow-label { font-size: 12px; color: var(--text-2); }
+    .flow-value { font-size: 22px; font-weight: 700; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+    .insight-card { padding: 32px 34px; display: flex; flex-direction: column; }
+    .insight-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+    .tag { font-size: 11px; font-weight: 600; color: var(--mint); background: var(--mint-soft); border-radius: var(--r-pill); padding: 5px 10px; }
+
+    .meter { height: 7px; border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.06); overflow: hidden; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4); }
+    .meter-fill { height: 100%; width: 0; border-radius: var(--r-pill); background: linear-gradient(90deg, #8fc8aa, #d3f2df); transition: width 1.1s var(--ease); }
+
+    .breakdown { margin-top: auto; padding-top: 26px; }
+    .breakdown .eyebrow { display: block; margin-bottom: 14px; }
+    .bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(46px, 1fr)); gap: 10px; align-items: end; }
+    .bar-cell { display: flex; flex-direction: column; align-items: center; gap: 9px; min-width: 0; }
+    .bar-track { width: 100%; height: 64px; border-radius: var(--r-md); background: rgba(255, 255, 255, 0.04); display: flex; align-items: flex-end; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35); }
+    .bar-fill { width: 100%; height: 0; border-radius: var(--r-md); transition: height 0.9s var(--ease); }
+    .bar-name { font-size: 10px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+    /* ---------- Workspace ---------- */
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 356px; gap: 18px; align-items: start; }
+    .feed-card, .form-card { padding: 28px 30px 30px; }
+    .form-card { position: sticky; top: 92px; }
+
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+    .panel-title { font-size: 18px; font-weight: 700; letter-spacing: -0.035em; }
+    .head-actions { display: flex; align-items: center; gap: 16px; }
+    .link-btn { font-size: 11px; font-weight: 600; color: var(--text-3); transition: color 0.25s ease; white-space: nowrap; }
+    .link-btn:hover { color: var(--mint); }
+    .link-btn.primary { color: var(--mint); }
+
+    .chips { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 6px; scrollbar-width: none; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { padding: 7px 13px; border-radius: var(--r-pill); background: var(--fill); border: 1px solid var(--line); font-size: 11px; font-weight: 600; color: var(--text-3); white-space: nowrap; transition: all 0.3s var(--ease); }
+    .chip:hover { color: var(--text); }
+    .chip.active { background: var(--mint-soft); border-color: var(--mint-line); color: var(--mint); }
+
+    .feed { display: flex; flex-direction: column; gap: 2px; }
+    .tx-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 10px; border-radius: var(--r-md); cursor: default; transition: background 0.3s var(--ease), transform 0.35s var(--ease); animation: rowIn 0.45s var(--ease) both; }
+    .tx-row:hover { background: var(--fill); transform: translateX(3px); }
+    @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .tx-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .tx-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 20px; flex: 0 0 auto; border: 1px solid var(--line); background: var(--fill); }
+    .tx-icon.Food { background: var(--warm-soft); }
+    .tx-icon.Salary { background: var(--mint-soft); }
+    .tx-icon.Entertainment { background: rgba(196, 184, 230, 0.1); }
+    .tx-icon.Shopping { background: rgba(160, 200, 230, 0.1); }
+    .tx-title { font-size: 14px; font-weight: 620; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tx-sub { font-size: 11px; color: var(--text-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tx-right { text-align: right; flex: 0 0 auto; }
+    .tx-amount { font-size: 15px; font-weight: 680; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; }
+    .tx-amount.credit { color: var(--mint); }
+    .tx-date { font-size: 10px; color: var(--text-3); margin-top: 3px; }
+
+    .empty { text-align: center; padding: 54px 20px; color: var(--text-3); }
+    .empty .glyph { font-size: 26px; margin-bottom: 10px; }
+    .empty p { font-size: 13px; }
+
+    /* ---------- Add form ---------- */
+    .field { border-radius: var(--r-md); background: var(--fill); border: 1px solid var(--line); padding: 12px 15px; margin-bottom: 11px; transition: border-color 0.3s ease, background 0.3s ease; }
+    .field:focus-within { border-color: var(--mint-line); background: var(--fill-strong); }
+    .field-label { display: block; font-size: 10px; font-weight: 600; color: var(--text-3); }
+    .field input { width: 100%; margin-top: 5px; background: transparent; border: 0; outline: 0; font-size: 21px; font-weight: 700; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+    .field input.text { font-size: 14px; font-weight: 550; letter-spacing: -0.01em; }
+    .field input::placeholder { color: var(--text-3); }
+
+    .category-field { cursor: pointer; }
+    .category-value { display: flex; align-items: center; justify-content: space-between; margin-top: 7px; font-size: 14px; font-weight: 600; }
+    .category-value svg { width: 15px; height: 15px; stroke: var(--text-3); }
+
+    .section-label { font-size: 12px; color: var(--text-2); font-weight: 600; margin: 18px 0 9px; }
+
+    .modes { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mode { padding: 8px 12px; border-radius: var(--r-pill); background: var(--fill); border: 1px solid var(--line); font-size: 11px; font-weight: 600; color: var(--text-3); transition: all 0.3s var(--ease); }
+    .mode:hover { color: var(--text); }
+    .mode.active { color: var(--mint); background: var(--mint-soft); border-color: var(--mint-line); }
+
+    .form-actions { display: flex; gap: 9px; margin-top: 22px; }
+    .btn { height: 46px; border-radius: var(--r-pill); font-size: 12px; font-weight: 650; transition: transform 0.3s var(--spring), background 0.3s ease, color 0.3s ease; }
+    .btn:active { transform: scale(0.96); }
+    .btn-quiet { flex: 1; background: var(--fill); border: 1px solid var(--line); color: var(--text-2); }
+    .btn-quiet:hover { background: var(--fill-strong); color: var(--text); }
+    .btn-primary { flex: 1.5; color: #0a110e; background: linear-gradient(135deg, #d3f2df, #8fc8aa); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 12px 26px -12px rgba(143, 200, 170, 0.55); }
+
+    /* =====================================================================
+       OVERLAYS / DIALOGS
+       ===================================================================== */
+    .overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(0, 0, 0, 0.74); backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); }
+    .overlay.open { display: flex; animation: fade 0.25s ease both; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .dialog { width: 100%; max-width: 490px; max-height: 88vh; overflow-y: auto; padding: 30px; border-radius: var(--r-lg); background: rgba(22, 24, 29, 0.96); border: 1px solid var(--line-bright); box-shadow: 0 40px 90px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.08); animation: dialogIn 0.4s var(--spring) both; }
+    .dialog.wide { max-width: 680px; }
+    @keyframes dialogIn { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+    .dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
+    .dialog-title { font-size: 19px; font-weight: 700; letter-spacing: -0.035em; }
+    .close { width: 30px; height: 30px; border-radius: 50%; background: var(--fill); color: var(--text-2); display: grid; place-items: center; font-size: 13px; flex: 0 0 auto; }
+    .close:hover { background: var(--fill-strong); color: var(--text); }
+    .dialog-copy { font-size: 12px; line-height: 1.6; color: var(--text-2); margin-bottom: 20px; }
+    .input-label { display: block; font-size: 10px; font-weight: 600; color: var(--text-3); margin: 14px 0 7px; }
+    .dialog input, .dialog select, .dialog textarea { width: 100%; background: var(--fill); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; font-size: 13px; outline: 0; resize: vertical; }
+    .dialog input:focus, .dialog select:focus, .dialog textarea:focus { border-color: var(--mint-line); }
+    .dialog textarea { font-family: var(--mono); font-size: 11px; line-height: 1.6; min-height: 120px; }
+    .dialog select { height: 44px; appearance: none; }
+    .dialog option { background: #17191d; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dialog-actions { display: flex; gap: 9px; margin-top: 20px; }
+    .dialog-actions .btn { flex: 1; }
+    .dialog-actions .btn-primary { flex: 1.5; }
+
+    .notice { display: flex; gap: 10px; align-items: flex-start; background: var(--mint-soft); border: 1px solid var(--mint-line); border-radius: var(--r-md); padding: 12px 14px; font-size: 11px; line-height: 1.6; color: var(--text-2); margin-bottom: 18px; }
+    .notice b { color: var(--mint); }
+    .inline-link { font-size: 11px; font-weight: 600; color: var(--mint); }
+    .upload-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 0 4px; padding: 11px 13px; background: var(--fill); border: 1px dashed var(--line-bright); border-radius: var(--r-md); font-size: 11px; color: var(--text-3); }
+    .upload-row input { width: auto; font-size: 10px; padding: 0; max-width: 180px; }
+
+    .qr-frame { display: inline-block; padding: 12px; border-radius: 18px; background: #fff; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6); margin: 2px 0 18px; }
+    .qr-frame img { display: block; width: 150px; height: 150px; border-radius: 9px; }
+    .url-row { display: flex; gap: 8px; align-items: center; margin-bottom: 18px; }
+    .url-row input { font-family: var(--mono); font-size: 11px; color: var(--mint); margin: 0; }
+    .url-row .btn { flex: 0 0 auto; padding: 0 16px; height: 44px; }
+    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; margin-bottom: 20px; }
+    .step { background: var(--fill); border: 1px solid var(--line); border-radius: var(--r-md); padding: 13px; }
+    .step strong { display: block; font-size: 12px; margin-bottom: 6px; }
+    .step ol { font-size: 10px; line-height: 1.65; color: var(--text-3); padding-left: 16px; margin: 0; }
+
+    .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 16px; }
+    .cat-choice { display: flex; align-items: center; gap: 10px; padding: 13px; border-radius: var(--r-md); background: var(--fill); border: 1px solid var(--line); font-size: 13px; font-weight: 600; text-align: left; }
+    .cat-choice:hover, .cat-choice.selected { background: var(--mint-soft); border-color: var(--mint-line); }
+
+    .sql-examples { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .sql-examples button { padding: 6px 10px; border-radius: var(--r-pill); background: var(--fill); border: 1px solid var(--line); font-size: 10px; color: var(--text-3); }
+    .sql-examples button:hover { color: var(--mint); }
+    .sql-box { background: rgba(0, 0, 0, 0.42); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; }
+    .sql-box textarea { background: transparent; border: 0; padding: 0; min-height: 76px; color: var(--mint); font-family: var(--mono); font-size: 12px; }
+    .sql-run { padding: 8px 16px; border-radius: var(--r-pill); background: var(--mint); color: #0a110e; font-size: 11px; font-weight: 700; }
+    .sql-status { font-size: 10px; color: var(--text-3); margin: 12px 0; }
+    .sql-scroll { overflow-x: auto; }
+    .sql-scroll table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .sql-scroll th { color: var(--text-3); text-align: left; padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .sql-scroll td { padding: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: var(--text-2); white-space: nowrap; }
+
+    .toasts { position: fixed; z-index: 200; bottom: 26px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+    .toast { padding: 11px 18px; border-radius: var(--r-pill); background: rgba(26, 28, 33, 0.95); border: 1px solid var(--line-bright); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7); backdrop-filter: var(--blur); font-size: 12px; font-weight: 600; animation: toastIn 0.4s var(--spring) both; }
+    .toast.error { border-color: rgba(230, 169, 143, 0.4); color: var(--warm); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(14px) scale(0.95); } to { opacity: 1; transform: none; } }
+
+    @media (max-width: 1020px) {
+      .hero-grid, .workspace { grid-template-columns: 1fr; }
+      .form-card { position: static; }
+      .nav-link { padding: 9px; }
+      .nav-label { display: none; }
+      .nav-links { margin: 0 6px; }
+    }
+    @media (max-width: 720px) {
+      .page { padding: 116px 16px 90px; }
+      .hero-head { flex-direction: column; align-items: flex-start; }
+      .balance-card, .insight-card, .feed-card, .form-card { padding: 24px 20px; }
+      .bank-chip span:not(.dot) { display: none; }
+      .glass-nav { height: 56px; padding-left: 12px; }
+      .glass-nav.scrolled { height: 50px; }
+      .steps, .grid-2, .cat-grid { grid-template-columns: 1fr; }
+      .dialog { padding: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+      .ambient { display: none; }
+    }
+    /* ===================================================================
+       CROSS-PLATFORM MOBILE ADAPTATION (iOS & ANDROID)
+       =================================================================== */
+    html {
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      user-select: none;
+      -webkit-user-select: none;
+      overscroll-behavior-y: none;
+    }
+    input, textarea, select {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    /* Mobile Bottom Dock (iPhone & Android) */
+    .mobile-bottom-dock {
+      display: none;
+    }
+    @media (max-width: 720px) {
+      .page {
+        padding: 90px 16px calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+      }
+      .mobile-bottom-dock {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 990;
+        height: calc(64px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        background: rgba(14, 16, 20, 0.92);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        align-items: center;
+        justify-content: space-around;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      .mobile-dock-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        background: transparent;
+        border: none;
+        color: #8e9590;
+        font-size: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 12px;
+        transition: color 0.15s, transform 0.1s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mobile-dock-btn:active {
+        transform: scale(0.92);
+      }
+      .mobile-dock-btn.active, .mobile-dock-btn:hover {
+        color: #9bc8a5;
+      }
+      .mobile-dock-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+      .mobile-dock-plus {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #9bc8a5;
+        color: #0b120d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        font-weight: 700;
+        box-shadow: 0 8px 24px rgba(155, 200, 165, 0.4);
+        border: none;
+        cursor: pointer;
+        transform: translateY(-8px);
+        transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mobile-dock-plus:active {
+        transform: translateY(-6px) scale(0.92);
+      }
+    }
+
+    /* Adaptive Cross-Device Install Banner */
+    .device-install-bar {
+      position: fixed;
+      bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+      left: 14px;
+      right: 14px;
+      max-width: 440px;
+      margin: 0 auto;
+      z-index: 1000;
+      background: #14171c;
+      border: 1px solid rgba(155, 200, 165, 0.45);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.9);
+      border-radius: 20px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
-  <!-- ========================================================================
-       SIDEBAR
-       ======================================================================== -->
-  <aside class="app-sidebar">
-    <div>
-      <div class="brand-header-area">
-        <div class="brand-avatar-leaf">🌱</div>
-        <div class="brand-text-block">
-          <h2>Expense</h2>
-          <span>Apple Obsidian Vault</span>
-        </div>
+  <div class="ambient" aria-hidden="true"><span class="a1"></span><span class="a2"></span></div>
+
+  <!-- ================= GLASS NAVIGATION ================= -->
+  <div class="nav-wrap">
+    <nav class="glass-nav" id="glassNav" aria-label="Main navigation">
+      <a class="nav-brand" href="#top">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16Z"/><path d="M4 20c2-5 6-8 11-10"/>
+          </svg>
+        </span>
+        <span class="brand-name">Vault</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <span class="nav-indicator" id="navIndicator"></span>
+        <button class="nav-link active" data-target="top">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>
+          <span class="nav-label">Overview</span>
+        </button>
+        <button class="nav-link" data-target="activity">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <span class="nav-label">Transactions</span>
+        </button>
+        <button class="nav-link" data-action="sql">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+          <span class="nav-label">SQL Studio</span>
+        </button>
+        <button class="nav-link" data-action="phone">
+          <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg>
+          <span class="nav-label">Install</span>
+        </button>
       </div>
 
-      <nav class="nav-links-stack">
-        <button class="nav-link-btn active" onclick="applyCategoryFilter('All')">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span>Dashboard</span>
+      <div class="nav-right">
+        <button class="bank-chip" id="sidebarActiveBankBtn" onclick="openBankModal()">
+          <span class="dot"></span><span id="sidebarActiveBank">HDFC Bank</span>
         </button>
-
-        <button class="nav-link-btn" onclick="applyCategoryFilter('Food')">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-            <line x1="2" y1="10" x2="22" y2="10"></line>
-          </svg>
-          <span>Transactions</span>
-        </button>
-
-        <button class="nav-link-btn" onclick="openSqlStudio()">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
-          <span>SQL Database</span>
-        </button>
-
-        <button class="nav-link-btn" onclick="openPhoneAppModal()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-            <line x1="12" y1="18" x2="12.01" y2="18"></line>
-          </svg>
-          <span>Install on Phone</span>
-        </button>
-      </nav>
-    </div>
-
-    <!-- Active Bank Account Widget -->
-    <div>
-      <div class="bank-connected-pill">
-        <div class="bank-pill-head">
-          <span style="font-size:13px; font-weight:800;" id="sidebarActiveBank">HDFC Bank</span>
-          <span class="bank-live-badge"><span class="pulse-green-dot"></span> Active</span>
-        </div>
-        <span style="font-size:11px; color:var(--text-muted);" id="sidebarActiveAccountNo">Acct •••• 4092</span>
-        <button class="btn-connect-bank" onclick="openRealAccountSetupModal()">⚙️ Change Real Bank Account</button>
+        <button class="avatar-btn" id="sidebarAvatarLetter" onclick="openBankModal()" aria-label="Account settings">V</button>
       </div>
 
-      <div class="profile-mini-box" onclick="openRealAccountSetupModal()">
-        <div class="avatar-token" id="sidebarAvatarLetter">V</div>
-        <div>
-          <h4 style="font-size:14px; font-weight:800;" id="sidebarUserName">Viraj Kumar</h4>
-          <span style="font-size:11px; color:var(--text-muted);">Real Portfolio Sync</span>
-        </div>
-      </div>
-    </div>
-  </aside>
+      <span class="scroll-progress" id="scrollProgress"></span>
+    </nav>
+  </div>
 
-  <!-- ========================================================================
-       MAIN DASHBOARD
-       ======================================================================== -->
-  <main class="app-main-viewport">
-    
-    <!-- Top Header -->
-    <header class="dashboard-top-header">
+  <main class="page" id="top">
+    <!-- Header -->
+    <header class="hero-head">
       <div>
-        <span style="font-size:16px; font-weight:600; color:var(--text-muted);">Hello,</span>
-        <h1 class="user-greeting-title" id="topUserGreeting">Viraj</h1>
+        <div class="eyebrow">Your money, clearly</div>
+        <h1 class="greeting" id="topUserGreeting">Hello, <span class="mint">Viraj</span></h1>
       </div>
-
-      <div class="top-actions-cluster">
-        <!-- Setup Real Account CTA -->
-        <button class="btn-real-setup" onclick="openRealAccountSetupModal()">
-          <span>🏦</span>
-          <span>My Real Bank</span>
-        </button>
-
-        <!-- Install on Phone CTA -->
-        <button class="btn-real-setup" onclick="openPhoneAppModal()" style="border-color: rgba(155, 200, 165, 0.4); background: rgba(155, 200, 165, 0.1);">
-          <span>📱</span>
-          <span>Add to Phone</span>
-        </button>
-
-        <!-- Time Filter Pills -->
-        <nav class="pill-filter-bar">
-          <button class="filter-item-btn active" onclick="setTimeFilter('All', this)">All</button>
-          <button class="filter-item-btn" onclick="setTimeFilter('Daily', this)">Daily</button>
-          <button class="filter-item-btn" onclick="setTimeFilter('Weekly', this)">Weekly</button>
-          <button class="filter-item-btn" onclick="setTimeFilter('Monthly', this)">Monthly</button>
-        </nav>
+      <div class="periods" role="group" aria-label="Time period">
+        <button class="period active" data-range="All">All</button>
+        <button class="period" data-range="Daily">Daily</button>
+        <button class="period" data-range="Weekly">Weekly</button>
+        <button class="period" data-range="Monthly">Monthly</button>
       </div>
     </header>
 
-    <!-- Top Bento 3-Hero Cards (Apple Squircle G2 Curves) -->
-    <section class="bento-overview-grid">
-      
-      <!-- Card 1: Donut Chart Card -->
-      <div class="donut-hero-card">
-        <div class="metric-duo-stack">
-          <div>
-            <div class="metric-row-lbl">
-              <span class="accent-indicator ind-green"></span>
-              <span>Income</span>
-            </div>
-            <div class="metric-number-bold" id="displayIncomeAmt">₹85,000</div>
-          </div>
-
-          <div>
-            <div class="metric-row-lbl">
-              <span class="accent-indicator ind-coral"></span>
-              <span>Spent</span>
-            </div>
-            <div class="metric-number-bold" id="displaySpentAmt">₹18,420</div>
-          </div>
-        </div>
-
-        <div class="donut-chart-box">
-          <svg class="donut-chart-svg" viewBox="0 0 100 100">
-            <circle class="donut-base-track" cx="50" cy="50" r="38"></circle>
-            <circle class="donut-income-arc" cx="50" cy="50" r="38"></circle>
-            <circle class="donut-spent-arc" id="donutSpentRing" cx="50" cy="50" r="38"></circle>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Card 2: Liquid Bank Balance -->
-      <div class="bank-card-widget">
-        <div class="widget-top-strip">
-          <span class="widget-title-tag">Available Bank Balance</span>
-          <span style="font-size:11px; font-weight:800; color:var(--sage-green); background:var(--sage-green-glow); padding:3px 10px; border-radius:var(--radius-capsule);" id="realBankBadge">HDFC Live</span>
-        </div>
-        <div class="balance-display-large" id="displayNetBalance">₹66,580.00</div>
+    <!-- Overview -->
+    <section class="hero-grid">
+      <article class="panel balance-card sq">
         <div>
-          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); font-weight:600;">
-            <span>Real Financial Liquidity</span>
-            <span id="savingsRateTxt">78% Retained</span>
-          </div>
-          <div class="balance-meter-bar">
-            <div class="meter-progress-green"></div>
+          <div class="eyebrow">Total balance</div>
+          <div class="balance-value" id="displayNetBalance">₹0</div>
+          <div class="balance-note">
+            <b id="realBankBadge">Live</b><span class="sep"></span>
+            <span id="sidebarActiveAccountNo">Acct •••• 0000</span><span class="sep"></span>
+            <span id="accountCount">2 accounts</span>
           </div>
         </div>
-      </div>
 
-      <!-- Card 3: Categorical Intensity -->
-      <div class="breakdown-card-widget">
-        <div class="widget-top-strip">
-          <span class="widget-title-tag">Spending Breakdown</span>
-          <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Curved Rings</span>
-        </div>
-        <div class="category-bars-cluster">
-          <div class="cat-bar-cell">
-            <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:60%; background:var(--coral-peach); box-shadow:0 0 10px rgba(244, 165, 138, 0.4);"></div>
+        <div class="ring-row">
+          <div class="ring">
+            <svg viewBox="0 0 100 100">
+              <circle class="ring-track" cx="50" cy="50" r="42"></circle>
+              <circle class="ring-arc ring-income" id="ringIncome" cx="50" cy="50" r="42"></circle>
+              <circle class="ring-arc ring-spent" id="donutSpentRing" cx="50" cy="50" r="42"></circle>
+            </svg>
+            <div class="ring-center">
+              <div><strong id="savingsRateTxt">0%</strong><span>retained</span></div>
             </div>
-            <span class="cat-bar-title">Food</span>
           </div>
-          <div class="cat-bar-cell">
-            <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:85%; background:var(--sage-green); box-shadow:0 0 10px rgba(155, 200, 165, 0.4);"></div>
+          <div class="flows">
+            <div class="flow in">
+              <span class="bullet"></span>
+              <div><div class="flow-label">Income</div><div class="flow-value" id="displayIncomeAmt">₹0</div></div>
             </div>
-            <span class="cat-bar-title">Salary</span>
-          </div>
-          <div class="cat-bar-cell">
-            <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:45%; background:#bf5af2; box-shadow:0 0 10px rgba(191, 90, 242, 0.4);"></div>
+            <div class="flow out">
+              <span class="bullet"></span>
+              <div><div class="flow-label">Spending</div><div class="flow-value" id="displaySpentAmt">₹0</div></div>
             </div>
-            <span class="cat-bar-title">Events</span>
-          </div>
-          <div class="cat-bar-cell">
-            <div class="cat-bar-bg">
-              <div class="cat-bar-level" style="height:50%; background:#64d2ff; box-shadow:0 0 10px rgba(100, 210, 255, 0.4);"></div>
-            </div>
-            <span class="cat-bar-title">Shop</span>
           </div>
         </div>
-      </div>
+      </article>
 
+      <article class="panel insight-card sq">
+        <div class="insight-top">
+          <span class="eyebrow">Cash flow</span>
+          <span class="tag" id="retainedCopy">Balanced</span>
+        </div>
+        <div>
+          <div class="balance-note" style="margin-bottom:11px;">
+            <span>Keep rate</span><span class="sep"></span><span id="liquidityCopy">—</span>
+          </div>
+          <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+        </div>
+        <div class="breakdown">
+          <span class="eyebrow">Where it went</span>
+          <div class="bars" id="breakdownBars"></div>
+        </div>
+      </article>
     </section>
 
-    <!-- Split Screen: 65% Recent Transactions | 35% Add Transaction -->
-    <div class="dashboard-split-frame">
-      
-      <!-- Left: Recent Transactions Feed -->
-      <div class="master-feed-card">
-        <div class="feed-header-line">
-          <h3>Recent transactions</h3>
-          <div style="display:flex; gap:14px; align-items:center;">
-            <span style="font-size:13px; color:var(--sage-green); font-weight:800; cursor:pointer;" onclick="openStatementModal()">📥 Import Statement (CSV)</span>
-            <span style="font-size:13px; color:var(--text-muted); font-weight:700; cursor:pointer;" onclick="openSqlStudio()">SQL Query &gt;</span>
+    <!-- Workspace -->
+    <div class="workspace" id="activity">
+      <section class="panel feed-card sq">
+        <div class="panel-head">
+          <h2 class="panel-title">Recent activity</h2>
+          <div class="head-actions">
+            <button class="link-btn primary" onclick="openStatementModal()">Import statement</button>
+            <button class="link-btn" onclick="openSqlStudio()">SQL query →</button>
           </div>
         </div>
-
-        <div id="transactionsListFeed" style="display:flex; flex-direction:column; gap:10px;">
-          <!-- Rendered dynamically -->
+        <div class="chips" id="categoryChips">
+          <button class="chip active" data-category="All">All</button>
+          <button class="chip" data-category="Food">Food</button>
+          <button class="chip" data-category="Salary">Salary</button>
+          <button class="chip" data-category="Travel">Travel</button>
+          <button class="chip" data-category="Shopping">Shopping</button>
+          <button class="chip" data-category="Entertainment">Entertainment</button>
+          <button class="chip" data-category="Transfer">Transfer</button>
         </div>
-      </div>
+        <div class="feed" id="transactionsListFeed"></div>
+      </section>
 
-      <!-- Right: Add Transaction Panel -->
-      <div class="add-transaction-pane">
-        <div class="pane-title-row">
-          <span>Add transaction</span>
-          <span style="font-size:12px; color:var(--sage-green); font-weight:800;">Live SQL</span>
+      <section class="panel form-card sq">
+        <div class="panel-head">
+          <h2 class="panel-title">Add transaction</h2>
+          <span class="tag">Live ledger</span>
         </div>
-
-        <form onsubmit="handleTransactionSubmit(event)">
-          <div class="input-field-card">
-            <span class="field-hint-text">Amount (<span class="currency-symbol-label">₹</span>)</span>
-            <input type="number" step="0.01" min="1" class="currency-raw-input" id="inputAmount" value="350.00" required>
+        <form id="txForm" onsubmit="handleTransactionSubmit(event)">
+          <div class="field">
+            <label class="field-label" for="inputAmount">Amount (<span class="currency-symbol-label">₹</span>)</label>
+            <input type="number" step="0.01" min="1" id="inputAmount" value="350" required>
           </div>
-
-          <div class="input-field-card" onclick="openCategoryModal()">
-            <span class="field-hint-text">Category</span>
-            <div class="category-touch-pill">
-              <div class="chosen-category-name" id="selectedCategoryPill">
-                <span>☕</span>
-                <span id="selectedCategoryLabel">Food</span>
-              </div>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
+          <div class="field category-field" onclick="openCategoryModal()">
+            <span class="field-label">Category</span>
+            <div class="category-value">
+              <span id="selectedCategoryPill"><span>☕</span> <span id="selectedCategoryLabel">Food</span></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </div>
           </div>
-
-          <div class="input-field-card">
-            <span class="field-hint-text">Merchant / Purpose</span>
-            <input type="text" class="currency-raw-input" id="inputMerchant" value="Swiggy Delivery" style="font-size:16px;" required>
+          <div class="field">
+            <label class="field-label" for="inputMerchant">Merchant / purpose</label>
+            <input type="text" class="text" id="inputMerchant" value="Swiggy Delivery" required>
           </div>
 
-          <div class="radio-section-headline">Payment Mode</div>
-
-          <div class="payment-radio-row active" onclick="selectRadioType('UPI / Google Pay', this)">
-            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
-            <span>UPI / Netbanking</span>
+          <div class="section-label">Payment mode</div>
+          <div class="modes" id="paymentModes">
+            <button type="button" class="mode active" data-mode="UPI">UPI</button>
+            <button type="button" class="mode" data-mode="Card">Card</button>
+            <button type="button" class="mode" data-mode="Cash">Cash</button>
+            <button type="button" class="mode" data-mode="Bank transfer">Bank</button>
           </div>
 
-          <div class="payment-radio-row" onclick="selectRadioType('Debit/Credit Card', this)">
-            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
-            <span>Debit/Credit Card</span>
-          </div>
-
-          <div class="payment-radio-row" onclick="selectRadioType('Cash', this)">
-            <div class="radio-outer-ring"><div class="radio-inner-pip"></div></div>
-            <span>Cash</span>
-          </div>
-
-          <div class="pane-button-group">
-            <button type="button" class="btn-capsule-draft" onclick="document.getElementById('inputAmount').value=''">Clear</button>
-            <button type="submit" class="btn-capsule-add">Record</button>
+          <div class="form-actions">
+            <button type="button" class="btn btn-quiet" onclick="document.getElementById('inputAmount').value=''">Clear</button>
+            <button type="submit" class="btn btn-primary">Record</button>
           </div>
         </form>
-      </div>
-
+      </section>
     </div>
-
   </main>
 
-  <!-- ========================================================================
-       MODAL 1: SETUP MY REAL BANK ACCOUNT DETAILS
-       ======================================================================== -->
-  <div class="real-setup-modal-layer" id="realSetupModalLayer">
-    <div class="real-setup-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-size:22px; font-weight:800;">My Real Bank Account</h3>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closeRealAccountSetupModal()">✕</span>
-      </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:22px;">Apna real bank name, account number, aur opening balance yahan set karein. Interface instantly real data me update ho jayega.</p>
-
+  <!-- ================= BANK SETUP ================= -->
+  <div class="overlay" id="realSetupModalLayer">
+    <div class="dialog">
+      <div class="dialog-head"><h3 class="dialog-title">My bank account</h3><button class="close" onclick="closeModal('realSetupModalLayer')">✕</button></div>
+      <p class="dialog-copy">Connect your real account details. Every figure updates instantly from this source of truth.</p>
       <form onsubmit="handleRealAccountSetup(event)">
-        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Your Name</label>
-        <input type="text" class="real-field-input" id="realUserNameInput" placeholder="Viraj Kumar" value="Viraj Kumar" required>
-
-        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Bank Name</label>
-        <input type="text" class="real-field-input" id="realBankNameInput" placeholder="e.g. HDFC Bank, SBI, ICICI, Axis, Chase" value="HDFC Bank" required>
-
-        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Account Number</label>
-        <input type="text" class="real-field-input" id="realAccountNoInput" placeholder="e.g. 501002948192 or XXXX-4092" value="501002948192" required>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-          <div>
-            <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Current Balance</label>
-            <input type="number" step="0.01" class="real-field-input" id="realBalanceInput" placeholder="50000" value="75000" required>
-          </div>
-          <div>
-            <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Currency</label>
-            <select class="real-field-input" id="realCurrencyInput" style="height:50px;">
-              <option value="₹" selected>₹ INR (Rupees)</option>
-              <option value="$">$ USD (Dollars)</option>
-              <option value="€">€ EUR (Euros)</option>
-              <option value="£">£ GBP (Pounds)</option>
+        <label class="input-label" for="realUserNameInput">Your name</label>
+        <input id="realUserNameInput" value="Viraj Kumar" required>
+        <label class="input-label" for="realBankNameInput">Bank name</label>
+        <input id="realBankNameInput" value="HDFC Bank" required>
+        <label class="input-label" for="realAccountNoInput">Account number</label>
+        <input id="realAccountNoInput" value="501002948192" required>
+        <div class="grid-2">
+          <div><label class="input-label" for="realBalanceInput">Opening balance</label><input type="number" step="0.01" id="realBalanceInput" value="66580" required></div>
+          <div><label class="input-label" for="realCurrencyInput">Currency</label>
+            <select id="realCurrencyInput">
+              <option value="₹" selected>₹ INR</option><option value="$">$ USD</option><option value="€">€ EUR</option><option value="£">£ GBP</option>
             </select>
           </div>
         </div>
-
-        <div style="display:flex; gap:14px; margin-top:14px;">
-          <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeRealAccountSetupModal()">Cancel</button>
-          <button type="submit" class="btn-capsule-add" style="flex:1.5;">Save Real Bank</button>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-quiet" onclick="closeModal('realSetupModalLayer')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save account</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Statement CSV & UPI Upload Modal -->
-  <div class="real-setup-modal-layer" id="statementModalLayer">
-    <div class="real-setup-box" style="max-width:560px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h3 style="font-size:22px; font-weight:800;">Link Real Transactions</h3>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closeStatementModal()">✕</span>
+  <!-- ================= STATEMENT ================= -->
+  <div class="overlay" id="statementModalLayer">
+    <div class="dialog wide">
+      <div class="dialog-head"><h3 class="dialog-title">Import statement</h3><button class="close" onclick="closeModal('statementModalLayer')">✕</button></div>
+      <div class="notice"><span>🔒</span><span><b>No passwords required.</b> Paste UPI / card debits or upload a CSV — merchants are categorised automatically.</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <label class="input-label" for="statementCsvText" style="margin:0;">Bank statement / UPI export</label>
+        <button type="button" class="inline-link" onclick="loadSampleStatement()">Load sample</button>
       </div>
-
-      <!-- Security / Safe Banking Notice -->
-      <div style="background:rgba(155, 200, 165, 0.08); border:1px solid rgba(155, 200, 165, 0.25); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px; font-size:12px; line-height:1.5; color:#c5d8c8;">
-        🔒 <strong>Zero-Password Security:</strong> Real banking apps (like CRED, Fold & Apple Wallet) never ask for netbanking passwords or PINs. Upload your bank statement file or paste real UPI / Card debits below — our smart parser categorizes everything live into your dashboard.
-      </div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Bank Statement / UPI Export (.csv or text)</label>
-        <button type="button" onclick="loadSampleIndianUpiStatement()" style="background:none; border:none; color:var(--sage-green); font-size:11px; font-weight:700; cursor:pointer;">✨ Load Sample UPI Statement</button>
-      </div>
-
-      <textarea id="statementCsvText" class="real-field-input" style="min-height:140px; font-family:var(--font-mono); font-size:12px; line-height:1.6;" placeholder="Paste real transactions (Date, Merchant, Amount) or upload CSV..."></textarea>
-
-      <!-- File Upload Option -->
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding:10px 14px; background:var(--input-bg); border-radius:var(--radius-sm); border:1px dashed var(--border-apple);">
-        <span style="font-size:12px; color:var(--text-muted);">📄 Or upload statement file:</span>
-        <input type="file" id="statementFileInput" accept=".csv, .txt" onchange="handleStatementFileUpload(event)" style="font-size:12px; color:var(--text-main); cursor:pointer;">
-      </div>
-
-      <div style="display:flex; gap:14px;">
-        <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeStatementModal()">Cancel</button>
-        <button type="button" class="btn-capsule-add" style="flex:1.5;" onclick="importStatementCsv()">Sync Real Transactions</button>
+      <textarea id="statementCsvText" style="margin-top:8px;" placeholder="Date, Merchant, Category, Amount"></textarea>
+      <div class="upload-row"><span>Or upload a .csv / .txt file</span><input type="file" id="statementFileInput" accept=".csv,.txt" onchange="handleStatementFileUpload(event)"></div>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-quiet" onclick="closeModal('statementModalLayer')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="importStatementCsv()">Sync transactions</button>
       </div>
     </div>
   </div>
 
-  <!-- Phone App PWA / Install Modal -->
-  <div class="real-setup-modal-layer" id="phoneAppModalLayer">
-    <div class="real-setup-box" style="max-width:520px; text-align:center;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h3 style="font-size:22px; font-weight:800; text-align:left;">📲 Install on Your Phone</h3>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closePhoneAppModal()">✕</span>
+  <!-- ================= PHONE ================= -->
+  <div class="overlay" id="phoneAppModalLayer">
+    <div class="dialog">
+      <div class="dialog-head"><h3 class="dialog-title">Install on your phone</h3><button class="close" onclick="closeModal('phoneAppModalLayer')">✕</button></div>
+      <p class="dialog-copy">Add Vault to your home screen and use it like a native app — no App Store required.</p>
+      <div class="qr-frame"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://10.129.180.20:4000" alt="Scan with phone camera"></div>
+      <div class="url-row">
+        <input type="text" readonly value="http://10.129.180.20:4000" id="phoneAppUrlInput">
+        <button type="button" class="btn btn-quiet" onclick="copyPhoneUrl()">Copy</button>
       </div>
-
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:18px; text-align:left; line-height:1.5;">
-        Aap is expense tracker ko apne iPhone ya Android phone me <strong>Standalone Native App</strong> ki tarah add kar sakte hain — bina kisi App Store ke, bilkul native smooth OLED UI ke saath!
-      </p>
-
-      <!-- QR Code Display -->
-      <div style="background:#ffffff; border-radius:var(--radius-lg); padding:16px; display:inline-block; margin-bottom:16px; box-shadow:0 12px 30px rgba(0,0,0,0.5);">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=http://10.129.180.20:4000" alt="Scan with Phone Camera" style="width:180px; height:180px; display:block; border-radius:8px;">
+      <div class="steps">
+        <div class="step"><strong>iPhone · Safari</strong><ol><li>Scan the QR or open the link</li><li>Tap Share</li><li>Add to Home Screen</li></ol></div>
+        <div class="step"><strong>Android · Chrome</strong><ol><li>Scan the QR or open the link</li><li>Tap the menu</li><li>Install app</li></ol></div>
       </div>
-
-      <!-- Direct Link with Copy Button -->
-      <div style="display:flex; gap:8px; align-items:center; margin-bottom:18px;">
-        <input type="text" readonly value="http://10.129.180.20:4000" id="phoneAppUrlInput" class="real-field-input" style="margin-bottom:0; font-family:var(--font-mono); font-size:13px; color:var(--sage-green);">
-        <button type="button" class="btn-capsule-draft" onclick="copyPhoneUrl()" style="white-space:nowrap; padding:0 18px; height:50px;">📋 Copy</button>
-      </div>
-
-      <!-- Quick Platform Steps -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:left; margin-bottom:20px;">
-        <div style="background:var(--input-bg); border:1px solid var(--border-apple); border-radius:var(--radius-md); padding:14px;">
-          <div style="font-weight:800; font-size:13px; color:var(--text-main); margin-bottom:6px;">🍎 iPhone (Safari)</div>
-          <ol style="font-size:11px; color:var(--text-muted); padding-left:16px; margin:0; line-height:1.6;">
-            <li>Camera se QR scan karein ya Safari me kholein</li>
-            <li>Neeche <strong>Share (􀈂)</strong> dabayein</li>
-            <li><strong>'Add to Home Screen' (⊞)</strong> chunein</li>
-          </ol>
-        </div>
-
-        <div style="background:var(--input-bg); border:1px solid var(--border-apple); border-radius:var(--radius-md); padding:14px;">
-          <div style="font-weight:800; font-size:13px; color:var(--text-main); margin-bottom:6px;">🤖 Android (Chrome)</div>
-          <ol style="font-size:11px; color:var(--text-muted); padding-left:16px; margin:0; line-height:1.6;">
-            <li>Camera se QR scan karein ya Chrome me kholein</li>
-            <li>Top right <strong>3 dots (⋮)</strong> dabayein</li>
-            <li><strong>'Install app'</strong> ya <strong>'Add to Home'</strong> dabayein</li>
-          </ol>
-        </div>
-      </div>
-
-      <button type="button" class="btn-capsule-add" style="width:100%;" onclick="closePhoneAppModal()">Got It / Done</button>
+      <button type="button" class="btn btn-primary" style="width:100%;" onclick="closeModal('phoneAppModalLayer')">Done</button>
     </div>
   </div>
 
-  <!-- Category Picker Modal -->
-  <div class="cat-modal-layer" id="catModalLayer">
-    <div class="cat-dialog-box">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:19px; font-weight:800;">Select Category</h4>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:16px; font-weight:600;" onclick="closeCategoryModal()">✕</span>
-      </div>
-
-      <div class="cat-picker-grid">
-        <div class="cat-choice-cell selected" onclick="setCategoryChoice('Food', '☕', this)">
-          <span>☕</span> <span>Food</span>
-        </div>
-        <div class="cat-choice-cell" onclick="setCategoryChoice('Salary', '💵', this)">
-          <span>💵</span> <span>Salary</span>
-        </div>
-        <div class="cat-choice-cell" onclick="setCategoryChoice('Entertainment', '🎟️', this)">
-          <span>🎟️</span> <span>Entertainment</span>
-        </div>
-        <div class="cat-choice-cell" onclick="setCategoryChoice('Shopping', '🛍️', this)">
-          <span>🛍️</span> <span>Shopping</span>
-        </div>
-        <div class="cat-choice-cell" onclick="setCategoryChoice('Travel', '✈️', this)">
-          <span>✈️</span> <span>Travel</span>
-        </div>
-        <div class="cat-choice-cell" onclick="setCategoryChoice('Transfer', '⇄', this)">
-          <span>⇄</span> <span>Transfer</span>
-        </div>
+  <!-- ================= CATEGORY ================= -->
+  <div class="overlay" id="catModalLayer">
+    <div class="dialog">
+      <div class="dialog-head"><h3 class="dialog-title">Select category</h3><button class="close" onclick="closeModal('catModalLayer')">✕</button></div>
+      <div class="cat-grid" id="catGrid">
+        <button class="cat-choice selected" onclick="setCategoryChoice('Food','☕',this)"><span>☕</span><span>Food</span></button>
+        <button class="cat-choice" onclick="setCategoryChoice('Salary','💵',this)"><span>💵</span><span>Salary</span></button>
+        <button class="cat-choice" onclick="setCategoryChoice('Travel','✈️',this)"><span>✈️</span><span>Travel</span></button>
+        <button class="cat-choice" onclick="setCategoryChoice('Shopping','🛍️',this)"><span>🛍️</span><span>Shopping</span></button>
+        <button class="cat-choice" onclick="setCategoryChoice('Entertainment','🎟️',this)"><span>🎟️</span><span>Entertainment</span></button>
+        <button class="cat-choice" onclick="setCategoryChoice('Transfer','⇄',this)"><span>⇄</span><span>Transfer</span></button>
       </div>
     </div>
   </div>
 
-  <!-- SQL Terminal Drawer -->
-  <div class="sql-terminal-modal" id="sqlTerminalModal">
-    <div class="terminal-content-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h4 style="font-size:20px; font-weight:800;">SQL Relational Studio</h4>
-        <span style="color:var(--text-muted); cursor:pointer; font-size:16px; font-weight:600;" onclick="closeSqlStudio()">✕</span>
+  <!-- ================= SQL STUDIO ================= -->
+  <div class="overlay" id="sqlTerminalModal">
+    <div class="dialog wide">
+      <div class="dialog-head"><h3 class="dialog-title">SQL studio</h3><button class="close" onclick="closeModal('sqlTerminalModal')">✕</button></div>
+      <p class="dialog-copy">Query the relational engine live. Read-only SELECT statements — the ledger stays safe.</p>
+      <div class="sql-examples">
+        <button onclick="setSql(this)">SELECT * FROM transactions ORDER BY tx_id DESC</button>
+        <button onclick="setSql(this)">SELECT category, SUM(amount) FROM transactions GROUP BY category</button>
+        <button onclick="setSql(this)">SELECT * FROM accounts WHERE balance > 60000</button>
+        <button onclick="setSql(this)">SELECT COUNT(*) FROM transactions</button>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Direct real-time query interface to backend relational engine.</p>
-
-      <div style="background:#09090b; border-radius:var(--radius-lg); padding:16px; margin-bottom:16px; border:1px solid var(--border-apple);">
-        <textarea id="sqlTerminalCode" style="width:100%; background:transparent; border:none; color:var(--sage-green); font-family:var(--font-mono); font-size:13px; outline:none; min-height:75px;">SELECT * FROM transactions ORDER BY tx_id DESC;</textarea>
-        <button style="padding:8px 18px; border-radius:var(--radius-capsule); background:var(--sage-green); color:#000; border:none; font-weight:800; font-size:12px; cursor:pointer;" onclick="runSqlTerminalQuery()">Execute Query</button>
+      <div class="sql-box">
+        <textarea id="sqlTerminalCode">SELECT * FROM transactions ORDER BY tx_id DESC;</textarea>
+        <button class="sql-run" onclick="runSqlTerminalQuery()">Run query</button>
       </div>
-
-      <div id="sqlExecutionMsg" style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Ready</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:12px;" id="sqlResultGrid">
-          <thead id="sqlGridHead"></thead>
-          <tbody id="sqlGridBody"></tbody>
-        </table>
-      </div>
+      <div class="sql-status" id="sqlExecutionMsg">Ready</div>
+      <div class="sql-scroll"><table id="sqlResultGrid"><thead id="sqlGridHead"></thead><tbody id="sqlGridBody"></tbody></table></div>
     </div>
   </div>
 
-  <!-- ========================================================================
-       APPLICATION LOGIC & LIVE REVENUE ENGINE
-       ======================================================================== -->
+  <div class="toasts" id="toasts"></div>
+
   <script>
-    const appState = {
+    /* ===================================================================
+       STATE & UTILITIES
+       =================================================================== */
+    const state = {
       transactions: [],
       accounts: [],
+      metrics: null,
       user: { full_name: 'Viraj Kumar' },
       currency: '₹',
+      category: 'All',
+      range: 'All',
       selectedCategory: 'Food',
       selectedIcon: '☕',
-      selectedRadio: 'UPI / Google Pay',
-      activeFilter: 'All'
+      paymentMode: 'UPI'
     };
 
-    // 1. Initial Data Fetch
-    async function hydrateAppData() {
+    const $ = id => document.getElementById(id);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function toast(message, kind = '') {
+      const el = document.createElement('div');
+      el.className = `toast ${kind}`;
+      el.textContent = message;
+      $('toasts').appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(8px)'; }, 2600);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    async function api(path, options) {
+      const res = await fetch(path, options);
+      const data = await res.json();
+      if (!data.success && data.message) throw new Error(data.message);
+      return data;
+    }
+
+    function money(value, decimals = 0) {
+      const n = Number(value) || 0;
       try {
-        const [txRes, accRes, metricsRes, profileRes] = await Promise.all([
-          fetch('/api/transactions').then(r => r.json()),
-          fetch('/api/accounts').then(r => r.json()),
-          fetch('/api/metrics').then(r => r.json()),
-          fetch('/api/user/profile').then(r => r.json())
+        return new Intl.NumberFormat('en-IN', {
+          style: 'currency', currency: state.currency === '₹' ? 'INR' : state.currency,
+          minimumFractionDigits: decimals, maximumFractionDigits: decimals
+        }).format(n).replace(/^₹/, '₹');
+      } catch (_) {
+        return `${state.currency}${n.toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
+      }
+    }
+
+    function shortDate(value) {
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return value || '—';
+      const today = new Date();
+      const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+      if (d.toDateString() === today.toDateString()) return 'Today';
+      if (d.toDateString() === yesterday.toDateString()) return 'Yesterday';
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+
+    function countUp(el, target, formatter) {
+      if (reduced) { el.textContent = formatter(target); return; }
+      const start = performance.now();
+      const duration = 850;
+      function frame(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 4);
+        el.textContent = formatter(target * eased);
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const icons = { Food: '☕', Salary: '💵', Travel: '✈️', Shopping: '🛍️', Entertainment: '🎟️', Transfer: '⇄' };
+
+    /* ===================================================================
+       DATA
+       =================================================================== */
+    async function hydrate() {
+      try {
+        const query = new URLSearchParams();
+        if (state.category !== 'All') query.set('category', state.category);
+        if (state.range !== 'All') query.set('range', state.range);
+
+        const [metricsRes, accountsRes, txRes, profileRes] = await Promise.all([
+          api('/api/metrics'),
+          api('/api/accounts'),
+          api(`/api/transactions?${query}`),
+          api('/api/user/profile')
         ]);
 
-        if (profileRes.success && profileRes.profile.user) {
-          appState.user = profileRes.profile.user;
-          const firstName = appState.user.full_name.split(' ')[0];
-          document.getElementById('topUserGreeting').textContent = firstName;
-          document.getElementById('sidebarUserName').textContent = appState.user.full_name;
-          document.getElementById('sidebarAvatarLetter').textContent = firstName.charAt(0).toUpperCase();
-        }
+        state.metrics = metricsRes.metrics;
+        state.accounts = accountsRes.accounts;
+        state.currency = (accountsRes.accounts[0] && accountsRes.accounts[0].currency) || '₹';
+        state.user = profileRes.profile.user || state.user;
+        state.transactions = txRes.transactions;
 
-        if (accRes.success && accRes.accounts.length > 0) {
-          appState.accounts = accRes.accounts;
-          const primary = appState.accounts[0];
-          appState.currency = primary.currency || '₹';
-          document.getElementById('sidebarActiveBank').textContent = primary.institution;
-          document.getElementById('sidebarActiveAccountNo').textContent = `Acct •••• ${primary.account_no.slice(-4)}`;
-          document.getElementById('realBankBadge').textContent = `${primary.institution} Live`;
-
-          document.querySelectorAll('.currency-symbol-label').forEach(el => el.textContent = appState.currency);
-        }
-
-        if (txRes.success) {
-          appState.transactions = txRes.transactions;
-          renderFeed();
-        }
-
-        if (metricsRes.success) {
-          updateMetricsUI(metricsRes.metrics);
-        }
+        renderIdentity();
+        renderMetrics();
+        renderFeed();
+        $('sidebarActiveAccountNo').textContent = `Acct •••• ${(accountsRes.accounts[0].account_no || '').slice(-4)}`;
       } catch (err) {
-        console.warn('Backend sync error:', err);
+        toast('Could not sync data — ' + err.message, 'error');
       }
     }
 
-    // 2. Render Transactions Feed
+    function renderIdentity() {
+      const name = state.user.full_name || 'There';
+      const first = name.split(' ')[0];
+      $('topUserGreeting').innerHTML = `Hello, <span class="mint">${first}</span>`;
+      $('sidebarAvatarLetter').textContent = first.charAt(0).toUpperCase();
+      $('sidebarActiveBank').textContent = state.accounts[0] ? state.accounts[0].institution : 'No bank';
+      document.querySelectorAll('.currency-symbol-label').forEach(el => el.textContent = state.currency);
+    }
+
+    function renderMetrics() {
+      const m = state.metrics;
+      if (!m) return;
+
+      countUp($('displayNetBalance'), m.totalLiquidity, v => money(v, 2));
+      countUp($('displayIncomeAmt'), m.income, v => money(v));
+      countUp($('displaySpentAmt'), m.spent, v => money(v));
+
+      $('savingsRateTxt').textContent = `${m.savingsRate}%`;
+      $('realBankBadge').textContent = `${state.accounts[0]?.institution || 'Bank'} · Live`;
+      $('accountCount').textContent = `${m.activeAccounts} account${m.activeAccounts === 1 ? '' : 's'}`;
+      $('retainedCopy').textContent = m.savingsRate >= 60 ? 'Healthy' : m.savingsRate >= 30 ? 'Balanced' : 'Watch';
+      $('liquidityCopy').textContent = `${m.savingsRate}% of income retained`;
+      $('meterFill').style.width = `${Math.min(m.savingsRate, 100)}%`;
+
+      const ratio = m.income > 0 ? Math.min(m.spent / m.income, 1) : 0;
+      $('ringIncome').style.strokeDashoffset = '0';
+      $('donutSpentRing').style.strokeDashoffset = String(264 - 264 * ratio);
+
+      const palette = { Food: 'var(--warm)', Salary: 'var(--mint)', Travel: 'var(--sky)', Shopping: '#d3a7c7', Entertainment: 'var(--violet)', Transfer: '#a7b6c7' };
+      const max = Math.max(1, ...(m.breakdown || []).map(b => b.amount));
+      $('breakdownBars').innerHTML = (m.breakdown || []).slice(0, 6).map(b => `
+        <div class="bar-cell" title="${b.category}: ${money(b.amount)}">
+          <div class="bar-track"><div class="bar-fill" style="height:${Math.max(12, Math.pow(b.amount / max, 0.55) * 100)}%;background:${palette[b.category] || 'var(--mint)'}"></div></div>
+          <span class="bar-name">${b.category}</span>
+        </div>`).join('');
+    }
+
     function renderFeed() {
-      const feed = document.getElementById('transactionsListFeed');
-      feed.innerHTML = '';
-
-      let list = appState.transactions;
-      if (appState.activeFilter !== 'All') {
-        list = list.filter(t => t.category.toLowerCase() === appState.activeFilter.toLowerCase());
+      const feed = $('transactionsListFeed');
+      if (!state.transactions.length) {
+        feed.innerHTML = `<div class="empty"><div class="glyph">◌</div><p>No transactions in this view yet.</p></div>`;
+        return;
       }
 
-      list.forEach(tx => {
-        const isIncome = tx.amount > 0;
-        const sign = isIncome ? `+${appState.currency}` : `-${appState.currency}`;
-        const displayAmount = `${sign}${Math.abs(tx.amount).toLocaleString(undefined, {minimumFractionDigits: 0})}`;
-
-        let icon = '☕';
-        let type = 'food';
-        if (tx.category.toLowerCase() === 'salary') { icon = '💵'; type = 'salary'; }
-        else if (tx.category.toLowerCase() === 'entertainment') { icon = '🎟️'; type = 'entertainment'; }
-        else if (tx.category.toLowerCase() === 'shopping') { icon = '🛍️'; type = 'shopping'; }
-        else if (tx.category.toLowerCase() === 'travel') { icon = '✈️'; type = 'shopping'; }
-
-        const row = document.createElement('div');
-        row.className = 'feed-row-item';
-        row.innerHTML = `
-          <div class="feed-item-left">
-            <div class="category-pastel-avatar ${type}">${icon}</div>
-            <div class="item-texts">
-              <h4>${tx.title || tx.category}</h4>
-              <span>${tx.merchant || tx.payment_type}</span>
+      feed.innerHTML = state.transactions.map((tx, i) => {
+        const credit = Number(tx.amount) > 0;
+        const cat = tx.category || 'Transfer';
+        const amount = `${credit ? '+' : '−'}${money(Math.abs(tx.amount))}`;
+        return `
+          <div class="tx-row" style="animation-delay:${Math.min(i * 28, 350)}ms">
+            <div class="tx-left">
+              <div class="tx-icon ${cat}">${icons[cat] || icons.Transfer}</div>
+              <div style="min-width:0">
+                <div class="tx-title">${escapeHtml(tx.title || cat)}</div>
+                <div class="tx-sub">${escapeHtml(tx.merchant || tx.payment_type || '')} · ${escapeHtml(tx.payment_type || '')}</div>
+              </div>
             </div>
-          </div>
-          <div class="feed-item-right">
-            <div class="feed-item-amount">${displayAmount}</div>
-            <div class="feed-item-date">${tx.created_at}</div>
-          </div>
-        `;
-        feed.appendChild(row);
+            <div class="tx-right">
+              <div class="tx-amount ${credit ? 'credit' : ''}">${amount}</div>
+              <div class="tx-date">${shortDate(tx.date || tx.created_at)}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    /* ===================================================================
+       NAVIGATION — glass movement, sliding indicator, scroll progress
+       =================================================================== */
+    function moveIndicator(button) {
+      const indicator = $('navIndicator');
+      if (!button) return;
+      indicator.style.width = button.offsetWidth + 'px';
+      indicator.style.transform = `translateX(${button.offsetLeft}px)`;
+    }
+
+    function initNav() {
+      const nav = $('glassNav');
+      const links = document.querySelectorAll('.nav-link');
+      moveIndicator(document.querySelector('.nav-link.active'));
+
+      links.forEach(link => link.addEventListener('click', () => {
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        moveIndicator(link);
+
+        if (link.dataset.action === 'sql') openSqlStudio();
+        else if (link.dataset.action === 'phone') openModal('phoneAppModalLayer');
+        else if (link.dataset.target) {
+          document.getElementById(link.dataset.target).scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+        }
+      }));
+
+      window.addEventListener('resize', () => moveIndicator(document.querySelector('.nav-link.active')));
+
+      nav.addEventListener('pointermove', e => {
+        const r = nav.getBoundingClientRect();
+        nav.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        nav.style.setProperty('--my', `${e.clientY - r.top}px`);
       });
+
+      function onScroll() {
+        nav.classList.toggle('scrolled', window.scrollY > 24);
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        $('scrollProgress').style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     }
 
-    // 3. Update Metrics & Donut Chart
-    function updateMetricsUI(metrics) {
-      const cur = appState.currency;
-      document.getElementById('displayIncomeAmt').textContent = `${cur}${metrics.income.toLocaleString()}`;
-      document.getElementById('displaySpentAmt').textContent = `${cur}${metrics.spent.toLocaleString()}`;
-      document.getElementById('displayNetBalance').textContent = `${cur}${metrics.totalLiquidity.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-      document.getElementById('savingsRateTxt').textContent = `${metrics.savingsRate}% Retained`;
+    /* ===================================================================
+       FILTERS & FORM
+       =================================================================== */
+    document.querySelectorAll('.period').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.period').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.range = btn.dataset.range;
+      hydrate();
+    }));
 
-      const total = metrics.income + metrics.spent;
-      const spentRatio = total > 0 ? (metrics.spent / total) : 0.3;
-      const offset = 280 - (280 * spentRatio);
-      document.getElementById('donutSpentRing').style.strokeDashoffset = offset;
-    }
+    document.querySelectorAll('.chip').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.category = btn.dataset.category;
+      hydrate();
+    }));
 
-    // 4. Setup My Real Bank Account
-    function openRealAccountSetupModal() {
-      document.getElementById('realSetupModalLayer').classList.add('active');
-    }
+    document.querySelectorAll('.mode').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.mode').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.paymentMode = btn.dataset.mode;
+    }));
 
-    function closeRealAccountSetupModal() {
-      document.getElementById('realSetupModalLayer').classList.remove('active');
-    }
-
-    async function handleRealAccountSetup(e) {
-      e.preventDefault();
-      const fullName = document.getElementById('realUserNameInput').value;
-      const bankName = document.getElementById('realBankNameInput').value;
-      const accountNo = document.getElementById('realAccountNoInput').value;
-      const balance = parseFloat(document.getElementById('realBalanceInput').value);
-      const currency = document.getElementById('realCurrencyInput').value;
-
+    async function handleTransactionSubmit(event) {
+      event.preventDefault();
+      const amount = Number($('inputAmount').value);
+      const merchant = $('inputMerchant').value.trim();
+      if (!Number.isFinite(amount) || amount <= 0) { toast('Enter an amount above zero.', 'error'); return; }
       try {
-        const res = await fetch('/api/user/setup-real-account', {
+        await api('/api/transactions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            full_name: fullName,
-            bank_name: bankName,
-            account_no: accountNo,
-            initial_balance: balance,
-            currency: currency
-          })
+          body: JSON.stringify({ amount, category: state.selectedCategory, merchant, payment_type: state.paymentMode })
         });
-        const data = await res.json();
-        if (data.success) {
-          alert('✓ ' + data.message);
-          closeRealAccountSetupModal();
-          hydrateAppData();
-        }
-      } catch (err) {
-        alert('Error setting up bank account: ' + err.message);
-      }
+        toast(`${money(amount)} recorded`);
+        $('inputAmount').value = '';
+        await hydrate();
+      } catch (err) { toast(err.message, 'error'); }
     }
 
-    // 5. Statement CSV Import & Real Transactions Sync
-    function openStatementModal() {
-      document.getElementById('statementModalLayer').classList.add('active');
+    /* ===================================================================
+       MODALS
+       =================================================================== */
+    function openModal(id) { $(id).classList.add('open'); }
+    function closeModal(id) { $(id).classList.remove('open'); }
+    function openBankModal() { openModal('realSetupModalLayer'); }
+    function openStatementModal() { openModal('statementModalLayer'); }
+    function openCategoryModal() { openModal('catModalLayer'); }
+    function openPhoneAppModal() { openModal('phoneAppModalLayer'); }
+
+    document.querySelectorAll('.overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(overlay.id); });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.querySelectorAll('.overlay.open').forEach(o => closeModal(o.id));
+    });
+
+    async function handleRealAccountSetup(event) {
+      event.preventDefault();
+      const payload = {
+        full_name: $('realUserNameInput').value.trim(),
+        bank_name: $('realBankNameInput').value.trim(),
+        account_no: $('realAccountNoInput').value.trim(),
+        initial_balance: Number($('realBalanceInput').value),
+        currency: $('realCurrencyInput').value
+      };
+      try {
+        await api('/api/user/setup-real-account', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        closeModal('realSetupModalLayer');
+        toast('Bank account saved');
+        await hydrate();
+      } catch (err) { toast(err.message, 'error'); }
     }
 
-    function closeStatementModal() {
-      document.getElementById('statementModalLayer').classList.remove('active');
-    }
-
-    function loadSampleIndianUpiStatement() {
-      document.getElementById('statementCsvText').value = 
-`2026-03-01, Swiggy Food Orders, Food, -420
-2026-03-02, Zomato Online, Food, -360
-2026-03-02, Starbucks Coffee, Food, -385
-2026-03-03, Uber Premier Ride, Travel, -290
-2026-03-03, HP Petrol Pump Fuel, Travel, -2000
-2026-03-04, Amazon India Marketplace, Shopping, -1899
-2026-03-05, Netflix Subscription 4K, Entertainment, -649
-2026-03-06, Monthly Professional Credit, Salary, +85000`;
+    function loadSampleStatement() {
+      $('statementCsvText').value = [
+        '2026-11-25, Swiggy, Food, -420',
+        '2026-11-24, Amazon India, Shopping, -1899',
+        '2026-11-23, Uber, Travel, -290',
+        '2026-11-22, Netflix, Entertainment, -649',
+        '2026-11-21, Starbucks, Food, -385',
+        '2026-11-20, Salary Credit, Salary, +85000'
+      ].join('\n');
     }
 
     function handleStatementFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('statementCsvText').value = e.target.result;
-      };
+      reader.onload = e => { $('statementCsvText').value = e.target.result; };
       reader.readAsText(file);
     }
 
     async function importStatementCsv() {
-      const rawText = document.getElementById('statementCsvText').value.trim();
-      if (!rawText) {
-        alert('Please paste transactions or upload a CSV statement file first.');
-        return;
-      }
-
+      const rawText = $('statementCsvText').value.trim();
+      if (!rawText) { toast('Paste or upload a statement first.', 'error'); return; }
       try {
-        const res = await fetch('/api/transactions/import-statement', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ rawText })
+        const data = await api('/api/transactions/import-statement', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rawText })
         });
-        const data = await res.json();
-        if (data.success) {
-          alert('✓ ' + data.message);
-          closeStatementModal();
-          hydrateAppData();
-        } else {
-          alert('Import failed: ' + data.message);
-        }
-      } catch (e) {
-        alert('Import error: ' + e.message);
-      }
-    }
-
-    // 6. Time & Category Filters
-    function setTimeFilter(label, btn) {
-      document.querySelectorAll('.filter-item-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderFeed();
-    }
-
-    function applyCategoryFilter(cat) {
-      appState.activeFilter = cat;
-      renderFeed();
-    }
-
-    // 7. Category Modal Picker
-    function openCategoryModal() {
-      document.getElementById('catModalLayer').classList.add('active');
-    }
-
-    function closeCategoryModal() {
-      document.getElementById('catModalLayer').classList.remove('active');
+        closeModal('statementModalLayer');
+        toast(`Imported ${data.result.importedCount} transactions`);
+        $('statementCsvText').value = '';
+        await hydrate();
+      } catch (err) { toast(err.message, 'error'); }
     }
 
     function setCategoryChoice(name, icon, element) {
-      document.querySelectorAll('.cat-choice-cell').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('.cat-choice').forEach(c => c.classList.remove('selected'));
       element.classList.add('selected');
-
-      appState.selectedCategory = name;
-      appState.selectedIcon = icon;
-      document.getElementById('selectedCategoryPill').innerHTML = `<span>${icon}</span> <span>${name}</span>`;
-      closeCategoryModal();
+      state.selectedCategory = name;
+      state.selectedIcon = icon;
+      $('selectedCategoryPill').innerHTML = `<span>${icon}</span> <span>${name}</span>`;
+      closeModal('catModalLayer');
     }
 
-    // 8. Payment Type Radio
-    function selectRadioType(type, element) {
-      document.querySelectorAll('.payment-radio-row').forEach(r => r.classList.remove('active'));
-      element.classList.add('active');
-      appState.selectedRadio = type;
-    }
-
-    // 9. Add Transaction Form Submission
-    async function handleTransactionSubmit(e) {
-      e.preventDefault();
-      const amt = parseFloat(document.getElementById('inputAmount').value);
-      const merchant = document.getElementById('inputMerchant').value;
-
-      if (isNaN(amt) || amt <= 0) return;
-
+    async function copyPhoneUrl() {
+      const input = $('phoneAppUrlInput');
       try {
-        const res = await fetch('/api/transactions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: amt,
-            category: appState.selectedCategory,
-            merchant,
-            payment_type: appState.selectedRadio
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          hydrateAppData();
-        }
-      } catch (err) {
-        console.error('Error posting transaction:', err);
+        await navigator.clipboard.writeText(input.value);
+        toast('Link copied');
+      } catch (_) {
+        input.select(); document.execCommand('copy'); toast('Link copied');
       }
     }
 
-    // 10. SQL Terminal Studio
-    function openSqlStudio() {
-      document.getElementById('sqlTerminalModal').classList.add('active');
-      runSqlTerminalQuery();
-    }
-
-    function closeSqlStudio() {
-      document.getElementById('sqlTerminalModal').classList.remove('active');
-    }
+    /* ===================================================================
+       SQL STUDIO
+       =================================================================== */
+    function openSqlStudio() { openModal('sqlTerminalModal'); runSqlTerminalQuery(); }
+    function setSql(el) { $('sqlTerminalCode').value = el.textContent; runSqlTerminalQuery(); }
 
     async function runSqlTerminalQuery() {
-      const q = document.getElementById('sqlTerminalCode').value;
-      const msg = document.getElementById('sqlExecutionMsg');
-      const thead = document.getElementById('sqlGridHead');
-      const tbody = document.getElementById('sqlGridBody');
-
+      const status = $('sqlExecutionMsg');
+      status.textContent = 'Running…';
       try {
-        const res = await fetch('/api/sql-query', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: q })
+        const data = await api('/api/sql-query', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: $('sqlTerminalCode').value })
         });
-        const data = await res.json();
-
-        if (data.success) {
-          msg.textContent = `Query executed in 0.9ms • ${data.rowCount} rows fetched.`;
-          thead.innerHTML = '';
-          tbody.innerHTML = '';
-
-          if (data.columns.length > 0) {
-            const trH = document.createElement('tr');
-            data.columns.forEach(col => {
-              const th = document.createElement('th');
-              th.style.padding = '8px';
-              th.style.borderBottom = '1px solid var(--border-apple)';
-              th.style.color = 'var(--text-muted)';
-              th.style.textAlign = 'left';
-              th.textContent = col;
-              trH.appendChild(th);
-            });
-            thead.appendChild(trH);
-
-            data.data.forEach(row => {
-              const tr = document.createElement('tr');
-              data.columns.forEach(col => {
-                const td = document.createElement('td');
-                td.style.padding = '8px';
-                td.style.borderBottom = '0.5px solid var(--border-apple)';
-                td.textContent = row[col];
-                tr.appendChild(td);
-              });
-              tbody.appendChild(tr);
-            });
-          }
-        }
+        status.textContent = `${data.rowCount} row${data.rowCount === 1 ? '' : 's'} · ${data.executionMs} ms`;
+        const cols = data.columns || [];
+        $('sqlGridHead').innerHTML = cols.length ? `<tr>${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>` : '';
+        $('sqlGridBody').innerHTML = data.data.map(row => `<tr>${cols.map(c => `<td>${escapeHtml(row[c] ?? '—')}</td>`).join('')}</tr>`).join('');
       } catch (err) {
-        msg.textContent = 'SQL Error: ' + err.message;
+        status.textContent = err.message;
+        $('sqlGridHead').innerHTML = '';
+        $('sqlGridBody').innerHTML = '';
       }
     }
 
-    // 8. Phone PWA App Install Modal & Service Worker
-    function openPhoneAppModal() {
-      document.getElementById('phoneAppModalLayer').classList.add('active');
+    /* ===================================================================
+       BOOT & ADAPTIVE CROSS-DEVICE OPTIMIZATIONS (iOS & ANDROID)
+       =================================================================== */
+    let deferredPrompt;
+
+    function initDeviceOptimizations() {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isAndroid = /Android/.test(navigator.userAgent);
+      const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+      const banner = document.getElementById('deviceInstallBanner');
+      const badge = document.getElementById('deviceIconBadge');
+      const title = document.getElementById('deviceInstallTitle');
+      const sub = document.getElementById('deviceInstallSub');
+      const btn = document.getElementById('deviceInstallBtn');
+
+      // Standalone mode on either iPhone or Android -> full-screen native, hide prompt
+      if (isStandalone) {
+        if (banner) banner.style.display = 'none';
+        return;
+      }
+
+      if (isIOS) {
+        if (banner) {
+          banner.style.display = 'flex';
+          badge.textContent = '🍎';
+          title.textContent = 'Add to iPhone';
+          sub.textContent = "Tap Share [ ↑ ] & 'Add to Home Screen'";
+          btn.textContent = 'Guide ➔';
+          btn.onclick = () => openModal('phoneAppModalLayer');
+        }
+      } else if (isAndroid) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          if (banner) {
+            banner.style.display = 'flex';
+            badge.textContent = '🤖';
+            title.textContent = 'Install on Android';
+            sub.textContent = 'Add native app icon to launcher';
+            btn.textContent = 'Install';
+            btn.onclick = triggerAndroidInstall;
+          }
+        });
+      }
     }
 
-    function closePhoneAppModal() {
-      document.getElementById('phoneAppModalLayer').classList.remove('active');
+    async function triggerAndroidInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        const banner = document.getElementById('deviceInstallBanner');
+        if (banner) banner.style.display = 'none';
+      } else {
+        openModal('phoneAppModalLayer');
+      }
     }
 
-    function copyPhoneUrl() {
-      const input = document.getElementById('phoneAppUrlInput');
-      input.select();
-      navigator.clipboard.writeText(input.value).then(() => {
-        alert('✓ Link copied: ' + input.value);
-      }).catch(() => {
-        prompt('Copy this link to open on your phone:', input.value);
-      });
+    function openAddTransactionMobile() {
+      const el = document.querySelector('.form-card');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const amt = document.getElementById('txAmount');
+        if (amt) setTimeout(() => amt.focus(), 350);
+      }
     }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    initNav();
+    hydrate();
+    initDeviceOptimizations();
 
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
-      });
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
     }
-
-    // Boot
-    hydrateAppData();
   </script>
+
+  <!-- Adaptive Cross-Device Install Bar -->
+  <aside class="device-install-bar" id="deviceInstallBanner" style="display:none;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="font-size:24px;" id="deviceIconBadge">📲</span>
+      <div>
+        <div style="font-weight:700; font-size:13px; color:#ffffff;" id="deviceInstallTitle">Install Vault App</div>
+        <div style="font-size:11px; color:#8e9590;" id="deviceInstallSub">Add to Home Screen as Native App</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="deviceInstallBtn" style="padding:8px 16px; font-size:12px; font-weight:700;">Install</button>
+  </aside>
+
+  <!-- Mobile Bottom Dock (iPhone & Android Native Look) -->
+  <nav class="mobile-bottom-dock" aria-label="Mobile navigation">
+    <button class="mobile-dock-btn active" onclick="scrollToSection('top')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="scrollToSection('activity')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>Activity</span>
+    </button>
+    <button class="mobile-dock-plus" onclick="openAddTransactionMobile()" aria-label="Add transaction">
+      +
+    </button>
+    <button class="mobile-dock-btn" onclick="openBankModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      <span>Bank</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="openModal('phoneAppModalLayer')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg>
+      <span>App</span>
+    </button>
+  </nav>
 </body>
 </html>
