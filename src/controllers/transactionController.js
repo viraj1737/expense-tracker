@@ -18,8 +18,8 @@ exports.create = (req, res) => {
 
 exports.importStatement = (req, res) => {
   try {
-    const { items } = req.body;
-    const result = BankingService.importStatement(items);
+    const { items, rawText } = req.body;
+    const result = BankingService.importStatement(items || rawText);
     res.json({
       success: true,
       message: `Successfully parsed and imported ${result.importedCount} transactions from statement.`,

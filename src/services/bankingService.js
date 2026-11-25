@@ -125,27 +125,121 @@ class BankingService {
     return newTx;
   }
 
+  // Auto-categorize merchant to Apple HIG icons & tags
+  static categorizeMerchant(merchantName = '') {
+    const m = (merchantName || '').toLowerCase();
+    if (/swiggy|zomato|starbucks|mcdonald|kfc|burger|pizza|domino|cafe|coffee|chai|tea|blinkit|zepto|instamart|bigbasket|grofers|restaurant|dining|food|bakery|dunkin|haldiram|subway|biryani/i.test(m)) {
+      return 'Food';
+    }
+    if (/uber|ola|rapido|metro|petrol|fuel|diesel|indian oil|bpcl|hpcl|shell|toll|fastag|irctc|flight|air|train|indigo|spicejet|vistara|travel|redbus/i.test(m)) {
+      return 'Travel';
+    }
+    if (/amazon|flipkart|myntra|ajio|zara|h&m|uniqlo|apple|croma|reliance|mall|shopping|retail|store|dmart|nykaa|tata cliq/i.test(m)) {
+      return 'Shopping';
+    }
+    if (/netflix|spotify|prime|hotstar|bookmyshow|pvr|inox|movie|cinema|youtube|gaming|steam|playstation|disney|entertainment/i.test(m)) {
+      return 'Entertainment';
+    }
+    if (/salary|payroll|wage|dividend|interest credit|cashback|refund|credited|income/i.test(m)) {
+      return 'Salary';
+    }
+    return 'Transfer';
+  }
+
+  // Smart Parser for Bank Statements & UPI Export text (CSV, TSV, Pipe, or Narration)
+  static parseRawStatementText(rawText) {
+    if (!rawText || typeof rawText !== 'string') return [];
+    const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+    const items = [];
+
+    for (const line of lines) {
+      if (/^(date|tx|transaction|timestamp|merchant|description|narration)/i.test(line)) {
+        continue;
+      }
+
+      let parts = line.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+      if (parts.length < 2) parts = line.split('\t').map(s => s.trim());
+      if (parts.length < 2) parts = line.split('|').map(s => s.trim());
+
+      let date = 'Today';
+      let merchant = 'Payment';
+      let category = '';
+      let amount = 0;
+      let payment_type = 'UPI';
+
+      if (parts.length >= 4) {
+        date = parts[0];
+        merchant = parts[1];
+        category = parts[2];
+        amount = parseFloat(parts[3].replace(/[^0-9.-]/g, ''));
+      } else if (parts.length === 3) {
+        const maybeAmt = parseFloat(parts[2].replace(/[^0-9.-]/g, ''));
+        if (!isNaN(maybeAmt)) {
+          date = parts[0];
+          merchant = parts[1];
+          amount = maybeAmt;
+        } else {
+          merchant = parts[0];
+          category = parts[1];
+          amount = parseFloat(parts[2].replace(/[^0-9.-]/g, ''));
+        }
+      } else if (parts.length === 2) {
+        merchant = parts[0];
+        amount = parseFloat(parts[1].replace(/[^0-9.-]/g, ''));
+      }
+
+      if (isNaN(amount) || amount === 0) continue;
+
+      if (!category) {
+        category = this.categorizeMerchant(merchant);
+      }
+
+      // If it's an expense and positive without a credit tag, make it negative
+      if (category !== 'Salary' && amount > 0 && !line.includes('+') && !/cr|credit/i.test(line)) {
+        amount = -Math.abs(amount);
+      }
+
+      items.push({
+        date,
+        merchant,
+        category,
+        amount,
+        payment_type
+      });
+    }
+
+    return items;
+  }
+
   // Bulk Import Statement (CSV or array of transactions)
-  static importStatement(items) {
+  static importStatement(itemsOrRaw) {
+    let items = itemsOrRaw;
+    if (typeof itemsOrRaw === 'string') {
+      items = this.parseRawStatementText(itemsOrRaw);
+    }
     if (!Array.isArray(items) || items.length === 0) {
-      throw new Error('No transaction items to import.');
+      throw new Error('No valid transaction items could be parsed from the statement.');
     }
 
     const acc = store.accounts[0];
     let count = 0;
 
     items.forEach(item => {
-      const amt = parseFloat(item.amount);
+      let amt = parseFloat(item.amount);
       if (!isNaN(amt)) {
+        const cat = item.category || this.categorizeMerchant(item.merchant);
+        if (cat !== 'Salary' && amt > 0 && !item.isCredit) {
+          amt = -Math.abs(amt);
+        }
         acc.balance += amt;
         store.transactions.unshift({
           tx_id: store.transactions.length + 1,
           tx_ref: 'TX-IMP-' + Math.floor(1000 + Math.random() * 9000),
           account_no: acc.account_no,
-          title: item.category || 'General',
-          category: item.category || 'General',
+          title: cat,
+          category: cat,
           amount: amt,
-          payment_type: item.payment_type || 'Card',
+          payment_type: item.payment_type || 'UPI',
           merchant: item.merchant || 'Statement Entry',
           created_at: item.date || 'Today'
         });

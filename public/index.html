@@ -1239,24 +1239,35 @@
     </div>
   </div>
 
-  <!-- Statement CSV Upload Modal -->
+  <!-- Statement CSV & UPI Upload Modal -->
   <div class="real-setup-modal-layer" id="statementModalLayer">
-    <div class="real-setup-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-size:22px; font-weight:800;">Import Bank Statement</h3>
+    <div class="real-setup-box" style="max-width:560px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-size:22px; font-weight:800;">Link Real Transactions</h3>
         <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closeStatementModal()">✕</span>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Apne bank statement se lines paste karein (Date, Merchant, Category, Amount):</p>
 
-      <textarea id="statementCsvText" class="real-field-input" style="min-height:140px; font-family:var(--font-mono); font-size:12px; line-height:1.6;">2026-03-01, Swiggy Food Orders, Food, -450
-2026-03-02, Amazon India Electronics, Shopping, -1299
-2026-03-03, Monthly Client Salary, Salary, 85000
-2026-03-04, PVR Cinemas Movie Tickets, Entertainment, -680
-2026-03-05, Petrol Pump Fuel, Travel, -2100</textarea>
+      <!-- Security / Safe Banking Notice -->
+      <div style="background:rgba(155, 200, 165, 0.08); border:1px solid rgba(155, 200, 165, 0.25); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px; font-size:12px; line-height:1.5; color:#c5d8c8;">
+        🔒 <strong>Zero-Password Security:</strong> Real banking apps (like CRED, Fold & Apple Wallet) never ask for netbanking passwords or PINs. Upload your bank statement file or paste real UPI / Card debits below — our smart parser categorizes everything live into your dashboard.
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <label style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Bank Statement / UPI Export (.csv or text)</label>
+        <button type="button" onclick="loadSampleIndianUpiStatement()" style="background:none; border:none; color:var(--sage-green); font-size:11px; font-weight:700; cursor:pointer;">✨ Load Sample UPI Statement</button>
+      </div>
+
+      <textarea id="statementCsvText" class="real-field-input" style="min-height:140px; font-family:var(--font-mono); font-size:12px; line-height:1.6;" placeholder="Paste real transactions (Date, Merchant, Amount) or upload CSV..."></textarea>
+
+      <!-- File Upload Option -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding:10px 14px; background:var(--input-bg); border-radius:var(--radius-sm); border:1px dashed var(--border-apple);">
+        <span style="font-size:12px; color:var(--text-muted);">📄 Or upload statement file:</span>
+        <input type="file" id="statementFileInput" accept=".csv, .txt" onchange="handleStatementFileUpload(event)" style="font-size:12px; color:var(--text-main); cursor:pointer;">
+      </div>
 
       <div style="display:flex; gap:14px;">
         <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeStatementModal()">Cancel</button>
-        <button type="button" class="btn-capsule-add" style="flex:1.5;" onclick="importStatementCsv()">Import Transactions</button>
+        <button type="button" class="btn-capsule-add" style="flex:1.5;" onclick="importStatementCsv()">Sync Real Transactions</button>
       </div>
     </div>
   </div>
@@ -1468,7 +1479,7 @@
       }
     }
 
-    // 5. Statement CSV Import
+    // 5. Statement CSV Import & Real Transactions Sync
     function openStatementModal() {
       document.getElementById('statementModalLayer').classList.add('active');
     }
@@ -1477,25 +1488,32 @@
       document.getElementById('statementModalLayer').classList.remove('active');
     }
 
+    function loadSampleIndianUpiStatement() {
+      document.getElementById('statementCsvText').value = 
+`2026-03-01, Swiggy Food Orders, Food, -420
+2026-03-02, Zomato Online, Food, -360
+2026-03-02, Starbucks Coffee, Food, -385
+2026-03-03, Uber Premier Ride, Travel, -290
+2026-03-03, HP Petrol Pump Fuel, Travel, -2000
+2026-03-04, Amazon India Marketplace, Shopping, -1899
+2026-03-05, Netflix Subscription 4K, Entertainment, -649
+2026-03-06, Monthly Professional Credit, Salary, +85000`;
+    }
+
+    function handleStatementFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('statementCsvText').value = e.target.result;
+      };
+      reader.readAsText(file);
+    }
+
     async function importStatementCsv() {
       const rawText = document.getElementById('statementCsvText').value.trim();
-      const lines = rawText.split('\n');
-      const items = [];
-
-      lines.forEach(line => {
-        const parts = line.split(',').map(p => p.trim());
-        if (parts.length >= 4) {
-          items.push({
-            date: parts[0],
-            merchant: parts[1],
-            category: parts[2],
-            amount: parseFloat(parts[3])
-          });
-        }
-      });
-
-      if (items.length === 0) {
-        alert('Invalid statement format. Example: 2026-03-01, Swiggy, Food, -450');
+      if (!rawText) {
+        alert('Please paste transactions or upload a CSV statement file first.');
         return;
       }
 
@@ -1503,13 +1521,15 @@
         const res = await fetch('/api/transactions/import-statement', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items })
+          body: JSON.stringify({ rawText })
         });
         const data = await res.json();
         if (data.success) {
           alert('✓ ' + data.message);
           closeStatementModal();
           hydrateAppData();
+        } else {
+          alert('Import failed: ' + data.message);
         }
       } catch (e) {
         alert('Import error: ' + e.message);
