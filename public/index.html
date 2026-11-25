@@ -8,7 +8,11 @@
   <!-- Apple Status Bar & PWA Theme -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Vault">
   <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/icon.png">
 
   <style>
     /* ==========================================================================
@@ -978,6 +982,14 @@
           </svg>
           <span>SQL Database</span>
         </button>
+
+        <button class="nav-link-btn" onclick="openPhoneAppModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+          <span>Install on Phone</span>
+        </button>
       </nav>
     </div>
 
@@ -1019,6 +1031,12 @@
         <button class="btn-real-setup" onclick="openRealAccountSetupModal()">
           <span>🏦</span>
           <span>My Real Bank</span>
+        </button>
+
+        <!-- Install on Phone CTA -->
+        <button class="btn-real-setup" onclick="openPhoneAppModal()" style="border-color: rgba(155, 200, 165, 0.4); background: rgba(155, 200, 165, 0.1);">
+          <span>📱</span>
+          <span>Add to Phone</span>
         </button>
 
         <!-- Time Filter Pills -->
@@ -1269,6 +1287,54 @@
         <button type="button" class="btn-capsule-draft" style="flex:1;" onclick="closeStatementModal()">Cancel</button>
         <button type="button" class="btn-capsule-add" style="flex:1.5;" onclick="importStatementCsv()">Sync Real Transactions</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Phone App PWA / Install Modal -->
+  <div class="real-setup-modal-layer" id="phoneAppModalLayer">
+    <div class="real-setup-box" style="max-width:520px; text-align:center;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-size:22px; font-weight:800; text-align:left;">📲 Install on Your Phone</h3>
+        <span style="color:var(--text-muted); cursor:pointer; font-size:18px;" onclick="closePhoneAppModal()">✕</span>
+      </div>
+
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:18px; text-align:left; line-height:1.5;">
+        Aap is expense tracker ko apne iPhone ya Android phone me <strong>Standalone Native App</strong> ki tarah add kar sakte hain — bina kisi App Store ke, bilkul native smooth OLED UI ke saath!
+      </p>
+
+      <!-- QR Code Display -->
+      <div style="background:#ffffff; border-radius:var(--radius-lg); padding:16px; display:inline-block; margin-bottom:16px; box-shadow:0 12px 30px rgba(0,0,0,0.5);">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=http://10.129.180.20:4000" alt="Scan with Phone Camera" style="width:180px; height:180px; display:block; border-radius:8px;">
+      </div>
+
+      <!-- Direct Link with Copy Button -->
+      <div style="display:flex; gap:8px; align-items:center; margin-bottom:18px;">
+        <input type="text" readonly value="http://10.129.180.20:4000" id="phoneAppUrlInput" class="real-field-input" style="margin-bottom:0; font-family:var(--font-mono); font-size:13px; color:var(--sage-green);">
+        <button type="button" class="btn-capsule-draft" onclick="copyPhoneUrl()" style="white-space:nowrap; padding:0 18px; height:50px;">📋 Copy</button>
+      </div>
+
+      <!-- Quick Platform Steps -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:left; margin-bottom:20px;">
+        <div style="background:var(--input-bg); border:1px solid var(--border-apple); border-radius:var(--radius-md); padding:14px;">
+          <div style="font-weight:800; font-size:13px; color:var(--text-main); margin-bottom:6px;">🍎 iPhone (Safari)</div>
+          <ol style="font-size:11px; color:var(--text-muted); padding-left:16px; margin:0; line-height:1.6;">
+            <li>Camera se QR scan karein ya Safari me kholein</li>
+            <li>Neeche <strong>Share (􀈂)</strong> dabayein</li>
+            <li><strong>'Add to Home Screen' (⊞)</strong> chunein</li>
+          </ol>
+        </div>
+
+        <div style="background:var(--input-bg); border:1px solid var(--border-apple); border-radius:var(--radius-md); padding:14px;">
+          <div style="font-weight:800; font-size:13px; color:var(--text-main); margin-bottom:6px;">🤖 Android (Chrome)</div>
+          <ol style="font-size:11px; color:var(--text-muted); padding-left:16px; margin:0; line-height:1.6;">
+            <li>Camera se QR scan karein ya Chrome me kholein</li>
+            <li>Top right <strong>3 dots (⋮)</strong> dabayein</li>
+            <li><strong>'Install app'</strong> ya <strong>'Add to Home'</strong> dabayein</li>
+          </ol>
+        </div>
+      </div>
+
+      <button type="button" class="btn-capsule-add" style="width:100%;" onclick="closePhoneAppModal()">Got It / Done</button>
     </div>
   </div>
 
@@ -1660,6 +1726,31 @@
       } catch (err) {
         msg.textContent = 'SQL Error: ' + err.message;
       }
+    }
+
+    // 8. Phone PWA App Install Modal & Service Worker
+    function openPhoneAppModal() {
+      document.getElementById('phoneAppModalLayer').classList.add('active');
+    }
+
+    function closePhoneAppModal() {
+      document.getElementById('phoneAppModalLayer').classList.remove('active');
+    }
+
+    function copyPhoneUrl() {
+      const input = document.getElementById('phoneAppUrlInput');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        alert('✓ Link copied: ' + input.value);
+      }).catch(() => {
+        prompt('Copy this link to open on your phone:', input.value);
+      });
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
+      });
     }
 
     // Boot

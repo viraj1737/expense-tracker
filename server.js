@@ -26,10 +26,11 @@ app.get('*', (req, res) => {
 
 // Start Server
 initDatabase().then(() => {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n======================================================`);
     console.log(`🌱 Expense Tracker API & Web App running on:`);
-    console.log(`   👉 http://localhost:${PORT}`);
+    console.log(`   👉 Local:   http://localhost:${PORT}`);
+    console.log(`   📱 Phone:   http://10.129.180.20:${PORT}`);
     console.log(`   Architecture: MVC (Controllers, Services, Routes, Models)`);
     console.log(`======================================================\n`);
   });
